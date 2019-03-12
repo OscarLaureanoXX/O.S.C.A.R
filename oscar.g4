@@ -9,8 +9,8 @@ modulo	    :	'def' (id_ | 'void' ID) param bloque ;
 main		:	'main' param bloque ;
 param		:	'(' (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp)? '}' ;
-vars_		:	'var' ( tipo ID (',' ID)* ';' )+ ; // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
-id_		    :	tipo ID ; // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
+vars_		:	'var' ( tipo ID (',' ID)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
+id_		    :	tipo ID ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ';' ;
 escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ;
 lectura	    :	(ID | element) '=' 'read' '(' ')' ';' ;
@@ -41,8 +41,8 @@ find		:	ID '=' 'find' '(' ID ',' exp ')' ';' ;
 import_csv	:	ID '=' 'import' '(' CTE_STRING ')' ';' ;
 export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' ';';
 length  	:	ID '=' 'lenght' '(' ID ')' ';' ;
-min_		    :	ID '=' 'min' '(' ID ')' ';' ; // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
-max_	    	:	ID '=' 'max' '(' ID ')' ';' ; // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
+min_		    :	ID '=' 'min' '(' ID ')' ';' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
+max_	    	:	ID '=' 'max' '(' ID ')' ';' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
 concat	    :	ID '=' 'concat' '(' ID ',' ID ')' ';' ;
 sort		:	ID '=' 'sort' '(' ID ',' CTE_I ')' ';' ;
 splice 	    :	ID '=' 'splice' '(' ID ',' CTE_I ',' CTE_I ')' ';' ;
