@@ -54,7 +54,7 @@ RESERVED	        : '#oscar' | 'for' | 'while' | 'if' | 'else' | 'int' | 'float' 
 RELACIONALES	    : '>' | '<' | '=>' | '=<' | '!=' | '!' ;
 LOGICOS		        : '&&' | '||';
 DELIMITADORES	    : '[' | ']' | '(' | ')' | '{' | '}' ; 
-WS		            : ( ' ' | '\t' | '\r' | '\n');
+WS		            : ( ' ' | '\t' | '\r' | '\n') -> skip;
 ID			        : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')* ;
 CTE_B			    : 'true' | 'false';
 CTE_I			    : ('0'..'9')+ ;
