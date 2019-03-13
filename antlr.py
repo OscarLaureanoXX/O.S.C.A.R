@@ -4,8 +4,8 @@ from oscarLexer import oscarLexer
 from oscarParser import oscarParser
 from myListener import MyListener 
 
-def main():
-  inp = StdinStream()
+def main(argv):
+  inp = FileStream(argv[1])
   lexer = oscarLexer(inp)
   stream = CommonTokenStream(lexer)
   parser = oscarParser(stream)
@@ -21,4 +21,4 @@ def main():
   output.close()
 
 if __name__ == '__main__':
-  main()
+  main(sys.argv)
