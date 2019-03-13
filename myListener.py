@@ -6,4 +6,4 @@ from oscarListener import oscarListener
 class MyListener(oscarListener) :
   def __init__(self, output):
     self.output = output
-    self.output.write(':D')
+    self.output.write('Program Started')
