@@ -10,6 +10,7 @@ def main(argv):
   stream = CommonTokenStream(lexer)
   parser = oscarParser(stream)
   tree = parser.programa()
+# print(tree.toStringTree(recog=parser))
 
   output = open("output.oscar","w")
 
