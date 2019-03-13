@@ -12,13 +12,13 @@ bloque	    :	'{' vars_? estatuto+ ('return' exp)? '}' ;
 vars_		:	'var' ( tipo ID (',' ID)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ';' ;
-escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ;
+escritura	:	'print'{print("Se va a hacer un print\n")} '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
 lectura	    :	(ID | element) '=' 'read' '(' ')' ';' ;
 expresion	:	exp ((RELACIONALES | LOGICOS) exp)? ;
 exp		    :	termino (( '+' | '-' ) termino)* ;
 termino	    :	factor (( '*' | '/' | '%' ) factor)* ;
 factor	    :	('(' expresion ')') | (( '+' | '-')? var_cte) ;
-var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING | element ;
+var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING {print ("String: " + $CTE_STRING.text)} | element ; //Codigo entre reglas para acceder al valor de un elemento
 tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | lectura | ciclo | llamada ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
@@ -32,7 +32,7 @@ median	    :	ID '=' 'median' '(' ID ')' ';' ;
 stdev		: 	ID '=' 'stdev' '(' ID ')' ';' ;
 head		: 	ID '=' 'head' '(' ID ')' ';' ;
 tail		:	ID '=' 'tail' '(' ID ')' ';' ;
-histograma	:	'histogram' '(' ID ',' ID ')' ';' ;
+histograma	:	'histogram' '(' ID ',' ID ')' ';' ; //Ejemplo de como meter codigo en reglas
 pie_chart	:	'pie_chart' '(' ID ',' ID ')' ';' ;
 bar_graph	:	'bar_graph' '(' ID ',' ID ')' ';' ;
 union		:	ID '=' 'union' '(' ID ',' ID ')' ';' ;
