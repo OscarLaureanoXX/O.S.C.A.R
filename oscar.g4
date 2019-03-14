@@ -1,10 +1,16 @@
 grammar oscar;
 
+// Importing python modules
+@header{
+from rules import testing
+}
+
+
 /*
 * Parser Rules
 */
 
-programa	:	'#oscar' ';' vars_? modulo* main ;
+programa	:	'#oscar' ';' vars_? modulo* main ; 
 modulo	    :	'def' (id_ | 'void' ID) param bloque ;
 main		:	'main' param bloque ;
 param		:	'(' (id_(','id_)*)? ')' ;
@@ -12,7 +18,7 @@ bloque	    :	'{' vars_? estatuto+ ('return' exp)? '}' ;
 vars_		:	'var' ( tipo ID (',' ID)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ';' ;
-escritura	:	'print'{print("Se va a hacer un print\n")} '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
+escritura	:	'print' {testing()}'(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
 lectura	    :	(ID | element) '=' 'read' '(' ')' ';' ;
 expresion	:	exp ((RELACIONALES | LOGICOS) exp)? ;
 exp		    :	termino (( '+' | '-' ) termino)* ;

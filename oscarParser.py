@@ -6,6 +6,9 @@ from io import StringIO
 import sys
 
 
+from rules import testing
+
+
 def serializedATN():
     with StringIO() as buf:
         buf.write(u"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3")
@@ -1011,7 +1014,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 170
             self.match(oscarParser.T__14)
-            print("Se va a hacer un print\n")
+            testing()
             self.state = 172
             self.match(oscarParser.T__5)
             self.state = 175

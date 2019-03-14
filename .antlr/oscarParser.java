@@ -1,4 +1,7 @@
 // Generated from c:\Users\oscar\Documents\Compilador\ProyectoCompiladores\oscar.g4 by ANTLR 4.7.1
+
+from rules import testing
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -622,7 +625,7 @@ public class oscarParser extends Parser {
 			{
 			setState(170);
 			match(T__14);
-			print("Se va a hacer un print\n")
+			testing()
 			setState(172);
 			match(T__5);
 			setState(175);

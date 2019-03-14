@@ -3,6 +3,7 @@ from antlr4 import *
 from oscarLexer import oscarLexer
 from oscarParser import oscarParser
 from myListener import MyListener 
+import rules
 
 def main():
   inp = StdinStream()
