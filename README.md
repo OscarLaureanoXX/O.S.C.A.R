@@ -30,7 +30,7 @@ __De ahora en adelante solo se mostrarán los comandos que utilizan los aliases 
 Para probar el análisis léxico y sintáctico se utiliza el comando:
 
 ```python2
-python antlr.py < test.oscar
+python antlr.py test.oscar
 ```
 
 [Antlr v4]: https://www.antlr.org/download.html
