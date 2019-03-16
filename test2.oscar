@@ -1,0 +1,16 @@
+#oscar;
+
+var
+  int a,f;
+  float b;
+  string c;
+  boolean d;
+  list e;
+
+main() {
+  a = 1;
+  b = 1.0;
+  c = "c";
+  d = true;
+  e = [a,b,c,d];
+}

@@ -1,4 +1,4 @@
-# Generated from oscar.g4 by ANTLR 4.7.2
+# Generated from oscar.g4 by ANTLR 4.7.1
 from antlr4 import *
 
 from rules import testing
@@ -184,6 +184,24 @@ class oscarListener(ParseTreeListener):
 
     # Exit a parse tree produced by oscarParser#asignacion.
     def exitAsignacion(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#igualdad.
+    def enterIgualdad(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#igualdad.
+    def exitIgualdad(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#asdf.
+    def enterAsdf(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#asdf.
+    def exitAsdf(self, ctx):
         pass
 
 

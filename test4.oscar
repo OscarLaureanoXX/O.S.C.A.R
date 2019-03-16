@@ -1,0 +1,22 @@
+#oscar;
+
+def void funcion (int x, boolean y) {
+  var
+    int i,j,k;
+
+    if (x > i) {
+      i = j;
+    }
+
+    return x + 2;
+}
+
+main () {
+  var 
+    int c = 5;
+    list a = [1,2,3,4,5];
+    list b = [6,7,8,9,10];
+
+    c = length(a);
+    histogram(a,b);
+}

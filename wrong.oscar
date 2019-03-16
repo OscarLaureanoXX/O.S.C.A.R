@@ -1,1 +1,11 @@
 #oscar;
+
+main () {
+  var
+    list b;
+    int x = 1;
+
+  b = [1,2,3];
+
+  b[1] = 1;
+}
