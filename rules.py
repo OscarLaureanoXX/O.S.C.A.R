@@ -1,16 +1,20 @@
-def testing():
-  print("Importing functions")
+def testing(texto):
+  print(texto)
 
 def create_function_table():
-  function_table = dict(
-    ['program'] = ['global']
-  )
+  print("CREATE FUNCTION TABLE")
 
-def create_variable_table(varTableName, scope):
-  if scope = "global":
-    function_table['program'].append(varTableName)
-  else:
-    function_table[varTableName] = list()
+def create_variable_table():
+  print("CREATE VARIABLE TABLE")
 
-def add_to_variable_table(varTableName, varName, varType):
-  #variable_table[varTableName] 
+def add_to_var_table(varName, tipo):
+  print("ADD TO VAR TABLE: " + varName + " " + tipo)
+
+def add_to_func_table(texto):
+  print("ADD TO FUNC TABLE: " + texto)
+
+def destroy():
+  print("DESTROY EVERYTHING")
+
+def delete_var_table():
+  print("DELET VAR TABLE")

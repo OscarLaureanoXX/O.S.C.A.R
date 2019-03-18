@@ -9,22 +9,22 @@ import rules
 * Parser Rules
 */
 
-programa	:	'#oscar' ';' {#crear tabla funciones} vars_? modulo* main {#destruir tabla funciones y tablas de variables} ; 
-modulo	    :	'def' {#agregar funcion a tabla funciones} (id_ | 'void' ID) param bloque {#borrar tabla de variables};
-main		:	'main' param bloque ;
-param		:	'('{#crea directorio vars para funcion} (id_(','id_)*)? ')' ;
+programa	:	'#oscar' ';' {rules.create_function_table()} vars_? modulo* main {rules.destroy()} ; 
+modulo	    :	'def' (id_ {rules.add_to_func_table($id_.text)} | 'void' ID {rules.add_to_func_table('void '+$ID.text)}) param bloque {rules.delete_var_table()};
+main		:	'main' {rules.add_to_func_table("main")} param bloque ;
+param		:	'('{rules.create_variable_table()} (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
-vars_		:	'var' {#crear tabla de variables} ( tipo ID igualdad? {#agregar a tabla variables} (',' ID igualdad? {#agregar a tabla variables})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
-id_		    :	tipo ID {#agregar nombre a tabla variables actual } ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
+vars_		:	'var' {rules.create_variable_table()} ( tipo ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)} (',' ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
+id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
-escritura	:	'print' {rules.testing()}'(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
+escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ;
 lectura	    :	(ID | element) '=' 'read' '(' ')' ';' ;
 expresion	:	exp ((RELACIONALES | LOGICOS) exp)? ;
 exp		    :	termino (( '+' | '-' ) termino)* ;
 termino	    :	factor (( '*' | '/' | '%' ) factor)* ;
 factor	    :	('(' expresion ')') | (( '+' | '-')? var_cte) ;
-var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING {print ("String: " + $CTE_STRING.text)}| element ; //Codigo entre reglas para acceder al valor de un elemento
-tipo		: 	('int' | 'float' | 'string' | 'boolean' | 'list') {#agregar tipo a tabla variables} ;
+var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING | element ;
+tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | lectura | ciclo | llamada ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
 estats	    :	'{' estatuto+ '}' ;
