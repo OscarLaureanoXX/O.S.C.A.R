@@ -6,7 +6,7 @@ from io import StringIO
 import sys
 
 
-from rules import testing
+import rules
 
 def serializedATN():
     with StringIO() as buf:
@@ -339,7 +339,7 @@ class oscarParser ( Parser ):
     RULE_estats = 18
     RULE_asignacion = 19
     RULE_igualdad = 20
-    RULE_asdf = 21
+    RULE_sub_lista = 21
     RULE_element = 22
     RULE_llamada = 23
     RULE_mean = 24
@@ -368,7 +368,7 @@ class oscarParser ( Parser ):
                    u"vars_", u"id_", u"condicion", u"escritura", u"lectura", 
                    u"expresion", u"exp", u"termino", u"factor", u"var_cte", 
                    u"tipo", u"estatuto", u"ciclo", u"estats", u"asignacion", 
-                   u"igualdad", u"asdf", u"element", u"llamada", u"mean", 
+                   u"igualdad", u"sub_lista", u"element", u"llamada", u"mean", 
                    u"variance", u"median", u"stdev", u"head", u"tail", u"histograma", 
                    u"pie_chart", u"bar_graph", u"union", u"intersect", u"find", 
                    u"import_csv", u"export_csv", u"length", u"min_", u"max_", 
@@ -681,7 +681,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 120
             self.match(oscarParser.T__5)
-            #crea directorio varspara funcion
+            #crea directorio vars para funcion
             self.state = 130
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1056,7 +1056,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 189
             self.match(oscarParser.T__14)
-            testing()
+            rules.testing()
             self.state = 191
             self.match(oscarParser.T__5)
             self.state = 194
@@ -1900,11 +1900,11 @@ class oscarParser ( Parser ):
                 return self.getTypedRuleContext(oscarParser.ExpContext,i)
 
 
-        def asdf(self, i=None):
+        def sub_lista(self, i=None):
             if i is None:
-                return self.getTypedRuleContexts(oscarParser.AsdfContext)
+                return self.getTypedRuleContexts(oscarParser.Sub_listaContext)
             else:
-                return self.getTypedRuleContext(oscarParser.AsdfContext,i)
+                return self.getTypedRuleContext(oscarParser.Sub_listaContext,i)
 
 
         def getRuleIndex(self):
@@ -1955,7 +1955,7 @@ class oscarParser ( Parser ):
 
                     elif la_ == 2:
                         self.state = 309
-                        self.asdf()
+                        self.sub_lista()
                         pass
 
 
@@ -1975,7 +1975,7 @@ class oscarParser ( Parser ):
 
                         elif la_ == 2:
                             self.state = 314
-                            self.asdf()
+                            self.sub_lista()
                             pass
 
 
@@ -1998,10 +1998,10 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-    class AsdfContext(ParserRuleContext):
+    class Sub_listaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
-            super(oscarParser.AsdfContext, self).__init__(parent, invokingState)
+            super(oscarParser.Sub_listaContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def exp(self, i=None):
@@ -2012,23 +2012,23 @@ class oscarParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return oscarParser.RULE_asdf
+            return oscarParser.RULE_sub_lista
 
         def enterRule(self, listener):
-            if hasattr(listener, "enterAsdf"):
-                listener.enterAsdf(self)
+            if hasattr(listener, "enterSub_lista"):
+                listener.enterSub_lista(self)
 
         def exitRule(self, listener):
-            if hasattr(listener, "exitAsdf"):
-                listener.exitAsdf(self)
+            if hasattr(listener, "exitSub_lista"):
+                listener.exitSub_lista(self)
 
 
 
 
-    def asdf(self):
+    def sub_lista(self):
 
-        localctx = oscarParser.AsdfContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_asdf)
+        localctx = oscarParser.Sub_listaContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 42, self.RULE_sub_lista)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)

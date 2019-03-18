@@ -1,7 +1,7 @@
 # Generated from oscar.g4 by ANTLR 4.7.1
 from antlr4 import *
 
-from rules import testing
+import rules
 
 
 # This class defines a complete listener for a parse tree produced by oscarParser.
@@ -196,12 +196,12 @@ class oscarListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by oscarParser#asdf.
-    def enterAsdf(self, ctx):
+    # Enter a parse tree produced by oscarParser#sub_lista.
+    def enterSub_lista(self, ctx):
         pass
 
-    # Exit a parse tree produced by oscarParser#asdf.
-    def exitAsdf(self, ctx):
+    # Exit a parse tree produced by oscarParser#sub_lista.
+    def exitSub_lista(self, ctx):
         pass
 
 

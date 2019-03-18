@@ -2,7 +2,7 @@ grammar oscar;
 
 // Importing python modules
 @header{
-from rules import testing
+import rules
 }
 
 /*
@@ -12,12 +12,12 @@ from rules import testing
 programa	:	'#oscar' ';' {#crear tabla funciones} vars_? modulo* main {#destruir tabla funciones y tablas de variables} ; 
 modulo	    :	'def' {#agregar funcion a tabla funciones} (id_ | 'void' ID) param bloque {#borrar tabla de variables};
 main		:	'main' param bloque ;
-param		:	'('{#crea directorio varspara funcion} (id_(','id_)*)? ')' ;
+param		:	'('{#crea directorio vars para funcion} (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
 vars_		:	'var' {#crear tabla de variables} ( tipo ID igualdad? {#agregar a tabla variables} (',' ID igualdad? {#agregar a tabla variables})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {#agregar nombre a tabla variables actual } ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
-escritura	:	'print' {testing()}'(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
+escritura	:	'print' {rules.testing()}'(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ; // Ejemplo de codigo en reglas
 lectura	    :	(ID | element) '=' 'read' '(' ')' ';' ;
 expresion	:	exp ((RELACIONALES | LOGICOS) exp)? ;
 exp		    :	termino (( '+' | '-' ) termino)* ;

@@ -6,7 +6,7 @@ from io import StringIO
 import sys
 
 
-from rules import testing
+import rules
 
 
 def serializedATN():
