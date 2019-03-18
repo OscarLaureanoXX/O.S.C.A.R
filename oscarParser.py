@@ -685,7 +685,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 123
             self.match(oscarParser.T__5)
-            rules.create_variable_table()
+            rules.create_variable_table('param')
             self.state = 133
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -853,7 +853,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 154
             self.match(oscarParser.T__11)
-            rules.create_variable_table()
+            rules.create_variable_table('vars')
             self.state = 175 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
