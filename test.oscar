@@ -1,5 +1,9 @@
 #oscar;
 
+def void funcion () {
+  print("hello world");
+}
+
 main(){
   print("hello world");
 }

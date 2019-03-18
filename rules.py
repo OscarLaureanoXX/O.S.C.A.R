@@ -4,7 +4,6 @@ def testing(texto):
 def create_function_table():
   print("CREATE FUNCTION TABLE")
   dir_func = dict()
-  print(dir_func)
 
 def create_variable_table(texto):
   print("CHECAR SI LA TABLA DE VARIABLES NO HA SIDO CREADA")
