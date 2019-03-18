@@ -1,4 +1,4 @@
-# Generated from oscar.g4 by ANTLR 4.7.1
+# Generated from oscar.g4 by ANTLR 4.7.2
 from antlr4 import *
 
 import rules
@@ -214,12 +214,21 @@ class oscarListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by oscarParser#llamada.
-    def enterLlamada(self, ctx):
+    # Enter a parse tree produced by oscarParser#llamadaret.
+    def enterLlamadaret(self, ctx):
         pass
 
-    # Exit a parse tree produced by oscarParser#llamada.
-    def exitLlamada(self, ctx):
+    # Exit a parse tree produced by oscarParser#llamadaret.
+    def exitLlamadaret(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#llamadavoid.
+    def enterLlamadavoid(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#llamadavoid.
+    def exitLlamadavoid(self, ctx):
         pass
 
 
@@ -277,33 +286,6 @@ class oscarListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by oscarParser#histograma.
-    def enterHistograma(self, ctx):
-        pass
-
-    # Exit a parse tree produced by oscarParser#histograma.
-    def exitHistograma(self, ctx):
-        pass
-
-
-    # Enter a parse tree produced by oscarParser#pie_chart.
-    def enterPie_chart(self, ctx):
-        pass
-
-    # Exit a parse tree produced by oscarParser#pie_chart.
-    def exitPie_chart(self, ctx):
-        pass
-
-
-    # Enter a parse tree produced by oscarParser#bar_graph.
-    def enterBar_graph(self, ctx):
-        pass
-
-    # Exit a parse tree produced by oscarParser#bar_graph.
-    def exitBar_graph(self, ctx):
-        pass
-
-
     # Enter a parse tree produced by oscarParser#union.
     def enterUnion(self, ctx):
         pass
@@ -337,15 +319,6 @@ class oscarListener(ParseTreeListener):
 
     # Exit a parse tree produced by oscarParser#import_csv.
     def exitImport_csv(self, ctx):
-        pass
-
-
-    # Enter a parse tree produced by oscarParser#export_csv.
-    def enterExport_csv(self, ctx):
-        pass
-
-    # Exit a parse tree produced by oscarParser#export_csv.
-    def exitExport_csv(self, ctx):
         pass
 
 
@@ -409,6 +382,42 @@ class oscarListener(ParseTreeListener):
 
     # Exit a parse tree produced by oscarParser#userdef.
     def exitUserdef(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#histograma.
+    def enterHistograma(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#histograma.
+    def exitHistograma(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#pie_chart.
+    def enterPie_chart(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#pie_chart.
+    def exitPie_chart(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#bar_graph.
+    def enterBar_graph(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#bar_graph.
+    def exitBar_graph(self, ctx):
+        pass
+
+
+    # Enter a parse tree produced by oscarParser#export_csv.
+    def enterExport_csv(self, ctx):
+        pass
+
+    # Exit a parse tree produced by oscarParser#export_csv.
+    def exitExport_csv(self, ctx):
         pass
 
 
