@@ -3,6 +3,8 @@ def testing(texto):
 
 def create_function_table():
   print("CREATE FUNCTION TABLE")
+  dir_func = dict()
+  print(dir_func)
 
 def create_variable_table(texto):
   print("LLAMADA DESDE "+texto+" CREATE VARIABLE TABLE")
