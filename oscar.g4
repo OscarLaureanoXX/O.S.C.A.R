@@ -27,7 +27,7 @@ termino	    :	factor (( '*' | '/' | '%' ) factor)* ;
 factor	    :	('(' expresion ')') | (( '+' | '-')? var_cte) | llamadaret;
 var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING| element ;
 tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;
-estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
+estatuto	:	asignacion {rules.asignacion($asignacion.text)} | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
 estats	    :	'{' estatuto+ '}' ;
 asignacion	:	ID element? igualdad ';' ;
