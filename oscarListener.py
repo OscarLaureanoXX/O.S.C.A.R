@@ -1,9 +1,8 @@
-# Generated from oscar.g4 by ANTLR 4.7.1
+# Generated from oscar.g4 by ANTLR 4.7.2
 from antlr4 import *
 
 import rules
 
-dir_func = None
 
 
 # This class defines a complete listener for a parse tree produced by oscarParser.

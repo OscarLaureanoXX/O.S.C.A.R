@@ -1,4 +1,4 @@
-# Generated from oscar.g4 by ANTLR 4.7.1
+# Generated from oscar.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from __future__ import print_function
 from antlr4 import *
@@ -8,7 +8,7 @@ import sys
 
 import rules
 
-dir_func = None
+
 
 
 def serializedATN():
@@ -416,7 +416,7 @@ class oscarLexer(Lexer):
 
     def __init__(self, input=None, output=sys.stdout):
         super(oscarLexer, self).__init__(input, output=output)
-        self.checkVersion("4.7.1")
+        self.checkVersion("4.7.2")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None

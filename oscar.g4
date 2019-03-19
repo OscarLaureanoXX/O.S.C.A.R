@@ -4,7 +4,6 @@ grammar oscar;
 @header{
 import rules
 
-dir_func = None
 }
 
 /*
@@ -12,12 +11,12 @@ dir_func = None
 */
 
 programa	:	'#oscar' ';' {rules.create_function_table()} vars_? modulo* main {rules.destroy()} ; 
-modulo	    :	'def' (id_ {rules.add_to_func_table($id_.text)} | 'void' ID {rules.add_to_func_table('void'+$ID.text)}) param bloque {rules.delete_var_table()};
-main		:	'main' {rules.add_to_func_table('main')} param bloque ;
+modulo	    :	'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.delete_var_table()};
+main		:	'main' {rules.add_to_func_table('main','main')} param bloque ;
 param		:	'('{rules.create_variable_table('param')} (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
 vars_		:	'var' {rules.create_variable_table('vars')} ( tipo ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)} (',' ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
-id_		    :	tipo ID {rules.add_to_var_table($tipo.text, $ID.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
+id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
 escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ;
 lectura	    :	'read' '(' ')' ;
