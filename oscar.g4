@@ -3,7 +3,6 @@ grammar oscar;
 // Importing python modules
 @header{
 import rules
-
 }
 
 /*

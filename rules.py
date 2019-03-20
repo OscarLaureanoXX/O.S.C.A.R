@@ -4,16 +4,19 @@ class Dir_Func:
     self.dictionary = dictionary
   
   def __getitem__(self, pos):
-    return dictionary[pos][1]
+    return self.dictionary[pos][1]
 
 # Variables globales
 dictionary = {}
-dir_func = Dir_Func(dictionary) 
-func_actual = 'None'
+dir_func = 'None'
+func_actual = 'global'
 
-
+# Inicializa el directorio de funciones y agrega la funcion global
 def create_function_table():
-  print("CREATE FUNCTION TABLE")
+  global dir_func
+  dir_func = Dir_Func(dictionary)
+  add_to_func_table('oscar', 'global')
+
 
 def create_variable_table(texto):
   print("CHECAR SI LA TABLA DE VARIABLES NO HA SIDO CREADA")
@@ -30,8 +33,6 @@ def add_to_var_table(varName, type):
   else:
     # Agregar a la tabla
     dir_func.__getitem__(func_actual)[varName] = type
-  
-  print("ADD TO VAR TABLE: " + varName + " " + type + " Func name:" + func_actual)
 
 
 def asignacion(texto):
@@ -44,7 +45,7 @@ def add_to_func_table(func_name, func_type):
   global dir_func
   # Checando si ya existe esa funcion
   if func_name in dir_func.dictionary:
-    print("Nombre de función repetido")
+    print("Nombre de funcion repetido")
   else:
     # Agregar a la tabla
     dir_func.dictionary[func_name] = [func_type,{}]
@@ -57,4 +58,4 @@ def destroy():
   print(dir_func.dictionary)
 
 def delete_var_table():
-  print("DELET VAR TABLE")
+  print("DELETE VAR TABLE")
