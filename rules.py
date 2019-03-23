@@ -26,6 +26,8 @@ class Stack:
 dictionary = {}
 dir_func = 'None'
 func_actual = 'global'
+
+# Pilas para expresiones
 pilaOperandos = Stack()
 pilaOperadores = Stack()
 pilaTipos = Stack()
