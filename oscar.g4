@@ -10,11 +10,11 @@ import rules
 */
 
 programa	:	'#oscar' ';' {rules.create_function_table()} vars_? modulo* main {rules.destroy()} ; 
-modulo	    :	'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.delete_var_table()};
+modulo	    :	'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque;
 main		:	'main' {rules.add_to_func_table('main','main')} param bloque ;
-param		:	'('{rules.create_variable_table('param')} (id_(','id_)*)? ')' ;
+param		:	'(' (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
-vars_		:	'var' {rules.create_variable_table('vars')} ( tipo ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)} (',' ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
+vars_		:	'var' ( tipo ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)} (',' ID igualdad? {rules.add_to_var_table($ID.text, $tipo.text)})* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
 escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* ')' ';' ;
@@ -25,7 +25,7 @@ termino	    :	factor (( '*' | '/' | '%' ) factor)* ;
 factor	    :	('(' expresion ')') | (( '+' | '-')? var_cte) | llamadaret;
 var_cte	    :	ID | CTE_I | CTE_F | CTE_B | CTE_STRING| element ;
 tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;
-estatuto	:	asignacion {rules.asignacion($asignacion.text)} | condicion | escritura | ciclo | llamadavoid ;
+estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
 estats	    :	'{' estatuto+ '}' ;
 asignacion	:	ID element? igualdad ';' ;

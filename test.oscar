@@ -6,6 +6,7 @@ var
 def void funcion (int x) {
   var
     int a;
+    int b;
   print("hello world");
 }
 

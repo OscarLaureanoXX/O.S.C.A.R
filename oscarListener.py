@@ -4,7 +4,6 @@ from antlr4 import *
 import rules
 
 
-
 # This class defines a complete listener for a parse tree produced by oscarParser.
 class oscarListener(ParseTreeListener):
 
