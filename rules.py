@@ -24,7 +24,6 @@ class Stack:
     return self.items[self.len() -1]
 
 # Variables globales
-dictionary = {}
 dir_func = 'None'
 func_actual = 'global'
 
@@ -37,7 +36,7 @@ pilaSaltos = Stack()
 # Inicializa el directorio de funciones y agrega la funcion global
 def create_function_table():
   global dir_func
-  dir_func = Dir_Func(dictionary)
+  dir_func = Dir_Func(dict())
   add_to_func_table('oscar', 'global')
 
 # Agregar una variable llamada [varName] de tipo [type] 
@@ -45,12 +44,14 @@ def create_function_table():
 def add_to_var_table(varName, type):
   global dir_func
 
+  var = varName.encode('ascii')
+  tipo = type.encode('ascii')
   # Checando si ya existe esa variable
-  if varName in dir_func.__getitem__(func_actual):
+  if var in dir_func.__getitem__(func_actual):
     print("Nombre de variable repetido")
   else:
     # Agregar a la tabla
-    dir_func.__getitem__(func_actual)[varName] = type
+    dir_func.__getitem__(func_actual)[var] = tipo
 
 # Agregar una funcion llamada [func_name] de tipo [func_type] 
 # a la tabla de funciones [func_table]
@@ -65,6 +66,30 @@ def add_to_func_table(func_name, func_type):
     dir_func.dictionary[func_name] = [func_type,{}]
     func_actual = func_name
 
+# Agregar el operador [op] dentro de la pila de operadores
+def add_to_operator_stack(op):
+  global pilaOperadores
+  print("ADD " + op + " TO OPERATOR STACK")
+
+  #pilaOperadores.push(op)
+
+# Agregar la variable [id] dentro de la pila de operandos
+def add_to_operand_stack(id):
+  global pilaOperandos
+  global func_actual
+  global dir_func
+
+  var = id.encode('ascii')
+
+  # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
+  try:
+    tipo = dir_func.__getitem__(func_actual)[var]
+  except KeyError:
+    tipo = dir_func.__getitem__('oscar')[var]
+  print("ADD " + id + " TO OPERAND STACK")
+  print("ADD " + tipo + " TO TYPE STACK")
+
+  #pilaOperandos.push(op)
 
 def destroy():
   # Imprimiendo toda la tabla
