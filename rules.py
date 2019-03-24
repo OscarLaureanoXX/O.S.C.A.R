@@ -5,7 +5,8 @@ class Dir_Func:
   
   def __getitem__(self, pos):
     return self.dictionary[pos][1]
-  
+
+# La clase stack es una lista
 class Stack:
   def __init__(self):
     self.items = []
