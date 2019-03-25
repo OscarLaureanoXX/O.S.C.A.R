@@ -69,13 +69,13 @@ def add_to_func_table(func_name, func_type):
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):
   global pilaOperadores
-  print("ADD " + op + " TO OPERATOR STACK")
 
-  #pilaOperadores.push(op)
+  pilaOperadores.push(op)
 
 # Agregar la variable [id] dentro de la pila de operandos
 def add_to_operand_stack(id):
   global pilaOperandos
+  global pilaTipos
   global func_actual
   global dir_func
 
@@ -85,11 +85,15 @@ def add_to_operand_stack(id):
   try:
     tipo = dir_func.__getitem__(func_actual)[var]
   except KeyError:
-    tipo = dir_func.__getitem__('oscar')[var]
-  print("ADD " + id + " TO OPERAND STACK")
-  print("ADD " + tipo + " TO TYPE STACK")
+    # Si no se encuentra en la funcion global entonces marcar error
+    try:
+      tipo = dir_func.__getitem__('oscar')[var]
+    except KeyError:
+      print("Variable " + "'" + var + "'" + " no declarada")
+      return
 
-  #pilaOperandos.push(op)
+  pilaOperandos.push(var)
+  pilaTipos.push(tipo)
 
 def destroy():
   # Imprimiendo toda la tabla
