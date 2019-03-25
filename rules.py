@@ -44,14 +44,20 @@ def create_function_table():
 def add_to_var_table(varName, type):
   global dir_func
 
-  var = varName.encode('ascii')
-  tipo = type.encode('ascii')
+  var = varName#varName.encode('UTF-8')
+  tipo = type#type.encode('UTF-8')
   # Checando si ya existe esa variable
   if var in dir_func.__getitem__(func_actual):
     print("Nombre de variable repetido")
   else:
     # Agregar a la tabla
-    dir_func.__getitem__(func_actual)[var] = tipo
+    dir_func.__getitem__(func_actual)[var] = [tipo]
+
+def addRows(tableName, sizeR):
+  dir_func.__getitem__(func_actual)[tableName].append(sizeR)
+
+def addColumns(tableName, sizeC):
+  dir_func.__getitem__(func_actual)[tableName].append(sizeC)
 
 # Agregar una funcion llamada [func_name] de tipo [func_type] 
 # a la tabla de funciones [func_table]
@@ -79,13 +85,13 @@ def add_to_operand_stack(id):
   global func_actual
   global dir_func
 
-  var = id.encode('ascii')
+  var = id#.encode('ascii')
 
   # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
   try:
-    tipo = dir_func.__getitem__(func_actual)[var]
+    tipo = dir_func.__getitem__(func_actual)[var][0]
   except KeyError:
-    tipo = dir_func.__getitem__('oscar')[var]
+    tipo = dir_func.__getitem__('oscar')[var][0]
   print("ADD " + id + " TO OPERAND STACK")
   print("ADD " + tipo + " TO TYPE STACK")
 
