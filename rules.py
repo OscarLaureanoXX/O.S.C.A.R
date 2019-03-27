@@ -44,8 +44,8 @@ def create_function_table():
 def add_to_var_table(varName, type):
   global dir_func
 
-  var = varName#varName.encode('UTF-8')
-  tipo = type#type.encode('UTF-8')
+  var = varName.encode('UTF-8')
+  tipo = type.encode('UTF-8')
   # Checando si ya existe esa variable
   if var in dir_func.__getitem__(func_actual):
     print("Nombre de variable repetido")
@@ -54,23 +54,34 @@ def add_to_var_table(varName, type):
     dir_func.__getitem__(func_actual)[var] = [tipo]
 
 def addRows(tableName, sizeR):
-  dir_func.__getitem__(func_actual)[tableName].append(sizeR)
+
+  name = tableName.encode('UTF-8')
+  rows = sizeR.encode('UTF-8')
+
+  dir_func.__getitem__(func_actual)[name].append(rows)
 
 def addColumns(tableName, sizeC):
-  dir_func.__getitem__(func_actual)[tableName].append(sizeC)
+  
+  name = tableName.encode('UTF-8')
+  cols = sizeC.encode('UTF-8')
+
+  dir_func.__getitem__(func_actual)[name].append(cols)
 
 # Agregar una funcion llamada [func_name] de tipo [func_type] 
 # a la tabla de funciones [func_table]
 def add_to_func_table(func_name, func_type):
   global func_actual
   global dir_func
+
+  name = func_name.encode('UTF-8')
+  tipo = func_type.encode('UTF-8')
   # Checando si ya existe esa funcion
   if func_name in dir_func.dictionary:
     print("Nombre de funcion repetido")
   else:
     # Agregar a la tabla
-    dir_func.dictionary[func_name] = [func_type,{}]
-    func_actual = func_name
+    dir_func.dictionary[name] = [tipo,{}]
+    func_actual = name
 
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):

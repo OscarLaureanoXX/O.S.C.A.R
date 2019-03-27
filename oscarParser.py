@@ -1,4 +1,4 @@
-# Generated from oscar.g4 by ANTLR 4.7.2
+# Generated from oscar.g4 by ANTLR 4.7.1
 # encoding: utf-8
 from __future__ import print_function
 from antlr4 import *
@@ -7,7 +7,6 @@ import sys
 
 
 import rules
-
 
 def serializedATN():
     with StringIO() as buf:
@@ -446,10 +445,9 @@ class oscarParser ( Parser ):
 
     def __init__(self, input, output=sys.stdout):
         super(oscarParser, self).__init__(input, output=output)
-        self.checkVersion("4.7.2")
+        self.checkVersion("4.7.1")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
-
 
 
 
@@ -529,7 +527,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class ModuloContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -607,7 +604,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class MainContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -656,7 +652,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class ParamContext(ParserRuleContext):
 
@@ -723,7 +718,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class BloqueContext(ParserRuleContext):
 
@@ -810,7 +804,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class Vars_Context(ParserRuleContext):
 
@@ -972,7 +965,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Id_Context(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1020,7 +1012,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class CondicionContext(ParserRuleContext):
 
@@ -1087,7 +1078,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class EscrituraContext(ParserRuleContext):
 
@@ -1183,7 +1173,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class LecturaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1224,7 +1213,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class ExpresionContext(ParserRuleContext):
 
@@ -1302,7 +1290,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class ExpContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1372,7 +1359,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class TerminoContext(ParserRuleContext):
 
@@ -1448,7 +1434,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class FactorContext(ParserRuleContext):
 
@@ -1536,7 +1521,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class Var_cteContext(ParserRuleContext):
 
@@ -1628,7 +1612,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class TipoContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1671,7 +1654,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class EstatutoContext(ParserRuleContext):
 
@@ -1759,7 +1741,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class CicloContext(ParserRuleContext):
 
@@ -1859,7 +1840,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class EstatsContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -1917,7 +1897,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class AsignacionContext(ParserRuleContext):
 
@@ -1980,7 +1959,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class IgualdadContext(ParserRuleContext):
 
@@ -2107,7 +2085,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Sub_listaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2174,7 +2151,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class ElementContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2232,7 +2208,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class LlamadaretContext(ParserRuleContext):
 
@@ -2426,7 +2401,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class LlamadavoidContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2513,7 +2487,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class MeanContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2558,7 +2531,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class VarianceContext(ParserRuleContext):
 
@@ -2605,7 +2577,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class MedianContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2650,7 +2621,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class StdevContext(ParserRuleContext):
 
@@ -2697,7 +2667,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class HeadContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2743,7 +2712,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class TailContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2788,7 +2756,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class UnionContext(ParserRuleContext):
 
@@ -2842,7 +2809,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class IntersectContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2894,7 +2860,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class FindContext(ParserRuleContext):
 
@@ -2949,7 +2914,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Import_csvContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -2994,7 +2958,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class LengthContext(ParserRuleContext):
 
@@ -3041,7 +3004,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Min_Context(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -3087,7 +3049,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Max_Context(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -3132,7 +3093,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class ConcatContext(ParserRuleContext):
 
@@ -3186,7 +3146,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class SortContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -3238,7 +3197,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class SpliceContext(ParserRuleContext):
 
@@ -3299,7 +3257,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class UserdefContext(ParserRuleContext):
 
@@ -3399,7 +3356,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class HistogramaContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -3453,7 +3409,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class Pie_chartContext(ParserRuleContext):
 
@@ -3509,7 +3464,6 @@ class oscarParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Bar_graphContext(ParserRuleContext):
 
         def __init__(self, parser, parent=None, invokingState=-1):
@@ -3563,7 +3517,6 @@ class oscarParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
 
     class Export_csvContext(ParserRuleContext):
 
