@@ -7,7 +7,7 @@ dir_func = 'None'
 func_actual = 'global'
 oraculo = Semantic_Cube().cubo_semantico
 
-print(oraculo['int']['int']['/'])
+#print(oraculo['int']['int']['/'])
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -35,6 +35,8 @@ def add_to_var_table(varName, type):
     # Agregar a la tabla
     dir_func.__getitem__(func_actual)[var] = [tipo]
 
+# Agregar numero de renglon de una lista [sizeR]
+# a una tabla de variables con nombre [tableName]
 def addRows(tableName, sizeR):
 
   name = tableName.encode('UTF-8')
@@ -42,6 +44,8 @@ def addRows(tableName, sizeR):
 
   dir_func.__getitem__(func_actual)[name].append(rows)
 
+# Agregar numero de columna de una lista [sizeC]
+# a una tabla de variables con nombre [tableName]
 def addColumns(tableName, sizeC):
   
   name = tableName.encode('UTF-8')
@@ -69,6 +73,7 @@ def add_to_func_table(func_name, func_type):
 def add_to_operator_stack(op):
   global pilaOperadores
 
+  #print("agregando operador" + op + " a la pila de operadores")
   pilaOperadores.push(op)
 
 # Agregar la variable [id] dentro de la pila de operandos
@@ -78,7 +83,7 @@ def add_to_operand_stack(id):
   global func_actual
   global dir_func
 
-  var = id#.encode('ascii')
+  var = id.encode('ascii')
 
   # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
   try:
@@ -91,8 +96,39 @@ def add_to_operand_stack(id):
       print("Variable " + "'" + var + "'" + " no declarada")
       return
 
+  #print("agregando variable " + var + " del tipo " + tipo + " a la pila de operandos")
   pilaOperandos.push(var)
   pilaTipos.push(tipo)
+
+def pop_sum_from_stack():
+  global pilaOperandos
+  global pilaTipos
+  global pilaOperadores
+
+  suma = pilaOperadores.pop()
+  der = pilaOperandos.pop()
+  t1 = pilaTipos.pop()
+  izq = pilaOperandos.pop()
+  t2 = pilaTipos.pop()
+
+  print(izq+" "+suma+" "+der)
+
+  pilaOperandos.push('temp')
+  pilaTipos.push(oraculo[t1][t2][suma])
+
+def pop_equals_from_stack():
+  global pilaOperandos
+  global pilaTipos
+  global pilaOperadores
+
+  igual = pilaOperadores.pop()
+  der = pilaOperandos.pop()
+  t1 = pilaTipos.pop()
+  izq = pilaOperandos.pop()
+  t2 = pilaTipos.pop()
+
+  print(izq+" "+igual+" "+der)
+
 
 def destroy():
   # Imprimiendo toda la tabla

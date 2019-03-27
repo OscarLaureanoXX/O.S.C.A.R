@@ -10,7 +10,6 @@ class Stack:
     self.items.append(data)
 
   def pop(self):
-    return self.items.pop()
-
-  def top(self):
-    return self.items[self.len() -1]
+    tope = self.items[len(self.items) -1]
+    self.items.pop()
+    return tope
