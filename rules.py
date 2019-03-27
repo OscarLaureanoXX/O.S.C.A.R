@@ -1,31 +1,13 @@
-# El Directorio de Funciones es un diccionario de listas
-class Dir_Func:
-  def __init__(self, dictionary):
-    self.dictionary = dictionary
-  
-  def __getitem__(self, pos):
-    return self.dictionary[pos][1]
-
-# La clase stack es una lista
-class Stack:
-  def __init__(self):
-    self.items = []
-
-  def is_empty(self):
-    return self.items == []
-
-  def push(self, data):
-    self.items.append(data)
-
-  def pop(self):
-    return self.items.pop()
-
-  def top(self):
-    return self.items[self.len() -1]
+from dir_func import Dir_Func
+from stack import Stack
+from semantic_cube import Semantic_Cube
 
 # Variables globales
 dir_func = 'None'
 func_actual = 'global'
+oraculo = Semantic_Cube().cubo_semantico
+
+print(oraculo['int']['int']['/'])
 
 # Pilas para expresiones
 pilaOperandos = Stack()
