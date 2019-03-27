@@ -91,13 +91,6 @@ def add_to_operand_stack(id):
   try:
     tipo = dir_func.__getitem__(func_actual)[var][0]
   except KeyError:
-<<<<<<< HEAD
-    tipo = dir_func.__getitem__('oscar')[var][0]
-  print("ADD " + id + " TO OPERAND STACK")
-  print("ADD " + tipo + " TO TYPE STACK")
-
-  #pilaOperandos.push(op)
-=======
     # Si no se encuentra en la funcion global entonces marcar error
     try:
       tipo = dir_func.__getitem__('oscar')[var]
@@ -107,7 +100,6 @@ def add_to_operand_stack(id):
 
   pilaOperandos.push(var)
   pilaTipos.push(tipo)
->>>>>>> d2660eb5f09ae12d7aaf503b78c9627d8af499fa
 
 def destroy():
   # Imprimiendo toda la tabla
