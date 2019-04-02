@@ -21,7 +21,7 @@ escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING))* 
 lectura	    :	'read' '(' ')' ;
 expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)} | LOGICOS {rules.add_to_operator_stack($LOGICOS.text)}) exp)? ;
 exp		    :	termino (( '+' {rules.add_to_operator_stack('+')} | '-' {rules.add_to_operator_stack('-')} ) termino {rules.pop_sum_from_stack()})* ;
-termino	    :	factor (( '*' {rules.add_to_operator_stack('*')} | '/' {rules.add_to_operator_stack('/')} | '%' {rules.add_to_operator_stack('%')} )  factor{#aqui sacas la mult})* ;
+termino	    :	factor (( '*' {rules.add_to_operator_stack('*')} | '/' {rules.add_to_operator_stack('/')} | '%' {rules.add_to_operator_stack('%')} )  factor{rules.pop_mult_from_stack()})* ;
 factor	    :	('(' {rules.add_to_operator_stack('(')} expresion ')'{#sacar parentesis}) | (( '+' | '-')? var_cte ) | llamadaret;
 var_cte	    :	ID {rules.add_to_operand_stack($ID.text)} | CTE_I | CTE_F | CTE_B | CTE_STRING| element ;
 tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;

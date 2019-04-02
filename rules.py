@@ -6,8 +6,7 @@ from semantic_cube import Semantic_Cube
 dir_func = 'None'
 func_actual = 'global'
 oraculo = Semantic_Cube().cubo_semantico
-
-#print(oraculo['int']['int']['/'])
+cont_Temporales = 1
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -26,8 +25,8 @@ def create_function_table():
 def add_to_var_table(varName, type):
   global dir_func
 
-  var = varName.encode('UTF-8')
-  tipo = type.encode('UTF-8')
+  var = varName#.encode('UTF-8')
+  tipo = type#.encode('UTF-8')
   # Checando si ya existe esa variable
   if var in dir_func.__getitem__(func_actual):
     print("Nombre de variable repetido")
@@ -39,8 +38,8 @@ def add_to_var_table(varName, type):
 # a una tabla de variables con nombre [tableName]
 def addRows(tableName, sizeR):
 
-  name = tableName.encode('UTF-8')
-  rows = sizeR.encode('UTF-8')
+  name = tableName#.encode('UTF-8')
+  rows = sizeR#.encode('UTF-8')
 
   dir_func.__getitem__(func_actual)[name].append(rows)
 
@@ -48,8 +47,8 @@ def addRows(tableName, sizeR):
 # a una tabla de variables con nombre [tableName]
 def addColumns(tableName, sizeC):
   
-  name = tableName.encode('UTF-8')
-  cols = sizeC.encode('UTF-8')
+  name = tableName#.encode('UTF-8')
+  cols = sizeC#.encode('UTF-8')
 
   dir_func.__getitem__(func_actual)[name].append(cols)
 
@@ -59,8 +58,9 @@ def add_to_func_table(func_name, func_type):
   global func_actual
   global dir_func
 
-  name = func_name.encode('UTF-8')
-  tipo = func_type.encode('UTF-8')
+  name = func_name#.encode('UTF-8')
+  tipo = func_type#.encode('UTF-8')
+
   # Checando si ya existe esa funcion
   if func_name in dir_func.dictionary:
     print("Nombre de funcion repetido")
@@ -72,7 +72,7 @@ def add_to_func_table(func_name, func_type):
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):
   global pilaOperadores
-
+  
   #print("agregando operador" + op + " a la pila de operadores")
   pilaOperadores.push(op)
 
@@ -83,7 +83,7 @@ def add_to_operand_stack(id):
   global func_actual
   global dir_func
 
-  var = id.encode('ascii')
+  var = id#id.encode('ascii')
 
   # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
   try:
@@ -104,17 +104,41 @@ def pop_sum_from_stack():
   global pilaOperandos
   global pilaTipos
   global pilaOperadores
+  global cont_Temporales
 
   suma = pilaOperadores.pop()
   der = pilaOperandos.pop()
   t1 = pilaTipos.pop()
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
+  temp = 't'+ str(cont_Temporales)
 
-  print(izq+" "+suma+" "+der)
+  # Impresion de Cuadruplos
+  print(suma+" "+izq+" "+der+" "+temp)
 
-  pilaOperandos.push('temp')
+  pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][suma])
+  cont_Temporales = cont_Temporales + 1
+
+def pop_mult_from_stack():
+  global pilaOperandos
+  global pilaTipos
+  global pilaOperadores
+  global cont_Temporales
+
+  suma = pilaOperadores.pop()
+  der = pilaOperandos.pop()
+  t1 = pilaTipos.pop()
+  izq = pilaOperandos.pop()
+  t2 = pilaTipos.pop()
+  temp = 't'+ str(cont_Temporales)
+
+  # Impresion de Cuadruplos
+  print(suma+" "+izq+" "+der+" "+temp)
+
+  pilaOperandos.push('t'+ str(cont_Temporales))
+  pilaTipos.push(oraculo[t1][t2][suma])
+  cont_Temporales = cont_Temporales + 1
 
 def pop_equals_from_stack():
   global pilaOperandos
@@ -127,8 +151,8 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
-  print(izq+" "+igual+" "+der)
-
+  # print(izq+" "+igual+" "+der)
+  print(igual+" "+der+" _ "+izq)
 
 def destroy():
   # Imprimiendo toda la tabla
