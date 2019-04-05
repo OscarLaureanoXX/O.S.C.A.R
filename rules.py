@@ -25,8 +25,8 @@ def create_function_table():
 def add_to_var_table(varName, type):
   global dir_func
 
-  var = varName#.encode('UTF-8')
-  tipo = type#.encode('UTF-8')
+  var = varName.encode('UTF-8')
+  tipo = type.encode('UTF-8')
   # Checando si ya existe esa variable
   if var in dir_func.__getitem__(func_actual):
     print("Nombre de variable repetido")
@@ -38,8 +38,8 @@ def add_to_var_table(varName, type):
 # a una tabla de variables con nombre [tableName]
 def addRows(tableName, sizeR):
 
-  name = tableName#.encode('UTF-8')
-  rows = sizeR#.encode('UTF-8')
+  name = tableName.encode('UTF-8')
+  rows = sizeR.encode('UTF-8')
 
   dir_func.__getitem__(func_actual)[name].append(rows)
 
@@ -47,8 +47,8 @@ def addRows(tableName, sizeR):
 # a una tabla de variables con nombre [tableName]
 def addColumns(tableName, sizeC):
   
-  name = tableName#.encode('UTF-8')
-  cols = sizeC#.encode('UTF-8')
+  name = tableName.encode('UTF-8')
+  cols = sizeC.encode('UTF-8')
 
   dir_func.__getitem__(func_actual)[name].append(cols)
 
@@ -58,8 +58,8 @@ def add_to_func_table(func_name, func_type):
   global func_actual
   global dir_func
 
-  name = func_name#.encode('UTF-8')
-  tipo = func_type#.encode('UTF-8')
+  name = func_name.encode('UTF-8')
+  tipo = func_type.encode('UTF-8')
 
   # Checando si ya existe esa funcion
   if func_name in dir_func.dictionary:
@@ -83,21 +83,19 @@ def add_to_operand_stack(id):
   global func_actual
   global dir_func
 
-  var = id#id.encode('ascii')
-
   # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
   try:
-    tipo = dir_func.__getitem__(func_actual)[var][0]
+    tipo = dir_func.__getitem__(func_actual)[id][0]
   except KeyError:
     # Si no se encuentra en la funcion global entonces marcar error
     try:
-      tipo = dir_func.__getitem__('oscar')[var]
+      tipo = dir_func.__getitem__('oscar')[id]
     except KeyError:
-      print("Variable " + "'" + var + "'" + " no declarada")
+      print("Variable " + "'" + id + "'" + " no declarada")
       return
 
-  #print("agregando variable " + var + " del tipo " + tipo + " a la pila de operandos")
-  pilaOperandos.push(var)
+  #print("agregando variable " + id + " del tipo " + tipo + " a la pila de operandos")
+  pilaOperandos.push(id)
   pilaTipos.push(tipo)
 
 def pop_sum_from_stack():
