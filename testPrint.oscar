@@ -3,6 +3,7 @@
 main () {
   var
     int a;
+    int b;
 
-  print(a + a);
+  print(a + b > b + b);
 }

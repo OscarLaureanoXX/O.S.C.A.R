@@ -32,8 +32,8 @@ def serializedATN():
         buf.write(u"\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u00d7\n\t\3\n\3\n")
         buf.write(u"\3\n\3\n\5\n\u00dd\n\n\3\n\3\n\3\n\5\n\u00e2\n\n\7\n")
         buf.write(u"\u00e4\n\n\f\n\16\n\u00e7\13\n\3\n\3\n\3\n\3\n\3\13\3")
-        buf.write(u"\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\5\f\u00f6\n\f\3\f\5")
-        buf.write(u"\f\u00f9\n\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\5\r\u0102\n")
+        buf.write(u"\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\5\f\u00f6\n\f\3\f\3")
+        buf.write(u"\f\3\f\5\f\u00fb\n\f\3\r\3\r\3\r\3\r\3\r\5\r\u0102\n")
         buf.write(u"\r\3\r\3\r\3\r\7\r\u0107\n\r\f\r\16\r\u010a\13\r\3\16")
         buf.write(u"\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u0113\n\16\3\16\3")
         buf.write(u"\16\3\16\7\16\u0118\n\16\f\16\16\16\u011b\13\16\3\17")
@@ -133,12 +133,12 @@ def serializedATN():
         buf.write(u"\2\u00e6\u00e8\3\2\2\2\u00e7\u00e5\3\2\2\2\u00e8\u00e9")
         buf.write(u"\b\n\1\2\u00e9\u00ea\7\n\2\2\u00ea\u00eb\7\4\2\2\u00eb")
         buf.write(u"\23\3\2\2\2\u00ec\u00ed\7\24\2\2\u00ed\u00ee\7\b\2\2")
-        buf.write(u"\u00ee\u00ef\7\n\2\2\u00ef\25\3\2\2\2\u00f0\u00f8\5\30")
+        buf.write(u"\u00ee\u00ef\7\n\2\2\u00ef\25\3\2\2\2\u00f0\u00fa\5\30")
         buf.write(u"\r\2\u00f1\u00f2\79\2\2\u00f2\u00f6\b\f\1\2\u00f3\u00f4")
         buf.write(u"\7:\2\2\u00f4\u00f6\b\f\1\2\u00f5\u00f1\3\2\2\2\u00f5")
-        buf.write(u"\u00f3\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7\u00f9\5\30\r")
-        buf.write(u"\2\u00f8\u00f5\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\u00fa")
-        buf.write(u"\3\2\2\2\u00fa\u00fb\b\f\1\2\u00fb\27\3\2\2\2\u00fc\u0108")
+        buf.write(u"\u00f3\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7\u00f8\5\30\r")
+        buf.write(u"\2\u00f8\u00f9\b\f\1\2\u00f9\u00fb\3\2\2\2\u00fa\u00f5")
+        buf.write(u"\3\2\2\2\u00fa\u00fb\3\2\2\2\u00fb\27\3\2\2\2\u00fc\u0108")
         buf.write(u"\5\32\16\2\u00fd\u00fe\7\25\2\2\u00fe\u0102\b\r\1\2\u00ff")
         buf.write(u"\u0100\7\26\2\2\u0100\u0102\b\r\1\2\u0101\u00fd\3\2\2")
         buf.write(u"\2\u0101\u00ff\3\2\2\2\u0102\u0103\3\2\2\2\u0103\u0104")
@@ -277,7 +277,7 @@ def serializedATN():
         buf.write(u"\2\u023a\u023b\7\n\2\2\u023b\u023c\7\4\2\2\u023c]\3\2")
         buf.write(u"\2\2\62bgu\u0085\u0088\u008e\u0093\u0099\u00a7\u00aa")
         buf.write(u"\u00ad\u00b8\u00bb\u00be\u00c2\u00c9\u00d6\u00dc\u00e1")
-        buf.write(u"\u00e5\u00f5\u00f8\u0101\u0108\u0112\u0119\u0123\u0127")
+        buf.write(u"\u00e5\u00f5\u00fa\u0101\u0108\u0112\u0119\u0123\u0127")
         buf.write(u"\u0130\u0139\u0143\u014d\u0153\u015a\u0165\u016a\u016e")
         buf.write(u"\u0171\u0175\u017f\u0182\u018a\u019f\u01a8\u020c\u0211")
         buf.write(u"\u0215\u0218")
@@ -1088,7 +1088,6 @@ class oscarParser ( Parser ):
         def __init__(self, parser, parent=None, invokingState=-1):
             super(oscarParser.EscrituraContext, self).__init__(parent, invokingState)
             self.parser = parser
-            self._expresion = None # ExpresionContext
 
         def expresion(self, i=None):
             if i is None:
@@ -1133,7 +1132,7 @@ class oscarParser ( Parser ):
             la_ = self._interp.adaptivePredict(self._input,17,self._ctx)
             if la_ == 1:
                 self.state = 216
-                localctx._expresion = self.expresion()
+                self.expresion()
                 pass
 
             elif la_ == 2:
@@ -1153,7 +1152,7 @@ class oscarParser ( Parser ):
                 la_ = self._interp.adaptivePredict(self._input,18,self._ctx)
                 if la_ == 1:
                     self.state = 221
-                    localctx._expresion = self.expresion()
+                    self.expresion()
                     pass
 
                 elif la_ == 2:
@@ -1166,7 +1165,7 @@ class oscarParser ( Parser ):
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            rules.add_print((None if localctx._expresion is None else self._input.getText((localctx._expresion.start,localctx._expresion.stop))))
+            rules.add_print()
             self.state = 231
             self.match(oscarParser.T__7)
             self.state = 232
@@ -1264,7 +1263,7 @@ class oscarParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 238
             self.exp()
-            self.state = 246
+            self.state = 248
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==oscarParser.RELACIONALES or _la==oscarParser.LOGICOS:
@@ -1286,9 +1285,9 @@ class oscarParser ( Parser ):
 
                 self.state = 245
                 self.exp()
+                rules.pop_rel_from_stack()
 
 
-            rules.pop_rel_from_stack()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

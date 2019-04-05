@@ -185,10 +185,10 @@ def pop_rel_from_stack():
   pilaTipos.push(oraculo[t1][t2][rel])
   cont_Temporales = cont_Temporales + 1
 
-def add_print(printThis):
+def add_print():
   global pilaOperandos
 
-  print("Voy a imprimir: " + printThis)
+  print("PRINT"+" _ "+" _ "+pilaOperandos.pop())
 
 def destroy():
   # Imprimiendo toda la tabla
