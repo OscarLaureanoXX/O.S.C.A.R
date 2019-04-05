@@ -1,0 +1,8 @@
+#oscar;
+
+main () {
+  var
+    int a;
+
+  print(a + a);
+}

@@ -9,12 +9,12 @@ class Semantic_Cube:
           '/' : 'float',
           '*' : 'int',
           '%' : 'int',
-          '>' : 'bool',
-          '>=' : 'bool',
-          '<=' : 'bool',
-          '<' : 'bool',
-          '==' : 'bool',
-          '!=' : 'bool',
+          '>' : 'boolean',
+          '>=' : 'boolean',
+          '<=' : 'boolean',
+          '<' : 'boolean',
+          '==' : 'boolean',
+          '!=' : 'boolean',
           '&&' : 'ERR',
           '||' : 'ERR'
         },
@@ -24,16 +24,16 @@ class Semantic_Cube:
           '/' : 'float',
           '*' : 'float',
           '%' : 'float',
-          '>' : 'bool',
-          '>=' : 'bool',
-          '<=' : 'bool',
-          '<' : 'bool',
-          '==' : 'bool',
-          '!=' : 'bool',
+          '>' : 'boolean',
+          '>=' : 'boolean',
+          '<=' : 'boolean',
+          '<' : 'boolean',
+          '==' : 'boolean',
+          '!=' : 'boolean',
           '&&' : 'ERR',
           '||' : 'ERR'
         },
-        'bool': {
+        'boolean': {
           '+' : 'ERR',
           '-' : 'ERR',
           '/' : 'ERR',
@@ -86,12 +86,12 @@ class Semantic_Cube:
           '/' : 'float',
           '*' : 'float',
           '%' : 'float',
-          '>' : 'bool',
-          '>=' : 'bool',
-          '<=' : 'bool',
-          '<' : 'bool',
-          '==' : 'bool',
-          '!=' : 'bool',
+          '>' : 'boolean',
+          '>=' : 'boolean',
+          '<=' : 'boolean',
+          '<' : 'boolean',
+          '==' : 'boolean',
+          '!=' : 'boolean',
           '&&' : 'ERR',
           '||' : 'ERR'
         },
@@ -101,16 +101,16 @@ class Semantic_Cube:
           '/' : 'float',
           '*' : 'float',
           '%' : 'float',
-          '>' : 'bool',
-          '>=' : 'bool',
-          '<=' : 'bool',
-          '<' : 'bool',
-          '==' : 'bool',
-          '!=' : 'bool',
+          '>' : 'boolean',
+          '>=' : 'boolean',
+          '<=' : 'boolean',
+          '<' : 'boolean',
+          '==' : 'boolean',
+          '!=' : 'boolean',
           '&&' : 'ERR',
           '||' : 'ERR'
         },
-        'bool': {
+        'boolean': {
           '+' : 'ERR',
           '-' : 'ERR',
           '/' : 'ERR',
@@ -156,7 +156,7 @@ class Semantic_Cube:
           '||' : 'ERR'
         }
       },
-      'bool': {
+      'boolean': {
         'int': {
           '+' : 'ERR',
           '-' : 'ERR',
@@ -187,7 +187,7 @@ class Semantic_Cube:
           '&&' : 'ERR',
           '||' : 'ERR'
         },
-        'bool': {
+        'boolean': {
           '+' : 'ERR',
           '-' : 'ERR',
           '/' : 'ERR',
@@ -199,8 +199,8 @@ class Semantic_Cube:
           '<' : 'ERR',
           '==' : 'ERR',
           '!=' : 'ERR',
-          '&&' : 'bool',
-          '||' : 'bool'
+          '&&' : 'boolean',
+          '||' : 'boolean'
         },
         'string': {
           '+' : 'ERR',
@@ -264,7 +264,7 @@ class Semantic_Cube:
           '&&' : 'ERR',
           '||' : 'ERR'
         },
-        'bool': {
+        'boolean': {
           '+' : 'ERR',
           '-' : 'ERR',
           '/' : 'ERR',
@@ -341,7 +341,7 @@ class Semantic_Cube:
           '&&' : 'ERR',
           '||' : 'ERR'
         },
-        'bool': {
+        'boolean': {
           '+' : 'ERR',
           '-' : 'ERR',
           '/' : 'ERR',

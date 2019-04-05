@@ -1,3 +1,4 @@
+import sys
 from dir_func import Dir_Func
 from stack import Stack
 from semantic_cube import Semantic_Cube
@@ -111,6 +112,9 @@ def pop_sum_from_stack():
   t2 = pilaTipos.pop()
   temp = 't'+ str(cont_Temporales)
 
+  if (oraculo[t1][t2][suma] == 'ERR'):
+    sys.exit('Tipos compatibles para la operacion ' + suma)
+
   # Impresion de Cuadruplos
   print(suma+" "+izq+" "+der+" "+temp)
 
@@ -124,18 +128,21 @@ def pop_mult_from_stack():
   global pilaOperadores
   global cont_Temporales
 
-  suma = pilaOperadores.pop()
+  mult = pilaOperadores.pop()
   der = pilaOperandos.pop()
   t1 = pilaTipos.pop()
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
   temp = 't'+ str(cont_Temporales)
 
+  if (oraculo[t1][t2][mult] == 'ERR'):
+    sys.exit('Tipos compatibles para la operacion ' + mult)
+
   # Impresion de Cuadruplos
-  print(suma+" "+izq+" "+der+" "+temp)
+  print(mult+" "+izq+" "+der+" "+temp)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
-  pilaTipos.push(oraculo[t1][t2][suma])
+  pilaTipos.push(oraculo[t1][t2][mult])
   cont_Temporales = cont_Temporales + 1
 
 def pop_equals_from_stack():
@@ -149,8 +156,39 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
-  # print(izq+" "+igual+" "+der)
-  print(igual+" "+der+" _ "+izq)
+  if(t1 == t2):
+    print(igual+" "+der+" _ "+izq)
+  else:
+    sys.exit("Incompatible type for operation " + igual)
+  
+
+def pop_rel_from_stack():
+  global pilaOperandos
+  global pilaTipos
+  global pilaOperadores
+  global cont_Temporales
+
+  rel = pilaOperadores.pop()
+  der = pilaOperandos.pop()
+  t1 = pilaTipos.pop()
+  izq = pilaOperandos.pop()
+  t2 = pilaTipos.pop()
+  temp = 't'+ str(cont_Temporales)
+
+  if (oraculo[t1][t2][rel] == 'ERR'):
+    sys.exit('Tipos compatibles para la operacion ' + rel)
+
+  # Impresion de Cuadruplos
+  print(rel+" "+izq+" "+der+" "+temp)
+
+  pilaOperandos.push('t'+ str(cont_Temporales))
+  pilaTipos.push(oraculo[t1][t2][rel])
+  cont_Temporales = cont_Temporales + 1
+
+def add_print(printThis):
+  global pilaOperandos
+
+  print("Voy a imprimir: " + printThis)
 
 def destroy():
   # Imprimiendo toda la tabla

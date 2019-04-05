@@ -1,0 +1,10 @@
+#oscar;
+
+main() {
+  var
+    int a;
+    int b;
+    boolean c;
+
+  c = a > b;
+} 
