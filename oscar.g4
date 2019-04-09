@@ -23,12 +23,17 @@ expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)}
 exp		    :	termino (( '+' {rules.add_to_operator_stack('+')} | '-' {rules.add_to_operator_stack('-')} ) termino {rules.pop_sum_from_stack()})* ;
 termino	    :	factor (( '*' {rules.add_to_operator_stack('*')} | '/' {rules.add_to_operator_stack('/')} | '%' {rules.add_to_operator_stack('%')} )  factor{rules.pop_mult_from_stack()})* ;
 factor	    :	('(' {rules.add_to_operator_stack('(')} expresion ')'{#sacar parentesis}) | (( '+' | '-')? var_cte ) | llamadaret;
-var_cte	    :	ID {rules.add_to_operand_stack($ID.text)} | CTE_I | CTE_F | CTE_B | CTE_STRING| element ;
-tipo		: 	'int' | 'float' | 'string' | 'boolean' | 'list' ;
+var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')} 
+                | CTE_I {rules.add_to_operand_stack($CTE_I.text, 'int')} 
+                | CTE_F {rules.add_to_operand_stack($CTE_F.text, 'float')} 
+                | CTE_B {rules.add_to_operand_stack($CTE_B.text, 'bool')}
+                | CTE_STRING 
+                | element ;
+tipo		: 	'int' | 'float' | 'string' | 'bool' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
 estats	    :	'{' estatuto+ '}' ;
-asignacion	:	ID {rules.add_to_operand_stack($ID.text)} element? igualdad ';' ;
+asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp(','exp)*)?']' ;
 element	    :	'[' exp (','exp)? ']' ;
@@ -59,12 +64,12 @@ export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' ';';
 /** LEXER RULES **/
 
 RESERVED	        : '#oscar' | 'for' | 'while' | 'if' | 'else' | 'int' | 'float' | 'string' | 'bool' | 'list' | 'min' | 'max' | 'mean' | 'mode' | 'variance' | 'stdev' | 'median' | 'tail' | 'head' | 'read' | 'print' | 'return' | 'length' | 'and' | 'or' | 'import' | 'export' | 'pie_chart' | 'histogram' | 'bar_graph' | 'concat' | 'splice' | 'find' | 'union' | 'intersect' | 'sort' ;
-RELACIONALES	    : '>' | '<' | '=>' | '=<' | '!=' | '!' ;
+RELACIONALES	    : '>' | '<' | '>=' | '<=' | '!=' | '==';
 LOGICOS		        : '&&' | '||';
 DELIMITADORES	    : '[' | ']' | '(' | ')' | '{' | '}' ; 
 WS		            : ( ' ' | '\t' | '\r' | '\n') -> skip;
 ID			        : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')* ;
-CTE_B			    : 'true' | 'false';
+CTE_B			    : '_true' | '_false';
 CTE_I			    : ('0'..'9')+ ;
 CTE_F			    : ('0'..'9')+ '.' ('0'..'9')* ;
 CTE_STRING		    : '"' ( ('a'..'z'|'A'..'Z') | '0'..'9' | WS)* '"' ;

@@ -88,7 +88,7 @@ LIST=64
 'int'=24
 'float'=25
 'string'=26
-'boolean'=27
+'bool'=27
 'list'=28
 'for'=29
 '='=30

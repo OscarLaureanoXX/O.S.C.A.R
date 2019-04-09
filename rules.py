@@ -9,6 +9,17 @@ func_actual = 'global'
 oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
 
+# Tablas de constantes
+# { valor : direccion }
+tabla_const_int = {}
+tabla_const_float = {}
+tabla_const_bool = {}
+
+# Valores iniciales de direcciones para tablas de constantes
+cont_const_bool = 10000
+cont_const_int = 11000
+cont_const_float = 12000
+
 # Pilas para expresiones
 pilaOperandos = Stack()
 pilaOperadores = Stack()
@@ -78,26 +89,68 @@ def add_to_operator_stack(op):
   pilaOperadores.push(op)
 
 # Agregar la variable [id] dentro de la pila de operandos
-def add_to_operand_stack(id):
+def add_to_operand_stack(id, type):
   global pilaOperandos
   global pilaTipos
   global func_actual
   global dir_func
 
-  # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
-  try:
-    tipo = dir_func.__getitem__(func_actual)[id][0]
-  except KeyError:
-    # Si no se encuentra en la funcion global entonces marcar error
-    try:
-      tipo = dir_func.__getitem__('oscar')[id]
-    except KeyError:
-      print("Variable " + "'" + id + "'" + " no declarada")
-      return
+  # Si es un int se agrega a la tabla de constantes int
+  if (type == 'int'):
+    global tabla_const_int
+    global cont_const_int
 
-  #print("agregando variable " + id + " del tipo " + tipo + " a la pila de operandos")
-  pilaOperandos.push(id)
-  pilaTipos.push(tipo)
+    id = id.encode('UTF-8')
+
+    if id not in tabla_const_int:
+      tabla_const_int[id] = cont_const_int
+      cont_const_int += 1
+    
+    pilaOperandos.push(id)
+    pilaTipos.push('int')
+
+  # Si es un float se agrega a la tabla de floats
+  elif (type == 'float'):
+    global tabla_const_float
+    global cont_const_float
+
+    id = id.encode('UTF-8')
+
+    if id not in tabla_const_float:
+      tabla_const_float[id] = cont_const_float
+      cont_const_float += 1
+    
+    pilaOperandos.push(id)
+    pilaTipos.push('float')
+  
+  # Si es un bool se agrega a la tabla de bools
+  elif (type == 'bool'):
+    global tabla_const_bool
+    global cont_const_bool
+
+    id = id.encode('UTF-8')
+
+    if id not in tabla_const_bool:
+      tabla_const_bool[id] = cont_const_bool
+      cont_const_bool += 1
+    
+    pilaOperandos.push(id)
+    pilaTipos.push('bool')
+
+  else:
+    # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
+    try:
+      tipo = dir_func.__getitem__(func_actual)[id][0]
+    except KeyError:
+      # Si no se encuentra en la funcion global entonces marcar error
+      try:
+        tipo = dir_func.__getitem__('oscar')[id]
+      except KeyError:
+        print("Variable " + "'" + id + "'" + " no declarada")
+      return
+    pilaOperandos.push(id)
+    pilaTipos.push(tipo)
+
 
 def pop_sum_from_stack():
   global pilaOperandos
@@ -193,3 +246,6 @@ def add_print():
 def destroy():
   # Imprimiendo toda la tabla
   print(dir_func.dictionary)
+  print(tabla_const_int)
+  print(tabla_const_float)
+  print(tabla_const_bool)

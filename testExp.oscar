@@ -2,12 +2,26 @@
 
 main() {
   var
-    int a;
-    int b;
-    int c;
+    int a, b, c;
+    int d;
+    float e, f;
+    bool g;
 
-  c = a + a + b;
-  a = b - a;
+  d = 1;
+  g = _true;
+  g = _false;
+  c = a + 14 + b;
+  e = f - 3.141516;
   c = c * b + a;
   b = a * c;
+  c = a % b + c;
+  if ( a > b ){
+    if ( a >= b+c ){
+      if ( a == b/a ){
+        if ( a != b%a ){
+          a = b;
+        }
+      }
+    }
+  }
 } 
