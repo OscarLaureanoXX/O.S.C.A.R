@@ -17,7 +17,7 @@ bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
 vars_		:	'var' ( tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?  (',' ID  {rules.add_to_var_table($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
-escritura	:	'print' '(' (expresion | CTE_STRING) (','(expresion | CTE_STRING) )* {rules.add_print()} ')' ';' ;
+escritura	:	'print' '(' (expresion {rules.add_print()} | CTE_STRING) (','(expresion {rules.add_print()} | CTE_STRING) )*  ')' ';' ;
 lectura	    :	'read' '(' ')' ;
 expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)} | LOGICOS {rules.add_to_operator_stack($LOGICOS.text)}) exp {rules.pop_rel_from_stack()} )? ;
 exp		    :	termino (( '+' {rules.add_to_operator_stack('+')} | '-' {rules.add_to_operator_stack('-')} ) termino {rules.pop_sum_from_stack()})* ;
@@ -27,7 +27,7 @@ var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')}
                 | CTE_I {rules.add_to_operand_stack($CTE_I.text, 'int')} 
                 | CTE_F {rules.add_to_operand_stack($CTE_F.text, 'float')} 
                 | CTE_B {rules.add_to_operand_stack($CTE_B.text, 'bool')}
-                | CTE_STRING 
+                | CTE_STRING {rules.add_to_operand_stack($CTE_STRING.text, 'string')}
                 | element ;
 tipo		: 	'int' | 'float' | 'string' | 'bool' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;

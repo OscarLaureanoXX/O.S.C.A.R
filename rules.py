@@ -14,11 +14,13 @@ cont_Temporales = 1
 tabla_const_int = {}
 tabla_const_float = {}
 tabla_const_bool = {}
+tabla_const_string = {}
 
 # Valores iniciales de direcciones para tablas de constantes
 cont_const_bool = 10000
 cont_const_int = 11000
 cont_const_float = 12000
+cont_const_string = 13000
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -137,6 +139,20 @@ def add_to_operand_stack(id, type):
     pilaOperandos.push(id)
     pilaTipos.push('bool')
 
+  # Si es un string se agrega a la tabla de strings
+  elif (type == 'string'):
+    global tabla_const_string
+    global cont_const_string
+
+    id = id.encode('UTF-8')
+
+    if id not in tabla_const_string:
+      tabla_const_string[id] = cont_const_string
+      cont_const_string += 1
+    
+    pilaOperandos.push(id)
+    pilaTipos.push('string')
+
   else:
     # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
     try:
@@ -147,7 +163,9 @@ def add_to_operand_stack(id, type):
         tipo = dir_func.__getitem__('oscar')[id]
       except KeyError:
         print("Variable " + "'" + id + "'" + " no declarada")
-      return
+        return
+    id = id.encode('UTF-8')
+    tipo = tipo[0]
     pilaOperandos.push(id)
     pilaTipos.push(tipo)
 
@@ -208,6 +226,7 @@ def pop_equals_from_stack():
   t1 = pilaTipos.pop()
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
+
 
   if(t1 == t2):
     print(igual+" "+der+" _ "+izq)

@@ -4,7 +4,7 @@ var
   int a,f;
   float b;
   string c;
-  boolean d;
+  bool d;
   list e;
 
 main() {
