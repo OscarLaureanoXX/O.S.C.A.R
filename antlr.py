@@ -2,7 +2,7 @@ import sys
 from antlr4 import *
 from oscarLexer import oscarLexer
 from oscarParser import oscarParser
-from myListener import MyListener 
+from oscarListener import oscarListener 
 import rules
 
 def main(argv):
@@ -11,16 +11,11 @@ def main(argv):
   stream = CommonTokenStream(lexer)
   parser = oscarParser(stream)
   tree = parser.programa()
-# print(tree.toStringTree(recog=parser))
 
-  output = open("output.oscar","w")
-
-  listener = MyListener(output)
+  listener = oscarListener()
 
   walker = ParseTreeWalker()
   walker.walk(listener, tree)
-
-  output.close()
 
 if __name__ == '__main__':
   main(sys.argv)
