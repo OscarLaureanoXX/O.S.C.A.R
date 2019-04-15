@@ -9,6 +9,7 @@ dir_func = 'None'
 func_actual = 'global'
 oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
+cont_Cuadruplos = 1
 
 # Tablas de constantes
 # { valor : direccion }
@@ -187,12 +188,14 @@ def pop_sum_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + suma)
 
   # Impresion de Cuadruplos
-  cuadruplo = Cuadruplo(suma, izq, der, temp)
+  global cont_Cuadruplos
+  cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
   print(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][suma])
   cont_Temporales = cont_Temporales + 1
+  cont_Cuadruplos = cont_Cuadruplos + 1
 
 def pop_mult_from_stack():
   global pilaOperandos
@@ -211,12 +214,14 @@ def pop_mult_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
   # Impresion de Cuadruplos
-  cuadruplo = Cuadruplo(mult, izq, der, temp)
+  global cont_Cuadruplos
+  cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
   print(Cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][mult])
   cont_Temporales = cont_Temporales + 1
+  cont_Cuadruplos = cont_Cuadruplos + 1
 
 def pop_equals_from_stack():
   global pilaOperandos
@@ -231,7 +236,9 @@ def pop_equals_from_stack():
 
 
   if(t1 == t2):
-    cuadruplo = Cuadruplo(igual, der, '_', izq)
+    global cont_Cuadruplos
+    cuadruplo = Cuadruplo(cont_Cuadruplos , igual, der, '_', izq)
+    cont_Cuadruplos = cont_Cuadruplos + 1
     print(cuadruplo)
   else:
     sys.exit("Incompatible type for operation " + igual)
@@ -254,18 +261,22 @@ def pop_rel_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
   # Impresion de Cuadruplos
-  cuadruplo = Cuadruplo(rel, izq, der, temp)
+  global cont_Cuadruplos
+  cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
   print(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][rel])
   cont_Temporales = cont_Temporales + 1
+  cont_Cuadruplos = cont_Cuadruplos + 1
 
 def add_print():
   global pilaOperandos
-  cuadruplo = Cuadruplo('PRINT', '_', '_', pilaOperandos.pop())
+  global cont_Cuadruplos
+  cuadruplo = Cuadruplo(cont_Cuadruplos ,'PRINT', '_', '_', pilaOperandos.pop())
 
   print(cuadruplo)
+  cont_Cuadruplos = cont_Cuadruplos + 1
 
 def destroy():
   # Imprimiendo toda la tabla

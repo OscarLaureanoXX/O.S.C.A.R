@@ -1,8 +1,9 @@
 # Un cuadruplo es un diccionario con sus llaves ordenadas de la siguiente manera
-# {operador, operandoIzq, operandoDer, resultado}
+# {contador, operador, operandoIzq, operandoDer, resultado}
 class Cuadruplo:
-  def __init__(self, op, izq, der, res):
+  def __init__(self, cont, op, izq, der, res):
     self.dict = dict()
+    self.dict['cont'] = str(cont)
     self.dict['op'] = op
     self.dict['izq'] = izq
     self.dict['der'] = der
@@ -15,7 +16,7 @@ class Cuadruplo:
     self.dict[index] = value
 
   def __str__(self):
-    return self.dict['op'] + ' ' + self.dict['izq'] + ' ' + self.dict['der'] + ' ' + self.dict['res']
+    return self.dict['cont'] + ' ' + self.dict['op'] + ' ' + self.dict['izq'] + ' ' + self.dict['der'] + ' ' + self.dict['res']
 
   def rellena():
     print()
