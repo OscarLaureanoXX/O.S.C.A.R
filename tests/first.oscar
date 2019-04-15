@@ -1,0 +1,10 @@
+#oscar;
+
+var
+  int a = 1;
+  int b = 0;
+
+main () {
+  b = a + b;
+  print(b);
+}

@@ -2,6 +2,7 @@ import sys
 from dir_func import Dir_Func
 from stack import Stack
 from semantic_cube import Semantic_Cube
+from cuadruplos import Cuadruplo
 
 # Variables globales
 dir_func = 'None'
@@ -160,12 +161,11 @@ def add_to_operand_stack(id, type):
     except KeyError:
       # Si no se encuentra en la funcion global entonces marcar error
       try:
-        tipo = dir_func.__getitem__('oscar')[id]
+        tipo = dir_func.__getitem__('oscar')[id][0]
       except KeyError:
         print("Variable " + "'" + id + "'" + " no declarada")
         return
     id = id.encode('UTF-8')
-    tipo = tipo[0]
     pilaOperandos.push(id)
     pilaTipos.push(tipo)
 
@@ -187,7 +187,8 @@ def pop_sum_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + suma)
 
   # Impresion de Cuadruplos
-  print(suma+" "+izq+" "+der+" "+temp)
+  cuadruplo = Cuadruplo(suma, izq, der, temp)
+  print(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][suma])
@@ -210,7 +211,8 @@ def pop_mult_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
   # Impresion de Cuadruplos
-  print(mult+" "+izq+" "+der+" "+temp)
+  cuadruplo = Cuadruplo(mult, izq, der, temp)
+  print(Cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][mult])
@@ -229,7 +231,8 @@ def pop_equals_from_stack():
 
 
   if(t1 == t2):
-    print(igual+" "+der+" _ "+izq)
+    cuadruplo = Cuadruplo(igual, der, '_', izq)
+    print(cuadruplo)
   else:
     sys.exit("Incompatible type for operation " + igual)
   
@@ -251,7 +254,8 @@ def pop_rel_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
   # Impresion de Cuadruplos
-  print(rel+" "+izq+" "+der+" "+temp)
+  cuadruplo = Cuadruplo(rel, izq, der, temp)
+  print(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][rel])
@@ -259,8 +263,9 @@ def pop_rel_from_stack():
 
 def add_print():
   global pilaOperandos
+  cuadruplo = Cuadruplo('PRINT', '_', '_', pilaOperandos.pop())
 
-  print("PRINT"+" _ "+" _ "+pilaOperandos.pop())
+  print(cuadruplo)
 
 def destroy():
   # Imprimiendo toda la tabla

@@ -4,7 +4,7 @@ main() {
   var
     int a;
     int b;
-    boolean c;
+    bool c;
 
   c = a > b;
 } 
