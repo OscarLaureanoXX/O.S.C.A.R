@@ -1,9 +1,0 @@
-#oscar;
-
-main() {
-  var
-    int a;
-    string b;
-
-  a = a * b;
-} 

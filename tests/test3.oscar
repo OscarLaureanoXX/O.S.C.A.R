@@ -1,8 +1,0 @@
-#oscar;
-
-var
-  int a = 1;
-
-main() {
-  print("Hello world");
-}
