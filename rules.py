@@ -21,6 +21,22 @@ cont_const_int = 11000
 cont_const_float = 12000
 cont_const_string = 13000
 
+# Valores de CODIGOS DE EJECUCCION
+PRINT = '1'
+SUMA = '2'
+RESTA = '3'
+MULTIPLICACION = '4'
+DIVISION = '5'
+MODULO = '6'
+MAYOR = '7'
+MENOR = '8'
+MAYORQUE = '9'
+MENORQUE = '10'
+ASIGNACION = '11'
+EQUAL = '12'
+NOTEQUAL = '13'
+
+
 # Pilas para expresiones
 pilaOperandos = Stack()
 pilaOperadores = Stack()
@@ -190,7 +206,10 @@ def pop_sum_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-  cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
+  if (suma == '+'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
   print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
@@ -218,7 +237,12 @@ def pop_mult_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-  cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
+  if (mult == '*'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MULTIPLICACION, izq, der, temp)
+  elif (mult == '/'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, DIVISION, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
   print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
@@ -242,7 +266,7 @@ def pop_equals_from_stack():
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
-    cuadruplo = Cuadruplo(cont_Cuadruplos , igual, der, '_', izq)
+    cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos = cont_Cuadruplos + 1
     print(cuadruplo)
     cuadruplos.append(cuadruplo)
@@ -269,7 +293,18 @@ def pop_rel_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-  cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
+  if (rel == '>'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYOR, izq, der, temp)
+  elif (rel == '<'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MENOR, izq, der, temp)
+  elif (rel == '<='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MENORQUE, izq, der, temp)
+  elif (rel == '>='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORQUE, izq, der, temp)
+  elif (rel == '=='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, EQUAL, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
   print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
@@ -282,7 +317,7 @@ def add_print():
   global pilaOperandos
   global cont_Cuadruplos
   global cuadruplos
-  cuadruplo = Cuadruplo(cont_Cuadruplos ,'PRINT', '_', '_', pilaOperandos.pop())
+  cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', pilaOperandos.pop())
 
   print(cuadruplo)
   cuadruplos.append(cuadruplo)
