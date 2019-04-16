@@ -16,7 +16,7 @@ param		:	'(' (id_(','id_)*)? ')' ;
 bloque	    :	'{' vars_? estatuto+ ('return' exp ';')? '}' ;
 vars_		:	'var' ( tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?  (',' ID  {rules.add_to_var_table($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
-condicion	:	'if' '(' expresion ')' estats ('else' estats)? ;
+condicion	:	'if' '(' expresion ')'{rules.add_conditional()} estats ('else'{rules.add_else()} estats)? {rules.add_end_conditional()} ;
 escritura	:	'print' '(' (expresion {rules.add_print()} | CTE_STRING) (','(expresion {rules.add_print()} | CTE_STRING) )*  ')' ';' ;
 lectura	    :	'read' '(' ')' ;
 expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)} | LOGICOS {rules.add_to_operator_stack($LOGICOS.text)}) exp {rules.pop_rel_from_stack()} )? ;

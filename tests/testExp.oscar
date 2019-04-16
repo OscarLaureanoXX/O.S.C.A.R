@@ -20,8 +20,16 @@ main() {
       if ( a == b/a ){
         if ( a != b%a ){
           a = b;
+        } 
+        else {
+          b = a;
         }
       }
     }
+    else {
+      c =  1 + 2;
+    }
   }
-} 
+  e = 3.0 + 1 * 2;
+  g = _false;
+}

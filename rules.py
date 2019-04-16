@@ -191,7 +191,7 @@ def pop_sum_from_stack():
   global cont_Cuadruplos
   global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
-  print(cuadruplo)
+  
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -219,13 +219,14 @@ def pop_mult_from_stack():
   global cont_Cuadruplos
   global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
-  print(cuadruplo)
+  
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][mult])
   cont_Temporales = cont_Temporales + 1
   cont_Cuadruplos = cont_Cuadruplos + 1
+
 
 def pop_equals_from_stack():
   global pilaOperandos
@@ -238,13 +239,13 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
-
+  
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
     cuadruplo = Cuadruplo(cont_Cuadruplos , igual, der, '_', izq)
     cont_Cuadruplos = cont_Cuadruplos + 1
-    print(cuadruplo)
+    
     cuadruplos.append(cuadruplo)
   else:
     sys.exit("Incompatible type for operation " + igual)
@@ -270,7 +271,7 @@ def pop_rel_from_stack():
   global cont_Cuadruplos
   global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
-  print(cuadruplo)
+  
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -278,13 +279,62 @@ def pop_rel_from_stack():
   cont_Temporales = cont_Temporales + 1
   cont_Cuadruplos = cont_Cuadruplos + 1
 
+### CONDICIONALES
+def add_conditional():
+  global cont_Cuadruplos
+  global cuadruplos
+  global pilaOperandos
+  global pilaSaltos
+
+  # Validando que la expresion del if sea bool
+  if pilaTipos.peek() != 'bool':
+    print("Error: Expected bool expresion inside if(expresion)")
+  
+  # Obteniendo el resultado de la expresion para el cuadruplo
+  res_Expresion = pilaOperandos.peek()
+
+  # Generando cuadruplo con GOTOF (go to en false)
+  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTOF',res_Expresion,'_','_')
+
+  # Metiendo el cuadruplo
+  cuadruplos.append(cuadruplo)
+  # Agregando la linea a la pila de saltos
+  pilaSaltos.push(cont_Cuadruplos)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+def add_else():
+  global cont_Cuadruplos
+  global cuadruplos
+  global pilaSaltos
+
+  # Generar cuadruplo para saltar el else
+  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTO','_','_','_')
+  cuadruplos.append(cuadruplo)
+
+  # Llenando el GOTOF del if correspondiente
+  fill = pilaSaltos.pop()
+  pilaSaltos.push(cont_Cuadruplos)
+  print(fill)
+  cuadruplos.__getitem__(fill-1)['res'] = str(cont_Cuadruplos + 1)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+def add_end_conditional():
+  global cont_Cuadruplos
+  global cuadruplos
+  global pilaSaltos
+
+  final = pilaSaltos.pop()
+  cuadruplos.__getitem__(final-1)['res'] = str(cont_Cuadruplos)
+
+### /CONDICIONALES
 def add_print():
   global pilaOperandos
   global cont_Cuadruplos
   global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos ,'PRINT', '_', '_', pilaOperandos.pop())
 
-  print(cuadruplo)
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos = cont_Cuadruplos + 1
 
@@ -294,4 +344,7 @@ def destroy():
   print(tabla_const_int)
   print(tabla_const_float)
   print(tabla_const_bool)
-  print(cuadruplos)
+  for i in cuadruplos:
+    print(i)
+  
+
