@@ -30,7 +30,7 @@ __De ahora en adelante solo se mostrarán los comandos que utilizan los aliases 
 Para probar el lenguaje:
 
 ```python2
-python2 antlr.py tests/nombreArchivo.oscar
+python2 ejecuccion.py tests/nombreArchivo.oscar
 ```
 
 [Antlr v4]: https://www.antlr.org/download.html
