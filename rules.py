@@ -219,7 +219,7 @@ def pop_mult_from_stack():
   global cont_Cuadruplos
   global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
-  print(Cuadruplo)
+  print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
