@@ -27,6 +27,9 @@ pilaOperadores = Stack()
 pilaTipos = Stack()
 pilaSaltos = Stack()
 
+# Lista de cuadruplos
+cuadruplos = list()
+
 # Inicializa el directorio de funciones y agrega la funcion global
 def create_function_table():
   global dir_func
@@ -186,8 +189,10 @@ def pop_sum_from_stack():
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
+  global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
   print(cuadruplo)
+  cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][suma])
@@ -212,8 +217,10 @@ def pop_mult_from_stack():
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
+  global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
   print(Cuadruplo)
+  cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][mult])
@@ -234,9 +241,11 @@ def pop_equals_from_stack():
 
   if(t1 == t2):
     global cont_Cuadruplos
+    global cuadruplos
     cuadruplo = Cuadruplo(cont_Cuadruplos , igual, der, '_', izq)
     cont_Cuadruplos = cont_Cuadruplos + 1
     print(cuadruplo)
+    cuadruplos.append(cuadruplo)
   else:
     sys.exit("Incompatible type for operation " + igual)
   
@@ -259,8 +268,10 @@ def pop_rel_from_stack():
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
+  global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
   print(cuadruplo)
+  cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][rel])
@@ -270,9 +281,11 @@ def pop_rel_from_stack():
 def add_print():
   global pilaOperandos
   global cont_Cuadruplos
+  global cuadruplos
   cuadruplo = Cuadruplo(cont_Cuadruplos ,'PRINT', '_', '_', pilaOperandos.pop())
 
   print(cuadruplo)
+  cuadruplos.append(cuadruplo)
   cont_Cuadruplos = cont_Cuadruplos + 1
 
 def destroy():
@@ -281,3 +294,4 @@ def destroy():
   print(tabla_const_int)
   print(tabla_const_float)
   print(tabla_const_bool)
+  print(cuadruplos)
