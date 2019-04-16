@@ -33,18 +33,6 @@ tipo		: 	'int' | 'float' | 'string' | 'bool' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' '(' expresion ')' estats) ;
 estats	    :	'{' estatuto+ '}' ;
-<<<<<<< HEAD
-asignacion	:	(ID | element) '=' ( expresion |('[' (exp(','exp)*)?']') ) ';' ;
-element	    :	'ID' '[' exp (','exp)* ']' ;
-llamada	    :	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | histograma | pie_chart | bar_graph | import_csv| export_csv | union | intersect | find | userdef ;
-mean		:	ID '=' 'mean' '(' ID ')' ';' ;
-variance	:	ID '=' 'variance' '(' ID ')' ';' ;
-median	    :	ID '=' 'median' '(' ID ')' ';' ;
-stdev		: 	ID '=' 'stdev' '(' ID ')' ';' ;
-head		: 	ID '=' 'head' '(' ID ')' ';' ;
-tail		:	ID '=' 'tail' '(' ID ')' ';' ;
-histograma	:	'histogram' '(' ID ',' ID ')' ';' ;
-=======
 asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp(','exp)*)?']' ;
@@ -69,7 +57,6 @@ sort		:	'sort' '(' ID ',' CTE_I ')' ;
 splice 	    :	'splice' '(' ID ',' exp ',' exp ')' ;
 userdef	    :	 ID'('((ID | var_cte)(','(ID | var_cte))*)?')';
 histograma	:	'histogram' '(' ID ',' ID ')' ';' ; 
->>>>>>> master
 pie_chart	:	'pie_chart' '(' ID ',' ID ')' ';' ;
 bar_graph	:	'bar_graph' '(' ID ',' ID ')' ';' ;
 export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' ';';
