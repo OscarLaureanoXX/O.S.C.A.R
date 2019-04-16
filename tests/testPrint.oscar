@@ -1,0 +1,9 @@
+#oscar;
+
+main () {
+  var
+    int a;
+    int b;
+
+  print(a + b > b + b);
+}

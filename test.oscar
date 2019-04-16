@@ -1,5 +1,0 @@
-#oscar;
-
-main(){
-  print("hello world");
-}

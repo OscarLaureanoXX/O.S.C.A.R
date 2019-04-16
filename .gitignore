@@ -2,3 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+oscar.interp
+oscar.tokens
+oscarLexer.interp
+oscarLexer.py
+oscarLexer.tokens
+oscarListener.py
+oscarParser.py

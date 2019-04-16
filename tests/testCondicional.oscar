@@ -1,0 +1,13 @@
+#oscar;
+
+main() {
+  var
+    int a;
+    int b;
+
+  if( a > b ) {
+    print("Hello world");
+  } else {
+    print("Bye world");
+  }
+} 
