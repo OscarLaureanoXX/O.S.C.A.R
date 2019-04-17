@@ -206,16 +206,11 @@ def pop_sum_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (suma == '+'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -242,7 +237,6 @@ def pop_mult_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (mult == '*'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, MULTIPLICACION, izq, der, temp)
   elif (mult == '/'):
@@ -250,10 +244,6 @@ def pop_mult_from_stack():
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -304,7 +294,6 @@ def pop_rel_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (rel == '>'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, MAYOR, izq, der, temp)
   elif (rel == '<'):
@@ -318,10 +307,6 @@ def pop_rel_from_stack():
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
