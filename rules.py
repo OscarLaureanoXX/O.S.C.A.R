@@ -8,6 +8,9 @@ oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
 cont_Cuadruplos = 1
 
+# Memoria de ejecuccion
+memoria = Execution_Memory()
+
 # Tablas de constantes
 # { valor : direccion }
 tabla_const_int = {}
@@ -35,7 +38,8 @@ MENORQUE = '10'
 ASIGNACION = '11'
 EQUAL = '12'
 NOTEQUAL = '13'
-
+GOTO = '14'
+GOTOF = '15'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -206,16 +210,11 @@ def pop_sum_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (suma == '+'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, suma, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -242,7 +241,6 @@ def pop_mult_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (mult == '*'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, MULTIPLICACION, izq, der, temp)
   elif (mult == '/'):
@@ -250,10 +248,6 @@ def pop_mult_from_stack():
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, mult, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -304,7 +298,6 @@ def pop_rel_from_stack():
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
-<<<<<<< HEAD
   if (rel == '>'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, MAYOR, izq, der, temp)
   elif (rel == '<'):
@@ -318,10 +311,6 @@ def pop_rel_from_stack():
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
   print(cuadruplo)
-=======
-  cuadruplo = Cuadruplo(cont_Cuadruplos, rel, izq, der, temp)
-  
->>>>>>> master
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
@@ -345,7 +334,7 @@ def add_conditional():
   res_Expresion = pilaOperandos.peek()
 
   # Generando cuadruplo con GOTOF (go to en false)
-  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTOF',res_Expresion,'_','_')
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTOF,res_Expresion,'_','_')
 
   # Metiendo el cuadruplo
   cuadruplos.append(cuadruplo)
@@ -360,7 +349,7 @@ def add_else():
   global pilaSaltos
 
   # Generar cuadruplo para saltar el else
-  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTO','_','_','_')
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO,'_','_','_')
   cuadruplos.append(cuadruplo)
 
   # Llenando el GOTOF del if correspondiente
@@ -400,7 +389,7 @@ def add_end_while():
   ret = str(pilaSaltos.pop())
 
   # Generar cuadruplo para volver a evaluar el while
-  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTO','_','_', ret)
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO,'_','_', ret)
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos = cont_Cuadruplos + 1
