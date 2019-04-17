@@ -190,7 +190,6 @@ def add_to_operand_stack(id, type):
     pilaOperandos.push(id)
     pilaTipos.push(tipo)
 
-
 def pop_sum_from_stack():
   global pilaOperandos
   global pilaTipos
@@ -214,13 +213,12 @@ def pop_sum_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
-  print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][suma])
-  cont_Temporales = cont_Temporales + 1
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Temporales += 1
+  cont_Cuadruplos += 1
 
 def pop_mult_from_stack():
   global pilaOperandos
@@ -247,14 +245,12 @@ def pop_mult_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, DIVISION, izq, der, temp)
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
-  print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][mult])
-  cont_Temporales = cont_Temporales + 1
-  cont_Cuadruplos = cont_Cuadruplos + 1
-
+  cont_Temporales += 1
+  cont_Cuadruplos += 1
 
 def pop_equals_from_stack():
   global pilaOperandos
@@ -267,13 +263,11 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
-  
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
-    cont_Cuadruplos = cont_Cuadruplos + 1
-    
+    cont_Cuadruplos += 1
     cuadruplos.append(cuadruplo)
   else:
     sys.exit("Incompatible type for operation " + igual)
@@ -310,15 +304,15 @@ def pop_rel_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, EQUAL, izq, der, temp)
   else:
     cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
-  print(cuadruplo)
   cuadruplos.append(cuadruplo)
 
   pilaOperandos.push('t'+ str(cont_Temporales))
   pilaTipos.push(oraculo[t1][t2][rel])
-  cont_Temporales = cont_Temporales + 1
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Temporales += 1
+  cont_Cuadruplos += 1
 
 ########################## CONDICIONALES ############################
+
 def add_conditional():
   global cont_Cuadruplos
   global cuadruplos
@@ -341,7 +335,7 @@ def add_conditional():
   # Agregando la linea a la pila de saltos
   pilaSaltos.push(cont_Cuadruplos)
 
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Cuadruplos += 1
 
 def add_else():
   global cont_Cuadruplos
@@ -358,7 +352,7 @@ def add_else():
 
   cuadruplos.__getitem__(fill-1)['res'] = str(cont_Cuadruplos + 1)
 
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Cuadruplos += 1
 
 def add_end_conditional():
   global cont_Cuadruplos
@@ -392,18 +386,13 @@ def add_end_while():
   cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO,'_','_', ret)
   cuadruplos.append(cuadruplo)
 
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Cuadruplos += 1
 
   # Llenando el cuadruplo final correspondiente
   cuadruplos.__getitem__(fin-1)['res'] = str(cont_Cuadruplos)
 
-  
-
-
-
-
-
 ############################### /WHILE ###############################
+
 def add_print():
   global pilaOperandos
   global cont_Cuadruplos
@@ -411,7 +400,7 @@ def add_print():
   cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', pilaOperandos.pop())
 
   cuadruplos.append(cuadruplo)
-  cont_Cuadruplos = cont_Cuadruplos + 1
+  cont_Cuadruplos += 1
 
 def destroy():
   # Imprimiendo toda la tabla
@@ -421,5 +410,3 @@ def destroy():
   print(tabla_const_bool)
   for i in cuadruplos:
     print(i)
-  
-
