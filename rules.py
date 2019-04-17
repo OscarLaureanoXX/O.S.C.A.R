@@ -164,7 +164,7 @@ def add_to_operand_stack(id, type):
       try:
         tipo = dir_func.__getitem__('oscar')[id][0]
       except KeyError:
-        print("Variable " + "'" + id + "'" + " no declarada")
+        sys.exit("Variable " + "'" + id + "'" + " no declarada")
         return
     id = id.encode('UTF-8')
     pilaOperandos.push(id)
@@ -279,16 +279,17 @@ def pop_rel_from_stack():
   cont_Temporales = cont_Temporales + 1
   cont_Cuadruplos = cont_Cuadruplos + 1
 
-### CONDICIONALES
+########################## CONDICIONALES ############################
 def add_conditional():
   global cont_Cuadruplos
   global cuadruplos
   global pilaOperandos
   global pilaSaltos
+  global pilaTipos
 
   # Validando que la expresion del if sea bool
   if pilaTipos.peek() != 'bool':
-    print("Error: Expected bool expresion inside if(expresion)")
+    sys.exit("Error: Expected bool expresion inside if(expresion)")
   
   # Obteniendo el resultado de la expresion para el cuadruplo
   res_Expresion = pilaOperandos.peek()
@@ -315,7 +316,7 @@ def add_else():
   # Llenando el GOTOF del if correspondiente
   fill = pilaSaltos.pop()
   pilaSaltos.push(cont_Cuadruplos)
-  print(fill)
+
   cuadruplos.__getitem__(fill-1)['res'] = str(cont_Cuadruplos + 1)
 
   cont_Cuadruplos = cont_Cuadruplos + 1
@@ -325,10 +326,45 @@ def add_end_conditional():
   global cuadruplos
   global pilaSaltos
 
+  # Llenando el cuadruplo final correspondiente
   final = pilaSaltos.pop()
   cuadruplos.__getitem__(final-1)['res'] = str(cont_Cuadruplos)
 
-### /CONDICIONALES
+########################## /CONDICIONALES ############################
+
+############################### WHILE ################################
+def add_while():
+  global pilaSaltos
+  global cont_Cuadruplos
+
+  pilaSaltos.push(cont_Cuadruplos)
+
+def add_expr_while():
+  add_conditional()
+
+def add_end_while():
+  global pilaSaltos
+  global cont_Cuadruplos
+
+  fin = pilaSaltos.pop()
+  ret = str(pilaSaltos.pop())
+
+  # Generar cuadruplo para volver a evaluar el while
+  cuadruplo = Cuadruplo(cont_Cuadruplos,'GOTO','_','_', ret)
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Llenando el cuadruplo final correspondiente
+  cuadruplos.__getitem__(fin-1)['res'] = str(cont_Cuadruplos)
+
+  
+
+
+
+
+
+############################### /WHILE ###############################
 def add_print():
   global pilaOperandos
   global cont_Cuadruplos
