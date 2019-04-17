@@ -13,3 +13,6 @@ class Stack:
     tope = self.items[len(self.items) -1]
     self.items.pop()
     return tope
+  
+  def peek(self):
+    return self.items[len(self.items) -1]
