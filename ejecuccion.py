@@ -27,6 +27,8 @@ def main(argv):
     # ASIGNACION = '11'
     # EQUAL = '12'
     # NOTEQUAL = '13'
+    # GOTO = '14'
+    # GOTOF = '15'
 
     if (operacion == '1'):
       print("La operacion es: " + "PRINT" + " " + resultado)
@@ -52,8 +54,14 @@ def main(argv):
       print("La operacion es: " + resultado + " " + "ASIGNACION" + " " + izquierdo)
     elif (operacion == '12'):
       print("La operacion es: " + izquierdo + " " + "EQUAL" + " " + derecho + " y el resultado queda en: " + resultado)
-    else:
+    elif (operacion == '13'):
       print("La operacion es: " + izquierdo + " " + "NOTEQUAL" + " " + derecho + " y el resultado queda en: " + resultado)
+    elif (operacion == '14'):
+      print("La operacion es: " + "GOTO " + "al cuadruplo numero: " + resultado)
+    elif (operacion == '15'):
+      print("La operacion es: " + "Si: " + izquierdo + " es falso entonces: " + "GOTOF " + "al cuadruplo numero " + resultado)
+    else:
+      print(operacion)
 
     lista_cuadruplos.pop(0)
 
