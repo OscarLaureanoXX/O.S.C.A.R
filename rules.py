@@ -11,6 +11,16 @@ cont_Cuadruplos = 1
 # Memoria de ejecuccion
 memoria = Execution_Memory()
 
+memoria.ints['locales'].append(0)
+memoria.ints['locales'].append(10)
+memoria.ints['locales'].append(110)
+memoria.ints['locales'].append(1110)
+
+print(memoria)
+print(memoria.ints)
+print(memoria.ints['locales'])
+print(memoria.ints['locales'][0])
+
 # Tablas de constantes
 # { valor : direccion }
 tabla_const_int = {}
