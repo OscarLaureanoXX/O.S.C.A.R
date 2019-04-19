@@ -1,4 +1,5 @@
 import sys
+import re
 from Structs import *
 
 # Variables globales
@@ -154,7 +155,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.floats:
-      if (id.isdigit()):
+      if (re.match(r"^\d+?\.\d+?$", id)):
         global apuntador_float_const
         memoria.floats['constantes'][id] = apuntador_float_const
         apuntador_float_const += 1
@@ -196,7 +197,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.strings:
-      if (id.isdigit()):
+      if (id[0] == '"'):
         global apuntador_string_const
         memoria.strings['constantes'][id] = apuntador_string_const
         apuntador_string_const += 1
