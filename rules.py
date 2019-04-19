@@ -197,6 +197,12 @@ def pop_sum_from_stack():
 
   if (tipoRes == 'int'):
     memoria.ints['temporales'].append(temp)
+  elif (tipoRes == 'float'):
+    memoria.floats['temporales'].append(temp)
+  elif (tipoRes == 'string'):
+    memoria.strings['temporales'].append(temp)
+  elif (tipoRes == 'bool'):
+    memoria.bools['temporales'].append(temp)
   
   pilaOperandos.push(temp)
   pilaTipos.push(tipoRes)
@@ -216,7 +222,9 @@ def pop_mult_from_stack():
   t2 = pilaTipos.pop()
   temp = 't'+ str(cont_Temporales)
 
-  if (oraculo[t1][t2][mult] == 'ERR'):
+  tipoRes = oraculo[t1][t2][mult]
+
+  if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
   # Impresion de Cuadruplos
@@ -230,8 +238,17 @@ def pop_mult_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
   cuadruplos.append(cuadruplo)
 
-  pilaOperandos.push('t'+ str(cont_Temporales))
-  pilaTipos.push(oraculo[t1][t2][mult])
+  if (tipoRes == 'int'):
+    memoria.ints['temporales'].append(temp)
+  elif (tipoRes == 'float'):
+    memoria.floats['temporales'].append(temp)
+  elif (tipoRes == 'string'):
+    memoria.strings['temporales'].append(temp)
+  elif (tipoRes == 'bool'):
+    memoria.bools['temporales'].append(temp)
+
+  pilaOperandos.push(temp)
+  pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
 
@@ -269,7 +286,9 @@ def pop_rel_from_stack():
   t2 = pilaTipos.pop()
   temp = 't'+ str(cont_Temporales)
 
-  if (oraculo[t1][t2][rel] == 'ERR'):
+  tipoRes = oraculo[t1][t2][rel]
+
+  if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
   # Impresion de Cuadruplos
@@ -289,8 +308,17 @@ def pop_rel_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
   cuadruplos.append(cuadruplo)
 
-  pilaOperandos.push('t'+ str(cont_Temporales))
-  pilaTipos.push(oraculo[t1][t2][rel])
+  if (tipoRes == 'int'):
+    memoria.ints['temporales'].append(temp)
+  elif (tipoRes == 'float'):
+    memoria.floats['temporales'].append(temp)
+  elif (tipoRes == 'string'):
+    memoria.strings['temporales'].append(temp)
+  elif (tipoRes == 'bool'):
+    memoria.bools['temporales'].append(temp)
+
+  pilaOperandos.push(temp)
+  pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
 
