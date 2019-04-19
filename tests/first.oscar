@@ -1,7 +1,7 @@
 #oscar;
 
 var
-  int a = 1;
+  int a = 99;
   int b = 0;
 
 main () {

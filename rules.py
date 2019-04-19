@@ -127,7 +127,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.ints:
-      if (48 <= ord(id) <= 57):
+      if (id.isdigit()):
         memoria.ints['constantes'][id] = apuntador_int
       elif (func_actual == 'oscar'):
         memoria.ints['globales'][id] = apuntador_int
