@@ -43,8 +43,8 @@ DIVISION = '5'
 MODULO = '6'
 MAYOR = '7'
 MENOR = '8'
-MAYORQUE = '9'
-MENORQUE = '10'
+MAYORIGUAL = '9'
+MENORIGUAL = '10'
 ASIGNACION = '11'
 EQUAL = '12'
 NOTEQUAL = '13'
@@ -59,6 +59,10 @@ pilaSaltos = Stack()
 
 # Lista de cuadruplos
 cuadruplos = list()
+
+# Pilas para el for
+pilaInicio = Stack()
+pilaStep = Stack()
 
 # Inicializa el directorio de funciones y agrega la funcion global
 def create_function_table():
@@ -307,9 +311,9 @@ def pop_rel_from_stack():
   elif (rel == '<'):
     cuadruplo = Cuadruplo(cont_Cuadruplos, MENOR, izq, der, temp)
   elif (rel == '<='):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MENORQUE, izq, der, temp)
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL, izq, der, temp)
   elif (rel == '>='):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORQUE, izq, der, temp)
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL, izq, der, temp)
   elif (rel == '=='):
     cuadruplo = Cuadruplo(cont_Cuadruplos, EQUAL, izq, der, temp)
   else:
@@ -402,6 +406,108 @@ def add_end_while():
   cuadruplos.__getitem__(fin-1)['res'] = str(cont_Cuadruplos)
 
 ############################### /WHILE ###############################
+
+################################# FOR ################################
+def add_for_inicio(id):
+  global pilaTipos
+  global pilaOperandos
+  global pilaInicio
+
+  # Validando que la expresion del inicio del for sea int
+  if pilaTipos.peek() != 'int':
+    sys.exit("Error: Expected int expresion on first parameter (START) of for")
+
+  # Metiendo el inicio del for
+  pilaInicio.push(id)
+
+
+
+def add_for_limite():
+  global pilaOperandos
+  global pilaTipos
+  global pilaStep
+  global cont_Cuadruplos
+  global cuadruplos
+  global cont_Temporales
+
+  # Validando que la expresion del limite superior sea int
+  if pilaTipos.peek() != 'int':
+    sys.exit("Error: Expected int expresion on second parameter (MAX) of for")
+
+  # Obteniendo inicio y limite superior del ciclo
+  inicio = pilaInicio.peek()
+  lim_superior = pilaOperandos.peek()
+
+  # Metiendo migaja de pan
+  pilaSaltos.push(cont_Cuadruplos)
+
+  # Generar cuadruplo de comparacion
+  temp = 't'+ str(cont_Temporales)
+  cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL , inicio , lim_superior , temp)
+  cuadruplos.append(cuadruplo)
+
+  cont_Temporales = cont_Temporales + 1
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Generar cuadruplo de gotof
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTOF , temp , '_', '_')
+  cuadruplos.append(cuadruplo)
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Metiendo a la pila de Steps el valor por default del for (1)
+  pilaStep.push('1')
+
+  # Metiendo migaja de pan
+  pilaSaltos.push(cont_Cuadruplos)
+
+def add_for_step():
+  global pilaTipos
+  global pilaOperandos
+  global pilaStep
+
+  # Validando que la expresion del los saltos sea int
+  if pilaTipos.peek() != 'int':
+    sys.exit("Error: Expected int expresion on third parameter (STEP) of for")
+  
+  step = pilaOperandos.peek()
+  pilaStep.push(step)
+
+def add_for_final():
+  global cont_Cuadruplos
+  global cuadruplos
+  global cont_Temporales
+  global pilaStep
+  global pilaInicio
+
+  # Variables para los cuadruplos
+  inicio = pilaInicio.pop()
+  step = pilaStep.pop()
+  fin = pilaSaltos.pop()
+  ret = pilaSaltos.pop()
+
+  # Generar cuadruplos de aumento de la variable controladora
+  temp = 't'+ str(cont_Temporales)
+  cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA , inicio , step , temp)
+  cuadruplos.append(cuadruplo)
+
+  cont_Temporales = cont_Temporales + 1
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ASIGNACION , temp , '_' , inicio)
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Generar cuadruplo para volver a evaluar
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO , '_' , '_' , str(ret))
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Llenando el cuadruplo del gotoF pendiente
+  cuadruplos.__getitem__(fin-2)['res'] = str(cont_Cuadruplos)
+
+################################ /FOR ################################
 
 def add_print():
   global pilaOperandos

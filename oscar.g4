@@ -31,7 +31,8 @@ var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')}
                 | element ;
 tipo		: 	'int' | 'float' | 'string' | 'bool' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
-ciclo		:	( 'for' ID '=' exp ':' exp (':' exp)? estats ) | ( 'while' {rules.add_while()}'(' expresion ')'{rules.add_expr_while()} estats{rules.add_end_while()}) ;
+ciclo		:	( 'for' ID {rules.add_to_operand_stack($ID.text, 'var')} '=' {rules.add_to_operator_stack('=')} exp {rules.pop_equals_from_stack()} ':'{rules.add_for_inicio($ID.text)} exp {rules.add_for_limite()} (':' exp{rules.add_for_step()})? estats {rules.add_for_final()}) 
+                | ( 'while' {rules.add_while()}'(' expresion ')'{rules.add_expr_while()} estats{rules.add_end_while()}) ;
 estats	    :	'{' estatuto+ '}' ;
 asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;

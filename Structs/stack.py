@@ -16,3 +16,7 @@ class Stack:
   
   def peek(self):
     return self.items[len(self.items) -1]
+  
+  def display(self):
+    for i in self.items:
+      print(i)
