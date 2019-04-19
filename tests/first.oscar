@@ -3,8 +3,6 @@
 var
   int a = 99;
   int b = 0;
-  float c = 1.0;
-  string d = "hola";
 
 main () {
   b = a + b;

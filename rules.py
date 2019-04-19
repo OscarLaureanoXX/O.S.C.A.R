@@ -246,14 +246,7 @@ def pop_sum_from_stack():
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + suma)
 
-  # Impresion de Cuadruplos
-  global cont_Cuadruplos
-  global cuadruplos
-  if (suma == '+'):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
-  else:
-    cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
-  cuadruplos.append(cuadruplo)
+  pilaOperandos.push(temp)
 
   if (tipoRes == 'int'):
     global apuntador_int_temp
@@ -271,8 +264,21 @@ def pop_sum_from_stack():
     global apuntador_bool_temp
     memoria.bools['temporales'][temp] = apuntador_bool_temp
     apuntador_bool_temp += 1
+
+  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
+  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
+  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+
+  # Impresion de Cuadruplos
+  global cont_Cuadruplos
+  global cuadruplos
+  if (suma == '+'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
+  cuadruplos.append(cuadruplo)
   
-  pilaOperandos.push(temp)
+  
   pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
@@ -295,17 +301,6 @@ def pop_mult_from_stack():
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
-  # Impresion de Cuadruplos
-  global cont_Cuadruplos
-  global cuadruplos
-  if (mult == '*'):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MULTIPLICACION, izq, der, temp)
-  elif (mult == '/'):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, DIVISION, izq, der, temp)
-  else:
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
-  cuadruplos.append(cuadruplo)
-
   if (tipoRes == 'int'):
     global apuntador_int_temp
     memoria.ints['temporales'][temp] = apuntador_int_temp
@@ -324,6 +319,22 @@ def pop_mult_from_stack():
     apuntador_bool_temp += 1
 
   pilaOperandos.push(temp)
+
+  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
+  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
+  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+
+  # Impresion de Cuadruplos
+  global cont_Cuadruplos
+  global cuadruplos
+  if (mult == '*'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MULTIPLICACION, izq, der, temp)
+  elif (mult == '/'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, DIVISION, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MODULO, izq, der, temp)
+  cuadruplos.append(cuadruplo)
+
   pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
@@ -335,13 +346,17 @@ def pop_equals_from_stack():
 
   igual = pilaOperadores.pop()
   der = pilaOperandos.pop()
-  t1 = pilaTipos.pop()
+  t1 = pilaTipos.pop() + 's'
   izq = pilaOperandos.pop()
-  t2 = pilaTipos.pop()
+  t2 = pilaTipos.pop() + 's'
 
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
+
+    der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+    izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
+  
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
     cuadruplos.append(cuadruplo)
@@ -367,23 +382,6 @@ def pop_rel_from_stack():
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
-  # Impresion de Cuadruplos
-  global cont_Cuadruplos
-  global cuadruplos
-  if (rel == '>'):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYOR, izq, der, temp)
-  elif (rel == '<'):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MENOR, izq, der, temp)
-  elif (rel == '<='):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL, izq, der, temp)
-  elif (rel == '>='):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL, izq, der, temp)
-  elif (rel == '=='):
-    cuadruplo = Cuadruplo(cont_Cuadruplos, EQUAL, izq, der, temp)
-  else:
-    cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
-  cuadruplos.append(cuadruplo)
-
   if (tipoRes == 'int'):
     global apuntador_int_temp
     memoria.ints['temporales'][temp] = apuntador_int_temp
@@ -402,6 +400,28 @@ def pop_rel_from_stack():
     apuntador_bool_temp += 1
 
   pilaOperandos.push(temp)
+
+  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
+  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
+  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+
+  # Impresion de Cuadruplos
+  global cont_Cuadruplos
+  global cuadruplos
+  if (rel == '>'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYOR, izq, der, temp)
+  elif (rel == '<'):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MENOR, izq, der, temp)
+  elif (rel == '<='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL, izq, der, temp)
+  elif (rel == '>='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL, izq, der, temp)
+  elif (rel == '=='):
+    cuadruplo = Cuadruplo(cont_Cuadruplos, EQUAL, izq, der, temp)
+  else:
+    cuadruplo = Cuadruplo(cont_Cuadruplos, NOTEQUAL, izq, der, temp)
+  cuadruplos.append(cuadruplo)
+
   pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
@@ -592,9 +612,12 @@ def add_for_final():
 
 def add_print():
   global pilaOperandos
+  global pilaTipos
   global cont_Cuadruplos
   global cuadruplos
-  cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', pilaOperandos.pop())
+
+  printeado = str([value[pilaOperandos.peek()] for value in getattr(memoria,pilaTipos.peek()+'s').values() if pilaOperandos.peek() in value][0])  
+  cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', printeado)
 
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos += 1
