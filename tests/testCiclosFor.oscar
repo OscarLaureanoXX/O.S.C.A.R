@@ -1,0 +1,14 @@
+#oscar;
+
+main() {
+    var
+        int a, b;
+    
+    a = 10*2;
+    for a = 1*2 : 10 {
+        for b = 1 : 5 {
+            print("HOLA");
+        }
+    }
+    a = a + b;
+}
