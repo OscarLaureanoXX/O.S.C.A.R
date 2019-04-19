@@ -11,29 +11,6 @@ cont_Cuadruplos = 1
 # Memoria de ejecuccion
 memoria = Execution_Memory()
 
-memoria.ints['locales'].append(0)
-memoria.ints['locales'].append(10)
-memoria.ints['locales'].append(110)
-memoria.ints['locales'].append(1110)
-
-print(memoria)
-print(memoria.ints)
-print(memoria.ints['locales'])
-print(memoria.ints['locales'][0])
-
-# Tablas de constantes
-# { valor : direccion }
-tabla_const_int = {}
-tabla_const_float = {}
-tabla_const_bool = {}
-tabla_const_string = {}
-
-# Valores iniciales de direcciones para tablas de constantes
-cont_const_bool = 10000
-cont_const_int = 11000
-cont_const_float = 12000
-cont_const_string = 13000
-
 # Valores de CODIGOS DE EJECUCCION
 PRINT = '1'
 SUMA = '2'
@@ -135,56 +112,43 @@ def add_to_operand_stack(id, type):
 
   # Si es un int se agrega a la tabla de constantes int
   if (type == 'int'):
-    global tabla_const_int
-    global cont_const_int
-
     id = id.encode('UTF-8')
 
-    if id not in tabla_const_int:
-      tabla_const_int[id] = cont_const_int
-      cont_const_int += 1
+    if id not in memoria.ints:
+      if (func_actual == 'oscar'):
+        memoria.ints['globales'].append(id)
+      else:
+        memoria.ints['constantes'].append(id)
     
     pilaOperandos.push(id)
     pilaTipos.push('int')
 
   # Si es un float se agrega a la tabla de floats
   elif (type == 'float'):
-    global tabla_const_float
-    global cont_const_float
-
     id = id.encode('UTF-8')
 
-    if id not in tabla_const_float:
-      tabla_const_float[id] = cont_const_float
-      cont_const_float += 1
+    if id not in memoria.floats:
+      memoria.floats['constantes'].append(id)
     
     pilaOperandos.push(id)
     pilaTipos.push('float')
   
   # Si es un bool se agrega a la tabla de bools
   elif (type == 'bool'):
-    global tabla_const_bool
-    global cont_const_bool
-
     id = id.encode('UTF-8')
 
-    if id not in tabla_const_bool:
-      tabla_const_bool[id] = cont_const_bool
-      cont_const_bool += 1
+    if id not in memoria.bools:
+      memoria.bools['constantes'].append(id)
     
     pilaOperandos.push(id)
     pilaTipos.push('bool')
 
   # Si es un string se agrega a la tabla de strings
   elif (type == 'string'):
-    global tabla_const_string
-    global cont_const_string
-
     id = id.encode('UTF-8')
 
-    if id not in tabla_const_string:
-      tabla_const_string[id] = cont_const_string
-      cont_const_string += 1
+    if id not in memoria.strings:
+      memoria.strings['constantes'].append(id)
     
     pilaOperandos.push(id)
     pilaTipos.push('string')
@@ -217,7 +181,9 @@ def pop_sum_from_stack():
   t2 = pilaTipos.pop()
   temp = 't'+ str(cont_Temporales)
 
-  if (oraculo[t1][t2][suma] == 'ERR'):
+  tipoRes = oraculo[t1][t2][suma]
+
+  if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + suma)
 
   # Impresion de Cuadruplos
@@ -229,8 +195,11 @@ def pop_sum_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos, RESTA, izq, der, temp)
   cuadruplos.append(cuadruplo)
 
-  pilaOperandos.push('t'+ str(cont_Temporales))
-  pilaTipos.push(oraculo[t1][t2][suma])
+  if (tipoRes == 'int'):
+    memoria.ints['temporales'].append(temp)
+  
+  pilaOperandos.push(temp)
+  pilaTipos.push(tipoRes)
   cont_Temporales += 1
   cont_Cuadruplos += 1
 
@@ -521,8 +490,6 @@ def add_print():
 def destroy():
   # Imprimiendo toda la tabla
   print(dir_func.dictionary)
-  print(tabla_const_int)
-  print(tabla_const_float)
-  print(tabla_const_bool)
+  print(memoria)
   for i in cuadruplos:
     print(i)

@@ -4,9 +4,9 @@ import antlr
 def main(argv):
   antlr.main(argv)
   lista_cuadruplos = antlr.rules.cuadruplos
-  tabla_ints = antlr.rules.tabla_const_int
+  memoria = antlr.rules.memoria
   
-  i = 1
+  i = 0
   print("___CUADRUPLOS___")
   while(lista_cuadruplos):
     contador = lista_cuadruplos[0]['cont']
