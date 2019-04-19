@@ -11,6 +11,18 @@ cont_Cuadruplos = 1
 # Memoria de ejecuccion
 memoria = Execution_Memory()
 
+# Apuntadores a inicio de memoria
+apuntador_int = 1000
+# apuntador_int_temp = 
+# apuntador_int_const =
+# apuntador_int_global =
+# apuntador_int_local =
+apuntador_float = 9000
+
+apuntador_string = 17000
+
+apuntador_bool = 23000
+
 # Valores de CODIGOS DE EJECUCCION
 PRINT = '1'
 SUMA = '2'
@@ -115,10 +127,12 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.ints:
-      if (func_actual == 'oscar'):
-        memoria.ints['globales'].append(id)
+      if (48 <= ord(id) <= 57):
+        memoria.ints['constantes'][id] = apuntador_int
+      elif (func_actual == 'oscar'):
+        memoria.ints['globales'][id] = apuntador_int
       else:
-        memoria.ints['constantes'].append(id)
+        memoria.ints['locales'][id] = apuntador_int
     
     pilaOperandos.push(id)
     pilaTipos.push('int')
@@ -128,7 +142,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.floats:
-      memoria.floats['constantes'].append(id)
+      memoria.floats['constantes'][id] = apuntador_float
     
     pilaOperandos.push(id)
     pilaTipos.push('float')
@@ -138,7 +152,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.bools:
-      memoria.bools['constantes'].append(id)
+      memoria.bools['constantes'][id] = apuntador_bool
     
     pilaOperandos.push(id)
     pilaTipos.push('bool')
@@ -148,7 +162,7 @@ def add_to_operand_stack(id, type):
     id = id.encode('UTF-8')
 
     if id not in memoria.strings:
-      memoria.strings['constantes'].append(id)
+      memoria.strings['constantes'][id] = apuntador_string
     
     pilaOperandos.push(id)
     pilaTipos.push('string')
@@ -196,13 +210,13 @@ def pop_sum_from_stack():
   cuadruplos.append(cuadruplo)
 
   if (tipoRes == 'int'):
-    memoria.ints['temporales'].append(temp)
+    memoria.ints['temporales'][temp] = apuntador_int
   elif (tipoRes == 'float'):
-    memoria.floats['temporales'].append(temp)
+    memoria.floats['temporales'][temp] = apuntador_int
   elif (tipoRes == 'string'):
-    memoria.strings['temporales'].append(temp)
+    memoria.strings['temporales'][temp] = apuntador_int
   elif (tipoRes == 'bool'):
-    memoria.bools['temporales'].append(temp)
+    memoria.bools['temporales'][temp] = apuntador_int
   
   pilaOperandos.push(temp)
   pilaTipos.push(tipoRes)
@@ -239,13 +253,13 @@ def pop_mult_from_stack():
   cuadruplos.append(cuadruplo)
 
   if (tipoRes == 'int'):
-    memoria.ints['temporales'].append(temp)
+    memoria.ints['temporales'][temp] = apuntador_int
   elif (tipoRes == 'float'):
-    memoria.floats['temporales'].append(temp)
+    memoria.floats['temporales'][temp] = apuntador_int
   elif (tipoRes == 'string'):
-    memoria.strings['temporales'].append(temp)
+    memoria.strings['temporales'][temp] = apuntador_int
   elif (tipoRes == 'bool'):
-    memoria.bools['temporales'].append(temp)
+    memoria.bools['temporales'][temp] = apuntador_int
 
   pilaOperandos.push(temp)
   pilaTipos.push(tipoRes)
@@ -309,13 +323,13 @@ def pop_rel_from_stack():
   cuadruplos.append(cuadruplo)
 
   if (tipoRes == 'int'):
-    memoria.ints['temporales'].append(temp)
+    memoria.ints['temporales'][temp] = apuntador_int
   elif (tipoRes == 'float'):
-    memoria.floats['temporales'].append(temp)
+    memoria.floats['temporales'][temp] = apuntador_int
   elif (tipoRes == 'string'):
-    memoria.strings['temporales'].append(temp)
+    memoria.strings['temporales'][temp] = apuntador_int
   elif (tipoRes == 'bool'):
-    memoria.bools['temporales'].append(temp)
+    memoria.bools['temporales'][temp] = apuntador_int
 
   pilaOperandos.push(temp)
   pilaTipos.push(tipoRes)
