@@ -32,6 +32,28 @@ def main(argv):
     # GOTO = '14'
     # GOTOF = '15'
 
+    # apuntador_int_global = 1000
+    # apuntador_int_local = 3000
+    # apuntador_int_temp = 5000
+    # apuntador_int_const = 7000
+    # apuntador_float_global = 9000
+    # apuntador_float_local = 11000
+    # apuntador_float_temp = 13000
+    # apuntador_float_const = 15000
+    # apuntador_string_global = 17000
+    # apuntador_string_local = 19000
+    # apuntador_string_temp = 21000
+    # apuntador_string_const = 23000
+    # apuntador_bool_global = 25000
+    # apuntador_bool_local = 27000
+    # apuntador_bool_temp = 29000
+    # apuntador_bool_const = 31000
+
+    # VALORES INT = 1000 <= x < 9000
+    # VALORES FLOAT = 9000 <= x < 17000
+    # VALORES STRING = 17000 <= x < 25000
+    # VALORES BOOL = 25000 <= x < 31000
+
     if (operacion == '1'):
       print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
     elif (operacion == '2'):

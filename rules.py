@@ -26,9 +26,9 @@ apuntador_string_local = 19000
 apuntador_string_temp = 21000
 apuntador_string_const = 23000
 apuntador_bool_global = 25000
-apuntador_bool_local = 3000
-apuntador_bool_temp = 5000
-apuntador_bool_const = 7000
+apuntador_bool_local = 27000
+apuntador_bool_temp = 29000
+apuntador_bool_const = 31000
 
 # Valores de CODIGOS DE EJECUCCION
 PRINT = '1'
