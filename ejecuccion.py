@@ -54,6 +54,22 @@ def main(argv):
     # VALORES STRING = 17000 <= x < 25000
     # VALORES BOOL = 25000 <= x < 31000
 
+    # Sacar tipo de izquierdo FALTA SI ES GLOBAL LOCAL ETC...
+    # Sacar tipo de derecho FALTA SI ES GLOBAL LOCAL ETC...
+    # Sacando tipo de resultado FALTA SI ES GLOBAL LOCAL ETC...
+    if (1000 <= int(resultado) < 9000):
+      tipoRes = 'int'
+    elif (9000 <= int(resultado) < 17000):
+      tipoRes = 'float'
+    elif (17000 <= int(resultado) < 25000):
+      tipoRes = 'string'
+    elif (25000 <= int(resultado) < 31000):
+      tipoRes = 'bool'
+
+    print("El resultado va a ser de tipo: " + tipoRes)
+
+    # Sacar los datos e ir metiendo los valores a memoria
+
     if (operacion == '1'):
       print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
     elif (operacion == '2'):
