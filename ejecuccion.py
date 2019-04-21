@@ -15,59 +15,6 @@ def main(argv):
     derecho = lista_cuadruplos[0]['der']
     resultado = lista_cuadruplos[0]['res']
 
-    # Valores de CODIGOS DE EJECUCCION
-    # PRINT = '1'
-    # SUMA = '2'
-    # RESTA = '3'
-    # MULTIPLICACION = '4'
-    # DIVISION = '5'
-    # MODULO = '6'
-    # MAYOR = '7'
-    # MENOR = '8'
-    # MAYORQUE = '9'
-    # MENORQUE = '10'
-    # ASIGNACION = '11'
-    # EQUAL = '12'
-    # NOTEQUAL = '13'
-    # GOTO = '14'
-    # GOTOF = '15'
-
-    # apuntador_int_global = 1000
-    # apuntador_int_local = 3000
-    # apuntador_int_temp = 5000
-    # apuntador_int_const = 7000
-    # apuntador_float_global = 9000
-    # apuntador_float_local = 11000
-    # apuntador_float_temp = 13000
-    # apuntador_float_const = 15000
-    # apuntador_string_global = 17000
-    # apuntador_string_local = 19000
-    # apuntador_string_temp = 21000
-    # apuntador_string_const = 23000
-    # apuntador_bool_global = 25000
-    # apuntador_bool_local = 27000
-    # apuntador_bool_temp = 29000
-    # apuntador_bool_const = 31000
-
-    # VALORES INT = 1000 <= x < 9000
-    # VALORES FLOAT = 9000 <= x < 17000
-    # VALORES STRING = 17000 <= x < 25000
-    # VALORES BOOL = 25000 <= x < 31000
-
-    # Sacar tipo de izquierdo FALTA SI ES GLOBAL LOCAL ETC...
-    # Sacar tipo de derecho FALTA SI ES GLOBAL LOCAL ETC...
-    # Sacando tipo de resultado FALTA SI ES GLOBAL LOCAL ETC...
-    if (1000 <= int(resultado) < 9000):
-      tipoRes = 'int'
-    elif (9000 <= int(resultado) < 17000):
-      tipoRes = 'float'
-    elif (17000 <= int(resultado) < 25000):
-      tipoRes = 'string'
-    elif (25000 <= int(resultado) < 31000):
-      tipoRes = 'bool'
-
-    print("El resultado va a ser de tipo: " + tipoRes)
-
     # Sacar los datos e ir metiendo los valores a memoria
 
     if (operacion == '1'):
@@ -105,6 +52,50 @@ def main(argv):
 
     lista_cuadruplos.pop(0)
     i = i + 1
+
+def sacaTipoYLocalidad(variable):
+  if (1000 <= int(variable) < 9000):
+    tipo = 'ints'
+    if (1000 <= int(variable) < 3000):
+      localidad = 'globales'
+    elif (3000 <= int(variable) < 5000):
+      localidad = 'locales'
+    elif (5000 <= int(variable) < 7000):
+      localidad = 'temporales'
+    elif (7000 <= int(variable) < 9000):
+      localidad = 'constantes'
+  elif (9000 <= int(variable) < 17000):
+    tipo = 'floats'
+    if (9000 <= int(variable) < 11000):
+      localidad = 'globales'
+    elif (11000 <= int(variable) < 13000):
+      localidad = 'locales'
+    elif (13000 <= int(variable) < 15000):
+      localidad = 'temporales'
+    elif (15000 <= int(variable) < 17000):
+      localidad = 'constantes'
+  elif (17000 <= int(variable) < 25000):
+    tipo = 'strings'
+    if (17000 <= int(variable) < 19000):
+      localidad = 'globales'
+    elif (19000 <= int(variable) < 21000):
+      localidad = 'locales'
+    elif (21000 <= int(variable) < 23000):
+      localidad = 'temporales'
+    elif (23000 <= int(variable) < 25000):
+      localidad = 'constantes'
+  elif (25000 <= int(variable) < 31000):
+    tipo = 'bools'
+    if (25000 <= int(variable) < 27000):
+      localidad = 'globales'
+    elif (27000 <= int(variable) < 29000):
+      localidad = 'locales'
+    elif (29000 <= int(variable) < 31000):
+      localidad = 'temporales'
+    elif (31000 <= int(variable) < 33000):
+      localidad = 'constantes'
+  
+  return [tipo, localidad]
 
 if __name__ == '__main__':
   main(sys.argv)
