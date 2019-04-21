@@ -39,6 +39,29 @@ def main(argv):
       print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
     elif (operacion == '11'):
       print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
+      # Sacar tipo y localidad de resultado y valor a asignar
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+
+      print(res, izq)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+
+      print(pedazoMemoriaResultado, pedazoMemoriaIzquierdo)
+
+      # Sacar valor de memoria
+      valorRes = [value for value in pedazoMemoriaResultado if int(resultado) == pedazoMemoriaResultado[value]]
+      valorIzq = [value for value in pedazoMemoriaIzquierdo if int(izquierdo) == pedazoMemoriaIzquierdo[value]]
+
+      print(valorRes, valorIzq)
+
+      for item in getattr(memoria, res[0])[res[1]].items():
+        if (item[0] == valorRes[0]):
+          getattr(memoria, res[0])[res[1]][valorIzq[0]] = pedazoMemoriaResultado.pop(item[0])
+
+      print(getattr(memoria, res[0])[res[1]])
+
     elif (operacion == '12'):
       print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
     elif (operacion == '13'):
