@@ -265,9 +265,9 @@ def pop_sum_from_stack():
     memoria.bools['temporales'][temp] = apuntador_bool_temp
     apuntador_bool_temp += 1
 
-  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
-  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
-  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+  #der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
+  #izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
+  #temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -320,9 +320,9 @@ def pop_mult_from_stack():
 
   pilaOperandos.push(temp)
 
-  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
-  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
-  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+  #der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
+  #izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
+  #temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -349,13 +349,14 @@ def pop_equals_from_stack():
   t1 = pilaTipos.pop() + 's'
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop() + 's'
+  print(der, izq)
 
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
 
-    der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-    izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
+    #der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+    #izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
