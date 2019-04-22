@@ -5,6 +5,9 @@ var
   int b = 25;
 
 main () {
+  var
+    string c = "hi";
   b = a + b;
   print(b);
+  print(c);
 }
