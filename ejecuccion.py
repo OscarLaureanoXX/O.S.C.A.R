@@ -8,7 +8,7 @@ def main(argv):
   lista_cuadruplos = antlr.rules.cuadruplos
 
   i = 1
-  print("___CUADRUPLOS___")
+  print("_____ EJECUCCION _____")
   while(i <= len(lista_cuadruplos)):
     contador = lista_cuadruplos[i-1]['cont']
     operacion = lista_cuadruplos[i-1]['op']
@@ -19,41 +19,41 @@ def main(argv):
     # Sacar los datos e ir metiendo los valores a memoria
 
     if (operacion == '1'):
-      print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
+      # print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
       pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
       valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
 
       print(valorRes[0])
     elif (operacion == '2'):
-      print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('+', izquierdo, derecho, resultado)
     elif (operacion == '3'):
-      print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('-', izquierdo, derecho, resultado)
     elif (operacion == '4'):
-      print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('*', izquierdo, derecho, resultado)
     elif (operacion == '5'):
-      print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('/', izquierdo, derecho, resultado)
     elif (operacion == '6'):
-      print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
       hazOperacion('%', izquierdo, derecho, resultado)
     elif (operacion == '7'):
-      print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>', izquierdo, derecho, resultado)
     elif (operacion == '8'):
-      print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<', izquierdo, derecho, resultado)
     elif (operacion == '9'):
-      print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>=', izquierdo, derecho, resultado)
     elif (operacion == '10'):
-      print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
-      print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
+      # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
       # Sacar tipo y localidad de resultado y valor a asignar
       res = sacaTipoYLocalidad(resultado)
       izq = sacaTipoYLocalidad(izquierdo)
@@ -78,17 +78,17 @@ def main(argv):
       # print(pedazoMemoriaResultado)
 
     elif (operacion == '12'):
-      print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('==', izquierdo, derecho, resultado)
     elif (operacion == '13'):
-      print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('!=', izquierdo, derecho, resultado)
     elif (operacion == '14'):
-      print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
+      # print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
       # BRINCAR AL CUADRUPLO: resultado
       i = int(resultado) - 1
     elif (operacion == '15'):
-      print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
+      # print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
       izq = sacaTipoYLocalidad(izquierdo)
 
       pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
@@ -149,10 +149,13 @@ def sacaTipoYLocalidad(variable):
 
 def hazOperacion(operacion, izquierdo, derecho, resultado):
   global memoria
+  # print(izquierdo, derecho, resultado)
 
   res = sacaTipoYLocalidad(resultado)
   izq = sacaTipoYLocalidad(izquierdo)
   der = sacaTipoYLocalidad(derecho)
+
+  # print(izq, der, res)
 
   pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
   pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
@@ -162,7 +165,7 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
   valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
   valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
 
-  # print(valorRes, valorIzq, valorDer)
+  # print(valorIzq, valorDer, valorRes)
   
   for item in pedazoMemoriaResultado.items():
     if (item[1] == valorRes[0]):

@@ -483,6 +483,7 @@ def add_for_inicio(id):
     sys.exit("Error: Expected int expresion on first parameter (START) of for")
 
   # Metiendo el inicio del for
+  id = id.encode('UTF-8')
   pilaInicio.push(id)
 
 def add_for_limite():
@@ -501,11 +502,19 @@ def add_for_limite():
   inicio = pilaInicio.peek()
   lim_superior = pilaOperandos.peek()
 
+  inicio = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if inicio in item][0])
+  lim_superior = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if lim_superior in item][0])
+
   # Metiendo migaja de pan
   pilaSaltos.push(cont_Cuadruplos)
 
   # Generar cuadruplo de comparacion
   temp = 't'+ str(cont_Temporales)
+  # Meter temporal a memoria
+  memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
+  memoria.apuntador_bool_temp += 1
+  temp = str([item[0] for value in memoria.bool.values() for item in value.items() if temp in item][0])
+
   cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL , inicio , lim_superior , temp)
   cuadruplos.append(cuadruplo)
 
@@ -541,6 +550,7 @@ def add_for_final():
   global cont_Temporales
   global pilaStep
   global pilaInicio
+  global pilaTipos
 
   # Variables para los cuadruplos
   inicio = pilaInicio.pop()
@@ -548,8 +558,15 @@ def add_for_final():
   fin = pilaSaltos.pop()
   ret = pilaSaltos.pop()
 
+  inicio = str([item[0] for value in memoria.int.values() for item in value.items() if inicio in item][0])
+
   # Generar cuadruplos de aumento de la variable controladora
   temp = 't'+ str(cont_Temporales)
+  # Meter temporal a memoria
+  memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
+  memoria.apuntador_bool_temp += 1
+  temp = str([item[0] for value in memoria.bool.values() for item in value.items() if temp in item][0])
+
   cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA , inicio , step , temp)
   cuadruplos.append(cuadruplo)
 

@@ -5,9 +5,10 @@ var
   int b = 2;
 
 main () {
-  if (a + b < 10){
-    print("Hi");
-  } else {
-    print("bye");
+  while (a > b) {
+    print(b);
+    b = b+1;
   }
+
+  print("Hi");
 }
