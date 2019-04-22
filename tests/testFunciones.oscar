@@ -1,0 +1,17 @@
+#oscar;
+
+def int suma(int der, int izq, float dos, string nombre, string otro, float a, bool flag){
+    var
+        int res;
+    
+    res = der + izq;
+
+    return res;
+}
+
+main(){
+    var
+        int i = 0;
+    
+    print("hello");
+}

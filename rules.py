@@ -5,6 +5,7 @@ from Structs import *
 # Variables globales
 dir_func = 'None'
 func_actual = 'global'
+var_actual = ['name','type']
 oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
 cont_Cuadruplos = 1
@@ -60,16 +61,71 @@ cuadruplos = list()
 pilaInicio = Stack()
 pilaStep = Stack()
 
+################################ TABLA DE FUNCIONES ################################################
+
 # Inicializa el directorio de funciones y agrega la funcion global
 def create_function_table():
   global dir_func
   dir_func = Dir_Func(dict())
   add_to_func_table('oscar', 'global')
 
+# Agregar una funcion llamada [func_name] de tipo [func_type] 
+# a la tabla de funciones [func_table]
+def add_to_func_table(func_name, func_type):
+  global func_actual
+  global dir_func
+
+  name = func_name.encode('UTF-8')
+  tipo = func_type.encode('UTF-8')
+
+  # Checando si ya existe esa funcion
+  if func_name in dir_func.dictionary:
+    print("Nombre de funcion repetido")
+  else:
+    # Agregar a la tabla de funciones
+    #                           [tipo de la funcion, directorio de variables, firma]
+    #                           la firma es un string que te dice cuantas variables de cada
+    #                           tipo recibe como parametro 
+    #                           orden = (i = int, f = float, s = string, b = bool, l = list)    
+    dir_func.dictionary[name] = [tipo,{},'00000']
+    func_actual = name
+
+# Actualizando la firma de la funcion (cuantas variables de cada tipo tiene)
+# orden: (i = int, f = float, s = string, b = bool, l = list)
+def update_func_firm():
+  global dir_func
+  global func_actual
+  global var_actual
+
+  # Obteniendo la firma de la funcion correspondiente
+  firm = dir_func.dictionary[func_actual][2]
+
+  # Actualizando la firma dependiendo del parametro nuevo
+  if var_actual[1] == 'int':
+    cant = int(firm[0]) + 1
+    firm = str(cant) + firm[1:]
+  elif var_actual[1] == 'float':
+    cant = int(firm[1]) + 1
+    firm = firm[0:1] + str(cant) + firm[2:]
+  elif var_actual[1] == 'string':
+    cant = int(firm[2]) + 1
+    firm = firm[0:2] + str(cant) + firm[3:]
+  elif var_actual[1] == 'bool':
+    cant = int(firm[3]) + 1
+    firm = firm[0:3] + str(cant) + firm[4:]
+  elif var_actual[1] == 'list':
+    cant = int(firm[4]) + 1
+    firm = firm[0:4] + str(cant)
+
+  # Asignando el nuevo valor a la firma
+  dir_func.dictionary[func_actual][2] = firm
+
+
 # Agregar una variable llamada [varName] de tipo [type] 
 # a la tabla correspondiente
 def add_to_var_table(varName, type):
   global dir_func
+  global var_actual
 
   var = varName.encode('UTF-8')
   tipo = type.encode('UTF-8')
@@ -79,6 +135,9 @@ def add_to_var_table(varName, type):
   else:
     # Agregar a la tabla
     dir_func.__getitem__(func_actual)[var] = [tipo]
+    # Manteniendo la variable actual y su tipo en un temporal para contabilizar despues
+    var_actual[0] = var
+    var_actual[1] = tipo
 
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
@@ -98,22 +157,7 @@ def addColumns(tableName, sizeC):
 
   dir_func.__getitem__(func_actual)[name].append(cols)
 
-# Agregar una funcion llamada [func_name] de tipo [func_type] 
-# a la tabla de funciones [func_table]
-def add_to_func_table(func_name, func_type):
-  global func_actual
-  global dir_func
-
-  name = func_name.encode('UTF-8')
-  tipo = func_type.encode('UTF-8')
-
-  # Checando si ya existe esa funcion
-  if func_name in dir_func.dictionary:
-    print("Nombre de funcion repetido")
-  else:
-    # Agregar a la tabla
-    dir_func.dictionary[name] = [tipo,{}]
-    func_actual = name
+################################ /TABLA DE FUNCIONES ################################################
 
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):
