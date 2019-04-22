@@ -86,6 +86,7 @@ def main(argv):
     elif (operacion == '14'):
       print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
       # BRINCAR AL CUADRUPLO: resultado
+      i = int(resultado) - 1
     elif (operacion == '15'):
       print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
       izq = sacaTipoYLocalidad(izquierdo)
@@ -94,11 +95,9 @@ def main(argv):
 
       valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
 
-      print(valorIzq)
-
       if (valorIzq[0] == False):
-        print("hi")
         # BRINCAR AL CUADRUPLO: resultado
+        i = int(resultado) - 1
     else:
       print(operacion)
 
@@ -167,7 +166,7 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
   
   for item in pedazoMemoriaResultado.items():
     if (item[1] == valorRes[0]):
-      pedazoMemoriaResultado[item[0]] = eval(valorIzq[0] + operacion + valorDer[0])
+      pedazoMemoriaResultado[item[0]] = eval(str(valorIzq[0]) + operacion + str(valorDer[0]))
 
   # print(pedazoMemoriaResultado)
 
