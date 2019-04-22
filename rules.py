@@ -235,9 +235,9 @@ def pop_sum_from_stack():
     memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
     memoria.apuntador_bool_temp += 1
 
-  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
-  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
+  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
+  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
+  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -286,9 +286,9 @@ def pop_mult_from_stack():
     memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
     memoria.apuntador_bool_temp += 1
 
-  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
-  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
+  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
+  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
+  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -320,8 +320,8 @@ def pop_equals_from_stack():
     global cont_Cuadruplos
     global cuadruplos
 
-    # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-    # izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
+    der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
+    izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
@@ -363,9 +363,9 @@ def pop_rel_from_stack():
     memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
     memoria.apuntador_bool_temp += 1
 
-  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
-  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
+  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
+  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
+  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -576,8 +576,7 @@ def add_print():
   global cont_Cuadruplos
   global cuadruplos
 
-  # printeado = str([value[pilaOperandos.peek()] for value in getattr(memoria,pilaTipos.peek()).values() if pilaOperandos.peek() in value][0])  
-  printeado = pilaOperandos.peek()
+  printeado = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if pilaOperandos.peek() in item][0])
   cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', printeado)
 
   cuadruplos.append(cuadruplo)
