@@ -12,8 +12,6 @@ cont_Cuadruplos = 1
 # Memoria de ejecuccion
 memoria = Execution_Memory()
 
-
-
 # Valores de CODIGOS DE EJECUCCION
 PRINT = '1'
 SUMA = '2'
@@ -326,6 +324,7 @@ def pop_equals_from_stack():
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
     cuadruplos.append(cuadruplo)
+    pilaTipos.push(t1)
   else:
     sys.exit("Incompatible type for operation " + igual)
   
@@ -515,7 +514,7 @@ def add_for_limite():
   memoria.apuntador_bool_temp += 1
   temp = str([item[0] for value in memoria.bool.values() for item in value.items() if temp in item][0])
 
-  cuadruplo = Cuadruplo(cont_Cuadruplos, MAYORIGUAL , inicio , lim_superior , temp)
+  cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL , inicio , lim_superior , temp)
   cuadruplos.append(cuadruplo)
 
   cont_Temporales = cont_Temporales + 1
@@ -559,6 +558,7 @@ def add_for_final():
   ret = pilaSaltos.pop()
 
   inicio = str([item[0] for value in memoria.int.values() for item in value.items() if inicio in item][0])
+  step = str([item[0] for value in memoria.int.values() for item in value.items() if step in item][0])
 
   # Generar cuadruplos de aumento de la variable controladora
   temp = 't'+ str(cont_Temporales)
