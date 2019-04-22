@@ -78,45 +78,45 @@ def main(argv):
 
 def sacaTipoYLocalidad(variable):
   if (1000 <= int(variable) < 9000):
-    tipo = 'ints'
+    tipo = 'int'
     if (1000 <= int(variable) < 3000):
-      localidad = 'globales'
+      localidad = 'global'
     elif (3000 <= int(variable) < 5000):
-      localidad = 'locales'
+      localidad = 'local'
     elif (5000 <= int(variable) < 7000):
-      localidad = 'temporales'
+      localidad = 'temporal'
     elif (7000 <= int(variable) < 9000):
-      localidad = 'constantes'
+      localidad = 'constante'
   elif (9000 <= int(variable) < 17000):
-    tipo = 'floats'
+    tipo = 'float'
     if (9000 <= int(variable) < 11000):
-      localidad = 'globales'
+      localidad = 'global'
     elif (11000 <= int(variable) < 13000):
-      localidad = 'locales'
+      localidad = 'local'
     elif (13000 <= int(variable) < 15000):
-      localidad = 'temporales'
+      localidad = 'temporal'
     elif (15000 <= int(variable) < 17000):
-      localidad = 'constantes'
+      localidad = 'constante'
   elif (17000 <= int(variable) < 25000):
-    tipo = 'strings'
+    tipo = 'string'
     if (17000 <= int(variable) < 19000):
-      localidad = 'globales'
+      localidad = 'global'
     elif (19000 <= int(variable) < 21000):
-      localidad = 'locales'
+      localidad = 'local'
     elif (21000 <= int(variable) < 23000):
-      localidad = 'temporales'
+      localidad = 'temporal'
     elif (23000 <= int(variable) < 25000):
-      localidad = 'constantes'
+      localidad = 'constante'
   elif (25000 <= int(variable) < 31000):
-    tipo = 'bools'
+    tipo = 'bool'
     if (25000 <= int(variable) < 27000):
-      localidad = 'globales'
+      localidad = 'global'
     elif (27000 <= int(variable) < 29000):
-      localidad = 'locales'
+      localidad = 'local'
     elif (29000 <= int(variable) < 31000):
-      localidad = 'temporales'
+      localidad = 'temporal'
     elif (31000 <= int(variable) < 33000):
-      localidad = 'constantes'
+      localidad = 'constante'
   
   return [tipo, localidad]
 

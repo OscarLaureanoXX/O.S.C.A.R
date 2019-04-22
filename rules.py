@@ -2,7 +2,7 @@ import sys
 import re
 from Structs import *
 
-# Variables globales
+# Variables global
 dir_func = 'None'
 func_actual = 'global'
 oraculo = Semantic_Cube().cubo_semantico
@@ -12,23 +12,7 @@ cont_Cuadruplos = 1
 # Memoria de ejecuccion
 memoria = Execution_Memory()
 
-# Apuntadores a inicio de memoria
-apuntador_int_global = 1000
-apuntador_int_local = 3000
-apuntador_int_temp = 5000
-apuntador_int_const = 7000
-apuntador_float_global = 9000
-apuntador_float_local = 11000
-apuntador_float_temp = 13000
-apuntador_float_const = 15000
-apuntador_string_global = 17000
-apuntador_string_local = 19000
-apuntador_string_temp = 21000
-apuntador_string_const = 23000
-apuntador_bool_global = 25000
-apuntador_bool_local = 27000
-apuntador_bool_temp = 29000
-apuntador_bool_const = 31000
+
 
 # Valores de CODIGOS DE EJECUCCION
 PRINT = '1'
@@ -129,23 +113,22 @@ def add_to_operand_stack(id, type):
   global func_actual
   global dir_func
 
-  # Si es un int se agrega a la tabla de constantes int
+  # Si es un int se agrega a la tabla de constante int
   if (type == 'int'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.ints:
+    if id not in memoria.int:
       if (id.isdigit()):
-        global apuntador_int_const
-        memoria.ints['constantes'][id] = apuntador_int_const
-        apuntador_int_const += 1
+        memoria.int['constante'][memoria.apuntador_int_const] = id
+        memoria.apuntador_int_const += 1
       elif (func_actual == 'oscar'):
-        global apuntador_int_global
-        memoria.ints['globales'][id] = apuntador_int_global
-        apuntador_int_global +=1
+        
+        memoria.int['global'][memoria.apuntador_int_global] = id
+        memoria.apuntador_int_global +=1
       else:
-        global apuntador_int_local
-        memoria.ints['locales'][id] = apuntador_int_local
-        apuntador_int_local += 1
+        
+        memoria.int['local'][memoria.apuntador_int_local] = id
+        memoria.apuntador_int_local += 1
     
     pilaOperandos.push(id)
     pilaTipos.push('int')
@@ -154,19 +137,16 @@ def add_to_operand_stack(id, type):
   elif (type == 'float'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.floats:
+    if id not in memoria.float:
       if (re.match(r"^\d+?\.\d+?$", id)):
-        global apuntador_float_const
-        memoria.floats['constantes'][id] = apuntador_float_const
-        apuntador_float_const += 1
+        memoria.float['constante'][memoria.apuntador_float_const] = id
+        memoria.apuntador_float_const += 1
       elif (func_actual == 'oscar'):
-        global apuntador_float_global
-        memoria.floats['globales'][id] = apuntador_float_global
-        apuntador_float_global +=1
+        memoria.float['global'][memoria.apuntador_float_global] = id
+        memoria.apuntador_float_global +=1
       else:
-        global apuntador_float_local
-        memoria.floats['locales'][id] = apuntador_float_local
-        apuntador_float_local += 1
+        memoria.float['local'][memoria.apuntador_float_local] = id
+        memoria.apuntador_float_local += 1
     
     pilaOperandos.push(id)
     pilaTipos.push('float')
@@ -175,19 +155,16 @@ def add_to_operand_stack(id, type):
   elif (type == 'bool'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.bools:
+    if id not in memoria.bool:
       if (id.isdigit()):
-        global apuntador_bool_const
-        memoria.bools['constantes'][id] = apuntador_bool_const
-        apuntador_bool_const += 1
+        memoria.bool['constante'][memoria.apuntador_bool_const] = id 
+        memoria.apuntador_bool_const += 1
       elif (func_actual == 'oscar'):
-        global apuntador_bool_global
-        memoria.bools['globales'][id] = apuntador_bool_global
-        apuntador_bool_global +=1
+        memoria.bool['global'][memoria.apuntador_bool_global] = id
+        memoria.apuntador_bool_global +=1
       else:
-        global apuntador_bool_local
-        memoria.bools['locales'][id] = apuntador_bool_local
-        apuntador_bool_local += 1
+        memoria.bool['local'][memoria.apuntador_bool_local] = id
+        memoria.apuntador_bool_local += 1
     
     pilaOperandos.push(id)
     pilaTipos.push('bool')
@@ -196,19 +173,16 @@ def add_to_operand_stack(id, type):
   elif (type == 'string'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.strings:
+    if id not in memoria.string:
       if (id[0] == '"'):
-        global apuntador_string_const
-        memoria.strings['constantes'][id] = apuntador_string_const
-        apuntador_string_const += 1
+        memoria.string['constante'][memoria.apuntador_string_const] = id
+        memoria.apuntador_string_const += 1
       elif (func_actual == 'oscar'):
-        global apuntador_string_global
-        memoria.strings['globales'][id] = apuntador_string_global
-        apuntador_string_global +=1
+        memoria.string['global'][memoria.apuntador_string_global] = id
+        memoria.apuntador_string_global +=1
       else:
-        global apuntador_string_local
-        memoria.strings['locales'][id] = apuntador_string_local
-        apuntador_string_local += 1
+        memoria.string['local'][memoria.apuntador_string_local] = id
+        memoria.apuntador_string_local += 1
     
     pilaOperandos.push(id)
     pilaTipos.push('string')
@@ -249,25 +223,21 @@ def pop_sum_from_stack():
   pilaOperandos.push(temp)
 
   if (tipoRes == 'int'):
-    global apuntador_int_temp
-    memoria.ints['temporales'][temp] = apuntador_int_temp
-    apuntador_int_temp += 1
+    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
+    memoria.apuntador_int_temp += 1
   elif (tipoRes == 'float'):
-    global apuntador_float_temp
-    memoria.floats['temporales'][temp] = apuntador_float_temp
-    apuntador_float_temp += 1
+    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
+    memoria.apuntador_float_temp += 1
   elif (tipoRes == 'string'):
-    global apuntador_string_temp
-    memoria.strings['temporales'][temp] = apuntador_string_temp
-    apuntador_string_temp += 1
+    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
+    memoria.apuntador_string_temp += 1
   elif (tipoRes == 'bool'):
-    global apuntador_bool_temp
-    memoria.bools['temporales'][temp] = apuntador_bool_temp
-    apuntador_bool_temp += 1
+    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
+    memoria.apuntador_bool_temp += 1
 
-  #der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
-  #izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
-  #temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
+  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -301,28 +271,24 @@ def pop_mult_from_stack():
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
-  if (tipoRes == 'int'):
-    global apuntador_int_temp
-    memoria.ints['temporales'][temp] = apuntador_int_temp
-    apuntador_int_temp += 1
-  elif (tipoRes == 'float'):
-    global apuntador_float_temp
-    memoria.floats['temporales'][temp] = apuntador_float_temp
-    apuntador_float_temp += 1
-  elif (tipoRes == 'string'):
-    global apuntador_string_temp
-    memoria.strings['temporales'][temp] = apuntador_string_temp
-    apuntador_string_temp += 1
-  elif (tipoRes == 'bool'):
-    global apuntador_bool_temp
-    memoria.bools['temporales'][temp] = apuntador_bool_temp
-    apuntador_bool_temp += 1
-
   pilaOperandos.push(temp)
 
-  #der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
-  #izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
-  #temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+  if (tipoRes == 'int'):
+    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
+    memoria.apuntador_int_temp += 1
+  elif (tipoRes == 'float'):
+    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
+    memoria.apuntador_float_temp += 1
+  elif (tipoRes == 'string'):
+    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
+    memoria.apuntador_string_temp += 1
+  elif (tipoRes == 'bool'):
+    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
+    memoria.apuntador_bool_temp += 1
+
+  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
+  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -346,17 +312,16 @@ def pop_equals_from_stack():
 
   igual = pilaOperadores.pop()
   der = pilaOperandos.pop()
-  t1 = pilaTipos.pop() + 's'
+  t1 = pilaTipos.pop()
   izq = pilaOperandos.pop()
-  t2 = pilaTipos.pop() + 's'
-  print(der, izq)
+  t2 = pilaTipos.pop()
 
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
 
-    #der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
-    #izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
+    # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+    # izq = str([value[izq] for value in getattr(memoria,t1).values() if izq in value][0])
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
@@ -383,28 +348,24 @@ def pop_rel_from_stack():
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
-  if (tipoRes == 'int'):
-    global apuntador_int_temp
-    memoria.ints['temporales'][temp] = apuntador_int_temp
-    apuntador_int_temp += 1
-  elif (tipoRes == 'float'):
-    global apuntador_float_temp
-    memoria.floats['temporales'][temp] = apuntador_float_temp
-    apuntador_float_temp += 1
-  elif (tipoRes == 'string'):
-    global apuntador_string_temp
-    memoria.strings['temporales'][temp] = apuntador_string_temp
-    apuntador_string_temp += 1
-  elif (tipoRes == 'bool'):
-    global apuntador_bool_temp
-    memoria.bools['temporales'][temp] = apuntador_bool_temp
-    apuntador_bool_temp += 1
-
   pilaOperandos.push(temp)
 
-  der = str([value[der] for value in getattr(memoria,t1+'s').values() if der in value][0])
-  izq = str([value[izq] for value in getattr(memoria,t2+'s').values() if izq in value][0])
-  temp = str([value[temp] for value in getattr(memoria,t2+'s').values() if temp in value][0])
+  if (tipoRes == 'int'):
+    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
+    memoria.apuntador_int_temp += 1
+  elif (tipoRes == 'float'):
+    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
+    memoria.apuntador_float_temp += 1
+  elif (tipoRes == 'string'):
+    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
+    memoria.apuntador_string_temp += 1
+  elif (tipoRes == 'bool'):
+    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
+    memoria.apuntador_bool_temp += 1
+
+  # der = str([value[der] for value in getattr(memoria,t1).values() if der in value][0])
+  # izq = str([value[izq] for value in getattr(memoria,t2).values() if izq in value][0])
+  # temp = str([value[temp] for value in getattr(memoria,t2).values() if temp in value][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -522,8 +483,6 @@ def add_for_inicio(id):
   # Metiendo el inicio del for
   pilaInicio.push(id)
 
-
-
 def add_for_limite():
   global pilaOperandos
   global pilaTipos
@@ -617,7 +576,8 @@ def add_print():
   global cont_Cuadruplos
   global cuadruplos
 
-  printeado = str([value[pilaOperandos.peek()] for value in getattr(memoria,pilaTipos.peek()+'s').values() if pilaOperandos.peek() in value][0])  
+  # printeado = str([value[pilaOperandos.peek()] for value in getattr(memoria,pilaTipos.peek()).values() if pilaOperandos.peek() in value][0])  
+  printeado = pilaOperandos.peek()
   cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', printeado)
 
   cuadruplos.append(cuadruplo)
