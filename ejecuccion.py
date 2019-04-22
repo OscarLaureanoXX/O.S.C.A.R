@@ -9,12 +9,12 @@ def main(argv):
 
   i = 1
   print("___CUADRUPLOS___")
-  while(lista_cuadruplos):
-    contador = lista_cuadruplos[0]['cont']
-    operacion = lista_cuadruplos[0]['op']
-    izquierdo = lista_cuadruplos[0]['izq']
-    derecho = lista_cuadruplos[0]['der']
-    resultado = lista_cuadruplos[0]['res']
+  while(i <= len(lista_cuadruplos)):
+    contador = lista_cuadruplos[i-1]['cont']
+    operacion = lista_cuadruplos[i-1]['op']
+    izquierdo = lista_cuadruplos[i-1]['izq']
+    derecho = lista_cuadruplos[i-1]['der']
+    resultado = lista_cuadruplos[i-1]['res']
 
     # Sacar los datos e ir metiendo los valores a memoria
 
@@ -102,7 +102,6 @@ def main(argv):
     else:
       print(operacion)
 
-    lista_cuadruplos.pop(0)
     i = i + 1
 
 def sacaTipoYLocalidad(variable):
