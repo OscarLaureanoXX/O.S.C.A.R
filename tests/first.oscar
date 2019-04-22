@@ -5,10 +5,7 @@ var
   int b = 2;
 
 main () {
-  while (a > b) {
-    print(b);
-    b = b+1;
+  for a = 1 : 10 {
+    print("Hi");
   }
-
-  print("Hi");
 }
