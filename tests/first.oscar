@@ -1,13 +1,13 @@
 #oscar;
 
 var
-  int a = 12;
-  int b = 25;
+  int a = 7;
+  int b = 2;
 
 main () {
   var
-    string c = "hi";
-  b = a + b;
+    float c = 0.0;
+  b = a % b;
   print(b);
   print(c);
 }
