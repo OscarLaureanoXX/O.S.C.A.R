@@ -5,9 +5,5 @@ var
   int b = 2;
 
 main () {
-  if (a > b) {
-    print(a);
-  } else {
-    print(b);
-  }
+  print(a+b);
 }
