@@ -5,9 +5,9 @@ var
   int b = 2;
 
 main () {
-  var
-    float c = 0.0;
-  b = a % b;
-  print(b);
-  print(c);
+  if (a > b) {
+    print(a);
+  } else {
+    print(b);
+  }
 }

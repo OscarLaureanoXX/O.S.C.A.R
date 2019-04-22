@@ -6,7 +6,7 @@ def main(argv):
   lista_cuadruplos = antlr.rules.cuadruplos
   memoria = antlr.rules.memoria
   
-  i = 0
+  i = 1
   print("___CUADRUPLOS___")
   while(lista_cuadruplos):
     contador = lista_cuadruplos[0]['cont']
@@ -40,11 +40,11 @@ def main(argv):
 
       # print(valorRes, valorIzq, valorDer)
       
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = int(valorIzq[0]) + int(valorDer[0])
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) + int(valorDer[0])
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
 
     elif (operacion == '3'):
       print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
@@ -62,11 +62,11 @@ def main(argv):
 
       # print(valorRes, valorIzq, valorDer)
       
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = int(valorIzq[0]) - int(valorDer[0])
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) - int(valorDer[0])
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
     elif (operacion == '4'):
       print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
@@ -83,11 +83,11 @@ def main(argv):
 
       # print(valorRes, valorIzq, valorDer)
       
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = int(valorIzq[0]) * int(valorDer[0])
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) * int(valorDer[0])
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
     elif (operacion == '5'):
       print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
@@ -104,11 +104,11 @@ def main(argv):
 
       # print(valorRes, valorIzq, valorDer)
       
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = int(valorIzq[0]) / int(valorDer[0])
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) / int(valorDer[0])
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
     elif (operacion == '6'):
       print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
@@ -125,19 +125,95 @@ def main(argv):
 
       # print(valorRes, valorIzq, valorDer)
       
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = int(valorIzq[0]) % int(valorDer[0])
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) % int(valorDer[0])
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
     elif (operacion == '7'):
       print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) > int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '8'):
       print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) < int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '9'):
       print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) >= int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '10'):
       print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) <= int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '11'):
       print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
       # Sacar tipo y localidad de resultado y valor a asignar
@@ -157,20 +233,70 @@ def main(argv):
 
       # print(valorRes, valorIzq)
 
-      for item in getattr(memoria, res[0])[res[1]].items():
+      for item in pedazoMemoriaResultado.items():
         if (item[1] == valorRes[0]):
-          getattr(memoria, res[0])[res[1]][item[0]] = valorIzq[0]
+          pedazoMemoriaResultado[item[0]] = valorIzq[0]
 
-      # print(getattr(memoria, res[0])[res[1]])
+      # print(pedazoMemoriaResultado)
 
     elif (operacion == '12'):
       print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) == int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '13'):
       print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
+      res = sacaTipoYLocalidad(resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+
+      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+
+      # print(valorRes, valorIzq, valorDer)
+      
+      for item in pedazoMemoriaResultado.items():
+        if (item[1] == valorRes[0]):
+          pedazoMemoriaResultado[item[0]] = int(valorIzq[0]) != int(valorDer[0])
+
+      # print(pedazoMemoriaResultado)
     elif (operacion == '14'):
-      print(str(i)+": " + "GOTO " + "\t" + izquierdo + "\t_\t" + resultado)
+      print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
+      # BRINCAR AL CUADRUPLO: resultado
     elif (operacion == '15'):
       print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
+      izq = sacaTipoYLocalidad(izquierdo)
+
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+
+      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+
+      print(valorIzq)
+
+      if (valorIzq[0] == False):
+        print("hi")
+        # BRINCAR AL CUADRUPLO: resultado
     else:
       print(operacion)
 

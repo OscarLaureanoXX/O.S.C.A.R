@@ -404,6 +404,8 @@ def add_conditional():
   # Obteniendo el resultado de la expresion para el cuadruplo
   res_Expresion = pilaOperandos.peek()
 
+  res_Expresion = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if res_Expresion in item][0])
+
   # Generando cuadruplo con GOTOF (go to en false)
   cuadruplo = Cuadruplo(cont_Cuadruplos, GOTOF,res_Expresion,'_','_')
 
