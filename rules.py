@@ -29,6 +29,7 @@ EQUAL = '12'
 NOTEQUAL = '13'
 GOTO = '14'
 GOTOF = '15'
+ENDPROC = '16'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -65,11 +66,11 @@ def add_to_func_table(func_name, func_type):
     print("Nombre de funcion repetido")
   else:
     # Agregar a la tabla de funciones
-    #                           [tipo de la funcion, directorio de variables, firma]
+    #                           [tipo de la funcion, directorio de variables, firma, cantidad de variables locales, cuadruplo de inicio de la funcion]
     #                           la firma es un string que te dice cuantas variables de cada
     #                           tipo recibe como parametro 
     #                           orden = (i = int, f = float, s = string, b = bool, l = list)    
-    dir_func.dictionary[name] = [tipo,{},'00000']
+    dir_func.dictionary[name] = [tipo,{},'',0,-1]
     func_actual = name
 
 # Actualizando la firma de la funcion (cuantas variables de cada tipo tiene)
@@ -84,20 +85,15 @@ def update_func_firm():
 
   # Actualizando la firma dependiendo del parametro nuevo
   if var_actual[1] == 'int':
-    cant = int(firm[0]) + 1
-    firm = str(cant) + firm[1:]
+    firm = firm + 'i'
   elif var_actual[1] == 'float':
-    cant = int(firm[1]) + 1
-    firm = firm[0:1] + str(cant) + firm[2:]
+    firm = firm + 'f'
   elif var_actual[1] == 'string':
-    cant = int(firm[2]) + 1
-    firm = firm[0:2] + str(cant) + firm[3:]
+    firm = firm + 's'
   elif var_actual[1] == 'bool':
-    cant = int(firm[3]) + 1
-    firm = firm[0:3] + str(cant) + firm[4:]
+    firm = firm + 'b'
   elif var_actual[1] == 'list':
-    cant = int(firm[4]) + 1
-    firm = firm[0:4] + str(cant)
+    firm = firm + 'l'
 
   # Asignando el nuevo valor a la firma
   dir_func.dictionary[func_actual][2] = firm
@@ -117,9 +113,30 @@ def add_to_var_table(varName, type):
   else:
     # Agregar a la tabla
     dir_func.__getitem__(func_actual)[var] = [tipo]
+    #Contabilizando las variables locales
+    dir_func.dictionary[func_actual][3] = dir_func.dictionary[func_actual][3] + 1
     # Manteniendo la variable actual y su tipo en un temporal para contabilizar despues
     var_actual[0] = var
     var_actual[1] = tipo
+
+def set_func_start():
+  global dir_func
+  global cont_Cuadruplos
+  global func_actual
+
+  dir_func.dictionary[func_actual][4] = cont_Cuadruplos
+
+def set_func_end():
+  global cuadruplos
+  global cont_Cuadruplos
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ENDPROC, '_', '_', '_')
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+  
+
+
 
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
