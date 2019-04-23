@@ -68,11 +68,13 @@ def main(argv):
       # Sacar valor de memoria
       valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
       valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      # print(resultado)
 
       # print(valorRes, valorIzq)
 
       for item in pedazoMemoriaResultado.items():
-        if (item[1] == valorRes[0]):
+        # print(item, resultado)
+        if (item[1] == valorRes[0] and item[0] == int(resultado)):
           pedazoMemoriaResultado[item[0]] = valorIzq[0]
 
       # print(pedazoMemoriaResultado)
