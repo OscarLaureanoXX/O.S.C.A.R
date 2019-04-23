@@ -1,6 +1,7 @@
 #oscar;
 
 main() {
+<<<<<<< HEAD
     var
         int a, b;
     
@@ -9,6 +10,15 @@ main() {
         for b = 1 : 5 {
             print("HOLA");
         }
+=======
+  var
+    int a, b;
+  
+  for a = 1 : 10 {
+    print("a", a);
+    for b = 1 : 10 {
+      print("b", b);
+>>>>>>> roiz
     }
-    a = a + b;
+  }
 }
