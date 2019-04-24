@@ -5,10 +5,12 @@ from Structs import *
 # Variables global
 dir_func = 'None'
 func_actual = 'global'
+func_llamada = ''
 var_actual = ['name','type']
 oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
 cont_Cuadruplos = 1
+cont_Parametros = 0
 
 # Memoria de ejecuccion
 memoria = Execution_Memory()
@@ -30,6 +32,9 @@ NOTEQUAL = '13'
 GOTO = '14'
 GOTOF = '15'
 ENDPROC = '16'
+ERA = '17'
+PARAM = '18'
+GOSUB = '19'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -135,9 +140,6 @@ def set_func_end():
 
   cont_Cuadruplos = cont_Cuadruplos + 1
   
-
-
-
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
 def addRows(tableName, sizeR):
@@ -157,6 +159,77 @@ def addColumns(tableName, sizeC):
   dir_func.__getitem__(func_actual)[name].append(cols)
 
 ################################ /TABLA DE FUNCIONES ################################################
+
+################################# LLAMADA A FUNCIONES ###############################################
+def func_call_validation(func_name):
+  global dir_func
+  global cuadruplos
+  global cont_Cuadruplos
+  global func_llamada
+
+  cont_Parametros = 0
+  name = func_name.encode('UTF-8')
+
+  # Validando que la funcion fue previamente declarada
+  if name not in dir_func.dictionary:
+    sys.exit("Funcion " + str(name) + " no declarada")
+  
+  # Generando el cuadruplo ERA de la funcion
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ERA, str(name), '_', '_')
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos += 1
+  func_llamada = name
+
+
+def func_add_argument():
+  global pilaOperandos
+  global pilaTipos
+  global cont_Parametros
+  global func_llamada
+  global dir_func
+  global cuadruplos
+  global cont_Cuadruplos
+  
+  # Obteniendo el argumento y su tipo
+  arg = pilaOperandos.pop()
+  tipo = pilaTipos.pop()
+
+  # Obteniendo la firma de la funcion
+  firm = dir_func.dictionary[func_llamada][2]
+
+  # Comparando el tipo del argumento contra la firma
+  if tipo[0] != firm[cont_Parametros]:
+    sys.exit("El parametro "+ str(cont_Parametros+1) + " de la funcion " + str(func_llamada) + " no es del tipo esperado ("+str(tipo)+")")
+  
+  # Generando el cuadruplo del parametro
+  cuadruplo = Cuadruplo(cont_Cuadruplos, PARAM, arg, '_', 'param'+str(cont_Parametros+1))
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos += 1
+  cont_Parametros += 1
+
+def func_gosub():
+  global cuadruplos
+  global cont_Cuadruplos
+  global cont_Parametros
+  global func_llamada
+  global dir_func
+
+  # Cuadruplo donde comienza la ejecucion de la funcion de la llamada
+  initialCuad = dir_func.dictionary[func_llamada][4]
+
+  # Reiniciando el contador de parametros
+  cont_Parametros = 0
+
+  # Generando el gosub
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOSUB, str(func_llamada), '_', str(initialCuad))
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos += 1
+
+
+################################# /LLAMADA A FUNCIONES ##############################################
 
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):

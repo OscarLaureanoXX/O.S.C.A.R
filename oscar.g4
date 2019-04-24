@@ -56,7 +56,7 @@ max_	    :	'max' '(' ID ')' ;                       // Se tuvo que cambiar max p
 concat	    :	'concat' '(' ID ',' ID ')' ;
 sort		:	'sort' '(' ID ',' CTE_I ')' ;
 splice 	    :	'splice' '(' ID ',' exp ',' exp ')' ;
-userdef	    :	 ID'('((ID | var_cte)(','(ID | var_cte))*)?')';
+userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (var_cte {rules.func_add_argument()}(',' var_cte{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
 histograma	:	'histogram' '(' ID ',' ID ')' ';' ; 
 pie_chart	:	'pie_chart' '(' ID ',' ID ')' ';' ;
 bar_graph	:	'bar_graph' '(' ID ',' ID ')' ';' ;

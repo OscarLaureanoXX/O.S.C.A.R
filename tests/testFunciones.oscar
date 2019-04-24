@@ -3,7 +3,7 @@
 var
     string name;
 
-def void suma(int der, int izq, bool flag, string name){
+def void suma(int a, int x){
     var
         int i = 0, b = 1;
     
@@ -13,8 +13,8 @@ def void suma(int der, int izq, bool flag, string name){
 
 main(){
     var
-        int i = 0, b = 1;
+        int i = 0;
+        float d = 0.0;
     
-    i = i + b;
-    print(i);
+    suma(i,i);
 }
