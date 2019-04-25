@@ -100,6 +100,14 @@ def main(argv):
       if (valorIzq[0] == False):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
+    elif (operacion == '16'):
+      print("ENDPROC")
+    elif (operacion == '17'):
+      print("ERA")
+    elif (operacion == '18'):
+      print("PARAM")
+    elif (operacion == '19'):
+      print("GOSUB")
     else:
       print(operacion)
 
