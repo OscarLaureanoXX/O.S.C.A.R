@@ -158,6 +158,21 @@ def addColumns(tableName, sizeC):
 
   dir_func.__getitem__(func_actual)[name].append(cols)
 
+def generate_first_goto():
+  global cont_Cuadruplos
+  global cuadruplos
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO, '_', '_', '_')
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos += 1
+
+def fill_first_goto():
+  global cuadruplos
+  global cont_Cuadruplos
+
+  cuadruplos[0]['res'] = str(cont_Cuadruplos)
+
 ################################ /TABLA DE FUNCIONES ################################################
 
 ################################# LLAMADA A FUNCIONES ###############################################

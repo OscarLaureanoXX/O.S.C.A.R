@@ -8,6 +8,7 @@ def main(argv):
   lista_cuadruplos = antlr.rules.cuadruplos
 
   i = 1
+  ret = 0
   print("_____ EJECUCCION _____")
   while(i <= len(lista_cuadruplos)):
     contador = lista_cuadruplos[i-1]['cont']
@@ -101,14 +102,19 @@ def main(argv):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
     elif (operacion == '16'):
-      print("ENDPROC", izquierdo, derecho, resultado)
+      # print("ENDPROC", izquierdo, derecho, resultado)
+      # REGRESAR AL VALOR DE RETORNO
+      i = int(ret)
     elif (operacion == '17'):
       print("ERA", izquierdo, derecho, resultado)
     elif (operacion == '18'):
       print("PARAM", izquierdo, derecho, resultado)
     elif (operacion == '19'):
-      print("GOSUB", izquierdo, derecho, resultado)
-      # i = int(resultado)
+      # print("GOSUB", izquierdo, derecho, resultado) 
+      # GUARDAR VALOR A RETORNAR
+      ret = contador
+      # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
+      i = int(resultado)
     else:
       print(operacion)
 
