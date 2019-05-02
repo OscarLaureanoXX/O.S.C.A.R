@@ -71,10 +71,10 @@ def add_to_func_table(func_name, func_type):
     print("Nombre de funcion repetido")
   else:
     # Agregar a la tabla de funciones
-    #                           [tipo de la funcion, directorio de variables, firma, cantidad de variables locales, cuadruplo de inicio de la funcion]
-    #                           la firma es un string que te dice cuantas variables de cada
-    #                           tipo recibe como parametro 
-    #                           orden = (i = int, f = float, s = string, b = bool, l = list)    
+    # [tipo de la funcion, directorio de variables, firma, cantidad de variables locales, cuadruplo de inicio de la funcion]
+    # la firma es un string que te dice cuantas variables de cada
+    # tipo recibe como parametro 
+    # orden = (i = int, f = float, s = string, b = bool, l = list)    
     dir_func.dictionary[name] = [tipo,{},'',0,-1]
     func_actual = name
 
