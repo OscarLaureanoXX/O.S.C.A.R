@@ -1,20 +1,20 @@
 #oscar;
 
 var
-    string name;
+  string name;
 
 def void suma(int a, int x){
-    var
-        int i = 0, b = 1;
-    
-    i = i + b;
-    print(i);
+  var
+    int i = 0, b = 1;
+  
+  i = i + b;
+  print(i);
 }
 
 main(){
-    var
-        int i = 0;
-        float d = 0.0;
-    
-    suma(i,i);
+  var
+    int i = 0;
+    float d = 0.0;
+  
+  suma(i,i);
 }
