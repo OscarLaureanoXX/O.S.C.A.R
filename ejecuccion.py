@@ -101,13 +101,14 @@ def main(argv):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
     elif (operacion == '16'):
-      print("ENDPROC")
+      print("ENDPROC", izquierdo, derecho, resultado)
     elif (operacion == '17'):
-      print("ERA")
+      print("ERA", izquierdo, derecho, resultado)
     elif (operacion == '18'):
-      print("PARAM")
+      print("PARAM", izquierdo, derecho, resultado)
     elif (operacion == '19'):
-      print("GOSUB")
+      print("GOSUB", izquierdo, derecho, resultado)
+      # i = int(resultado)
     else:
       print(operacion)
 

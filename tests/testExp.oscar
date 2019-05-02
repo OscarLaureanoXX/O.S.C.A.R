@@ -5,31 +5,34 @@ main() {
     int a, b, c;
     int d;
     float e, f;
-    bool g;
 
   d = 1;
-  g = _true;
-  g = _false;
+  a = 2;
+  b = 3;
+  f = 1.0;
   c = a + 14 + b;
   e = f - 3.141516;
   c = c * b + a;
   b = a * c;
   c = a % b + c;
-  if ( a > b ){
-    if ( a >= b+c ){
-      if ( a == b/a ){
+  if ( a < b ){
+    if ( a > b+c ){
+      if ( a <= b/a ){
         if ( a != b%a ){
           a = b;
+          print(a);
         } 
         else {
           b = a;
+          print(b);
         }
       }
     }
     else {
       c =  1 + 2;
+      print(c);
     }
   }
   e = 3.0 + 1 * 2;
-  g = _false;
+  print(e);
 }
