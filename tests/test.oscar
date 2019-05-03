@@ -1,9 +1,10 @@
 #oscar; 
 
 var
-  int a = 1;
+  string a;
   int b = 1; 
 
 main () {
-  a = union(a, b);
+  a = read(string);
+  print(a);
 }

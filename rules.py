@@ -11,6 +11,7 @@ oraculo = Semantic_Cube().cubo_semantico
 cont_Temporales = 1
 cont_Cuadruplos = 1
 cont_Parametros = 0
+cont_Read = 0
 
 # Memoria de ejecuccion
 memoria = Execution_Memory()
@@ -472,7 +473,13 @@ def pop_equals_from_stack():
     global cont_Cuadruplos
     global cuadruplos
 
-    der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
+    if (der == 'read'):
+      der = 'read'
+      for cuadruplo in cuadruplos:
+        if int(cuadruplo['cont']) == cont_Read:
+          cuadruplo['res'] = str(cont_Cuadruplos)
+    else:
+      der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
     izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
@@ -758,8 +765,19 @@ def add_print():
 def generate_read(tipo):
   global cont_Cuadruplos
   global cuadruplos
+  global pilaOperandos
+  global pilaTipos
+  global cont_Read
 
-  # AQUI QUE SE HACE??
+  tipo = tipo.encode("UTF-8")
+
+  pilaOperandos.push('read')
+  pilaTipos.push(tipo)
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, READ, tipo, '_', '_')
+  cuadruplos.append(cuadruplo)
+  cont_Read = cont_Cuadruplos
+  cont_Cuadruplos += 1
 
 def generate_special_function(function, id):
   print(function, id)

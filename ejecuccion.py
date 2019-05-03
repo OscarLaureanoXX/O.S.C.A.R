@@ -56,30 +56,42 @@ def main(argv):
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
       # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
-      # Sacar tipo y localidad de resultado y valor a asignar
-      res = sacaTipoYLocalidad(resultado)
-      izq = sacaTipoYLocalidad(izquierdo)
+      
+      # Si la variable fue extraida de consola, no va a tener lugar en memoria, asi que solo se necesita trabajar con el resultado
+      if (derecho == "read"):
+        res = sacaTipoYLocalidad(resultado)
+        pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+        valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+        for item in pedazoMemoriaResultado.items():
+          # print(item, resultado)
+          if (item[1] == valorRes[0] and item[0] == int(resultado)):
+            pedazoMemoriaResultado[item[0]] = izquierdo
+      # Si no, buscamos en memoria para ambos casos
+      else:
+        # Sacar tipo y localidad de resultado y valor a asignar
+        res = sacaTipoYLocalidad(resultado)
+        izq = sacaTipoYLocalidad(izquierdo)
 
-      # print(res, izq)
+        # print(res, izq)
 
-      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
-      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+        pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+        pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
 
-      # print(pedazoMemoriaResultado, pedazoMemoriaIzquierdo)
+        # print(pedazoMemoriaResultado, pedazoMemoriaIzquierdo)
 
-      # Sacar valor de memoria
-      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
-      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-      # print(resultado)
+        # Sacar valor de memoria
+        valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
+        valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+        # print(resultado)
 
-      # print(valorRes, valorIzq)
+        # print(valorRes, valorIzq)
 
-      for item in pedazoMemoriaResultado.items():
-        # print(item, resultado)
-        if (item[1] == valorRes[0] and item[0] == int(resultado)):
-          pedazoMemoriaResultado[item[0]] = valorIzq[0]
+        for item in pedazoMemoriaResultado.items():
+          # print(item, resultado)
+          if (item[1] == valorRes[0] and item[0] == int(resultado)):
+            pedazoMemoriaResultado[item[0]] = valorIzq[0]
 
-      # print(pedazoMemoriaResultado)
+        # print(pedazoMemoriaResultado)
 
     elif (operacion == '12'):
       # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
@@ -128,7 +140,21 @@ def main(argv):
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
       i = int(resultado)
     elif (operacion == '20'):
-      print("READ")
+      # print("READ", izquierdo, derecho, resultado)
+
+      # Leer de consola y eliminar caracteres invisibles
+      var = sys.stdin.readline()
+      var = var.rstrip("\n\r")
+
+      # Intentar hacer el cast y si no se puede marcar error
+      try:
+        exec(izquierdo+'('+var+')')
+      except NameError:
+        sys.exit("Valor leido no es del tipo de la variable")
+
+      # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor leido de consola
+      lista_cuadruplos[int(resultado)-1]['izq'] = var
+      lista_cuadruplos[int(resultado)-1]['der'] = "read"
     else:
       print(operacion)
 
