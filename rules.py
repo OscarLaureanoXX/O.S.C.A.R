@@ -760,8 +760,8 @@ def generate_read():
 
   # AQUI QUE SE HACE??
 
-def generate_special_function(function, id, id2):
-  print(function, id, id2)
+def generate_special_function(function, id):
+  print(function, id)
 
 
 def destroy():

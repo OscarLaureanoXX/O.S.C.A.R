@@ -46,21 +46,21 @@ median	    :	'median' '(' ID {rules.generate_special_function("median", $ID.text
 stdev		: 	'stdev' '(' ID {rules.generate_special_function("stdev", $ID.text)}')' ;
 head		: 	'head' '(' ID {rules.generate_special_function("head", $ID.text)}')' ;
 tail		:	'tail' '(' ID {rules.generate_special_function("tail", $ID.text)}')' ;
-union		:	'union' '(' ID ',' ID ')' {rules.generate_special_function("union", $ID.text, $ID.text )} ;
+union		:	'union' '(' ID ',' ID ')' {rules.generate_special_function("union")} ;
 intersect	:	'intersect' '(' ID ',' ID ')' {rules.generate_special_function("intersect")} ;
 find		:	'find' '(' ID ',' exp ')' ;
 import_csv	:	'import' '(' CTE_STRING ')' ;
 length  	:	'length' '(' ID {rules.generate_special_function("length", $ID.text)}')' ;
 min_		:	'min' '(' ID {rules.generate_special_function("min", $ID.text)}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
 max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
-concat	    :	'concat' '(' ID ',' ID ')' {rules.generate_special_function("concat", $ID.text)} ;
-sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort", $ID.text)} ;
-splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice", $ID.text)} ;
+concat	    :	'concat' '(' ID ',' ID ')' {rules.generate_special_function("concat")} ;
+sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort")} ;
+splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice")} ;
 userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (var_cte {rules.func_add_argument()}(',' var_cte{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
-histograma	:	'histogram' '(' ID ',' ID ')' {rules.generate_special_function("histogram", $ID.text)} ';' ; 
-pie_chart	:	'pie_chart' '(' ID ',' ID ')' {rules.generate_special_function("pie_chart", $ID.text)} ';' ;
-bar_graph	:	'bar_graph' '(' ID ',' ID ')' {rules.generate_special_function("bar_graph", $ID.text)} ';' ;
-export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {rules.generate_special_function("export", $ID.text)} ';';
+histograma	:	'histogram' '(' ID ',' ID ')' {rules.generate_special_function("histogram")} ';' ; 
+pie_chart	:	'pie_chart' '(' ID ',' ID ')' {rules.generate_special_function("pie_chart")} ';' ;
+bar_graph	:	'bar_graph' '(' ID ',' ID ')' {rules.generate_special_function("bar_graph")} ';' ;
+export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {rules.generate_special_function("export")} ';';
 
 /** LEXER RULES **/
 
