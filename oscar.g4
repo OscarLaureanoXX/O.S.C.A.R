@@ -10,19 +10,19 @@ import rules
 */
 
 programa	:	'#oscar' ';' {rules.create_function_table()} vars_? modulo* main {rules.destroy()} ; 
-modulo	    :	{rules.generate_first_goto()} 'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.set_func_end()};
-main		:	'main' {rules.fill_first_goto()}{rules.add_to_func_table('main','main')} {#generar GOTO para el main} param bloque ;
+modulo	    :	{rules.generate_first_goto()} 'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.set_func_end()} {rules.fill_first_goto()};
+main		:	'main' {rules.add_to_func_table('main','main')} param bloque ;
 param		:	'(' (id_{rules.update_func_firm()}(','id_{rules.update_func_firm()})*)? ')' ;
 bloque	    :	'{' {rules.set_func_start()} vars_? estatuto+ ('return' exp ';')? '}' ;
 vars_		:	'var' ( tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?  (',' ID  {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')'{rules.add_conditional()} estats ('else'{rules.add_else()} estats)? {rules.add_end_conditional()} ;
 escritura	:	'print' '(' (expresion {rules.add_print()} | CTE_STRING) (','(expresion {rules.add_print()} | CTE_STRING) )*  ')' ';' ;
-lectura	    :	'read' '(' ')' {#leer de consola} ;
+lectura	    :	'read' '(' ')' {rules.generate_read()} ;
 expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)} | LOGICOS {rules.add_to_operator_stack($LOGICOS.text)}) exp {rules.pop_rel_from_stack()} )? ;
 exp		    :	termino (( '+' {rules.add_to_operator_stack('+')} | '-' {rules.add_to_operator_stack('-')} ) termino {rules.pop_sum_from_stack()})* ;
 termino	    :	factor (( '*' {rules.add_to_operator_stack('*')} | '/' {rules.add_to_operator_stack('/')} | '%' {rules.add_to_operator_stack('%')} )  factor{rules.pop_mult_from_stack()})* ;
-factor	    :	('(' {rules.add_to_operator_stack('(')} expresion ')'{#sacar parentesis}) | (( '+' | '-')? var_cte ) | llamadaret;
+factor	    :	('(' {rules.add_to_operator_stack('(')} expresion ')') | (( '+' | '-')? var_cte ) | llamadaret;
 var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')} 
                 | CTE_I {rules.add_to_operand_stack($CTE_I.text, 'int')} 
                 | CTE_F {rules.add_to_operand_stack($CTE_F.text, 'float')} 
@@ -40,27 +40,27 @@ sub_lista   :   '[' (exp(','exp)*)?']' ;
 element	    :	'[' exp {#primera dimension} (','exp {#segunda dimension})? ']' ;
 llamadaret	:	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | import_csv | union | intersect | find | userdef ;
 llamadavoid :   histograma | pie_chart | bar_graph | export_csv | (userdef ';');
-mean		:	'mean' '(' ID {#hacer algo} ')' ;
-variance	:	'variance' '(' ID {#hacer algo}')' ;
-median	    :	'median' '(' ID {#hacer algo}')' ;
-stdev		: 	'stdev' '(' ID {#hacer algo}')' ;
-head		: 	'head' '(' ID {#hacer algo}')' ;
-tail		:	'tail' '(' ID {#hacer algo}')' ;
-union		:	'union' '(' ID ',' ID ')' {#hacer algo} ;
-intersect	:	'intersect' '(' ID ',' ID ')' {#hacer algo} ;
+mean		:	'mean' '(' ID {rules.generate_special_function("mean", $ID.text)} ')' ;
+variance	:	'variance' '(' ID {rules.generate_special_function("variance", $ID.text)}')' ;
+median	    :	'median' '(' ID {rules.generate_special_function("median", $ID.text)}')' ;
+stdev		: 	'stdev' '(' ID {rules.generate_special_function("stdev", $ID.text)}')' ;
+head		: 	'head' '(' ID {rules.generate_special_function("head", $ID.text)}')' ;
+tail		:	'tail' '(' ID {rules.generate_special_function("tail", $ID.text)}')' ;
+union		:	'union' '(' ID ',' ID ')' {rules.generate_special_function("union", $ID.text, $ID.text )} ;
+intersect	:	'intersect' '(' ID ',' ID ')' {rules.generate_special_function("intersect")} ;
 find		:	'find' '(' ID ',' exp ')' ;
 import_csv	:	'import' '(' CTE_STRING ')' ;
-length  	:	'length' '(' ID {#hacer algo}')' ;
-min_		:	'min' '(' ID {#hacer algo}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
-max_	    :	'max' '(' ID {#hacer algo}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
-concat	    :	'concat' '(' ID ',' ID ')' {#hacer algo} ;
-sort		:	'sort' '(' ID ',' CTE_I ')' {#hacer algo} ;
-splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {#hacer algo} ;
+length  	:	'length' '(' ID {rules.generate_special_function("length", $ID.text)}')' ;
+min_		:	'min' '(' ID {rules.generate_special_function("min", $ID.text)}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
+max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
+concat	    :	'concat' '(' ID ',' ID ')' {rules.generate_special_function("concat", $ID.text)} ;
+sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort", $ID.text)} ;
+splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice", $ID.text)} ;
 userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (var_cte {rules.func_add_argument()}(',' var_cte{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
-histograma	:	'histogram' '(' ID ',' ID ')' {#hacer algo} ';' ; 
-pie_chart	:	'pie_chart' '(' ID ',' ID ')' {#hacer algo} ';' ;
-bar_graph	:	'bar_graph' '(' ID ',' ID ')' {#hacer algo} ';' ;
-export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {#hacer algo} ';';
+histograma	:	'histogram' '(' ID ',' ID ')' {rules.generate_special_function("histogram", $ID.text)} ';' ; 
+pie_chart	:	'pie_chart' '(' ID ',' ID ')' {rules.generate_special_function("pie_chart", $ID.text)} ';' ;
+bar_graph	:	'bar_graph' '(' ID ',' ID ')' {rules.generate_special_function("bar_graph", $ID.text)} ';' ;
+export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {rules.generate_special_function("export", $ID.text)} ';';
 
 /** LEXER RULES **/
 

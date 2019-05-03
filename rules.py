@@ -754,6 +754,16 @@ def add_print():
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos += 1
 
+def generate_read():
+  global cont_Cuadruplos
+  global cuadruplos
+
+  # AQUI QUE SE HACE??
+
+def generate_special_function(function, id, id2):
+  print(function, id, id2)
+
+
 def destroy():
   # Imprimiendo toda la tabla
   print(dir_func.dictionary)

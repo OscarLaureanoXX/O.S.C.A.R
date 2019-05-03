@@ -6,10 +6,15 @@ main() {
     int d;
     float e, f;
 
+
   d = 1;
   a = 2;
   b = 3;
   f = 1.0;
+
+  a = a + d * b;
+  print(a);
+
   c = a + 14 + b;
   e = f - 3.141516;
   c = c * b + a;

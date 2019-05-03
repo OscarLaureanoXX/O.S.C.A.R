@@ -1,0 +1,9 @@
+#oscar; 
+
+var
+  int a = 1;
+  int b = 1; 
+
+main () {
+  a = union(a, b);
+}
