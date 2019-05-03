@@ -35,6 +35,7 @@ ENDPROC = '16'
 ERA = '17'
 PARAM = '18'
 GOSUB = '19'
+READ = '20'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -754,7 +755,7 @@ def add_print():
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos += 1
 
-def generate_read():
+def generate_read(tipo):
   global cont_Cuadruplos
   global cuadruplos
 
@@ -762,7 +763,6 @@ def generate_read():
 
 def generate_special_function(function, id):
   print(function, id)
-
 
 def destroy():
   # Imprimiendo toda la tabla

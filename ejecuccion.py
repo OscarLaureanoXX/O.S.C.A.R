@@ -127,6 +127,8 @@ def main(argv):
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
       i = int(resultado)
+    elif (operacion == '20'):
+      print("READ")
     else:
       print(operacion)
 
