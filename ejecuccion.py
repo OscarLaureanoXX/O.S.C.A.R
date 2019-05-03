@@ -6,6 +6,7 @@ memoria = antlr.rules.memoria
 def main(argv):
   antlr.main(argv)
   lista_cuadruplos = antlr.rules.cuadruplos
+  dirfunc = antlr.rules.dir_func.dictionary
 
   i = 1
   ret = 0
@@ -107,8 +108,19 @@ def main(argv):
       i = int(ret)
     elif (operacion == '17'):
       print("ERA", izquierdo, derecho, resultado)
+      # Checar si la funcion existe en el directiorio de funciones
+      if izquierdo in dirfunc:
+        # Si existe, sacar variables locales de la funcion y su firma
+        variables_locales_funcion = dirfunc[izquierdo][3]
+        firma_funcion = dirfunc[izquierdo][2]
+
     elif (operacion == '18'):
       print("PARAM", izquierdo, derecho, resultado)
+      # Checar si el primer parametro es igual al primer elemento de la firma
+      if izquierdo == firma_funcion[0]:
+        # Si si fue, eliminar el primer elemento de la firma
+        firma_funcion = firma_funcion[1:]
+
     elif (operacion == '19'):
       # print("GOSUB", izquierdo, derecho, resultado) 
       # GUARDAR VALOR A RETORNAR

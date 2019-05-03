@@ -209,13 +209,17 @@ def func_add_argument():
   # Obteniendo el argumento y su tipo
   arg = pilaOperandos.pop()
   tipo = pilaTipos.pop()
+  
 
   # Obteniendo la firma de la funcion
   firm = dir_func.dictionary[func_llamada][2]
 
   # Comparando el tipo del argumento contra la firma
-  if tipo[0] != firm[cont_Parametros]:
-    sys.exit("El parametro "+ str(cont_Parametros+1) + " de la funcion " + str(func_llamada) + " no es del tipo esperado ("+str(tipo)+")")
+  try:
+    if tipo[0] != firm[cont_Parametros]:
+      sys.exit("El parametro "+ str(cont_Parametros+1) + " de la funcion " + str(func_llamada) + " no es del tipo esperado ("+str(tipo)+")")
+  except IndexError:
+    sys.exit("Demasiados argumentos para la funcion")
   
   # Generando el cuadruplo del parametro
   cuadruplo = Cuadruplo(cont_Cuadruplos, PARAM, arg, '_', 'param'+str(cont_Parametros+1))

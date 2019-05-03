@@ -16,5 +16,5 @@ main(){
     int i = 0;
     float d = 0.0;
   
-  suma(i,i);
+  suma(i,i,i);
 }
