@@ -37,6 +37,7 @@ ERA = '17'
 PARAM = '18'
 GOSUB = '19'
 READ = '20'
+ESPECIAL = '21'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -780,6 +781,15 @@ def generate_read(tipo):
   cont_Cuadruplos += 1
 
 def generate_special_function(function, id):
+  global cont_Cuadruplos
+  global cuadruplos
+  global pilaOperandos
+  global pilaTipos
+
+  # cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, funcion, '_')
+  # cuadruplos.append(cuadruplo)
+  # cont_Cuadruplos += 1
+
   print(function, id)
 
 def destroy():
