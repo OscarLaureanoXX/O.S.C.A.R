@@ -146,11 +146,12 @@ def main(argv):
       var = sys.stdin.readline()
       var = var.rstrip("\n\r")
 
-      # Intentar hacer el cast y si no se puede marcar error
-      try:
-        exec(izquierdo+'('+var+')')
-      except NameError:
-        sys.exit("Valor leido no es del tipo de la variable")
+      if izquierdo != "string":
+        # Intentar hacer el cast y si no se puede marcar error
+        try:
+          exec(izquierdo+'('+var+')')
+        except NameError:
+          sys.exit("Valor leido no es del tipo de la variable")
 
       # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor leido de consola
       lista_cuadruplos[int(resultado)-1]['izq'] = var

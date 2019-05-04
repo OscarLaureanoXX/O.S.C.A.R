@@ -1,10 +1,10 @@
 #oscar; 
 
 var
-  string a;
+  int a;
   int b = 1; 
 
 main () {
-  a = read(string);
+  a = read(int);
   print(a);
 }
