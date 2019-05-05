@@ -126,12 +126,15 @@ def main(argv):
         variables_locales_funcion = dirfunc[izquierdo][3]
         firma_funcion = dirfunc[izquierdo][2]
 
+        #Crear memoria de tamaño [variables_locales_funcion]
+
     elif (operacion == '18'):
       print("PARAM", izquierdo, derecho, resultado)
       # Checar si el primer parametro es igual al primer elemento de la firma
       if izquierdo == firma_funcion[0]:
         # Si si fue, eliminar el primer elemento de la firma
         firma_funcion = firma_funcion[1:]
+        # PASARSELO A LA FUNCION
 
     elif (operacion == '19'):
       # print("GOSUB", izquierdo, derecho, resultado) 
