@@ -56,7 +56,7 @@ max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ; 
 concat	    :	'concat' '(' ID ',' ID ')' {rules.generate_special_function("concat")} ;
 sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort")} ;
 splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice")} ;
-userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (var_cte {rules.func_add_argument()}(',' var_cte{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
+userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (exp {rules.func_add_argument()}(',' exp{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
 histograma	:	'histogram' '(' ID ',' ID ')' {rules.generate_special_function("histogram")} ';' ; 
 pie_chart	:	'pie_chart' '(' ID ',' ID ')' {rules.generate_special_function("pie_chart")} ';' ;
 bar_graph	:	'bar_graph' '(' ID ',' ID ')' {rules.generate_special_function("bar_graph")} ';' ;

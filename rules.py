@@ -105,6 +105,9 @@ def update_func_firm():
 
   # Asignando el nuevo valor a la firma
   dir_func.dictionary[func_actual][2] = firm
+  
+  # Actualizando firma de funcion con las variables de parametro
+  dir_func.dictionary[func_actual].append(var_actual[0])
 
 
 # Agregar una variable llamada [varName] de tipo [type] 
@@ -121,8 +124,9 @@ def add_to_var_table(varName, type):
   else:
     # Agregar a la tabla
     dir_func.__getitem__(func_actual)[var] = [tipo]
-    #Contabilizando las variables locales
+    # Contabilizando las variables locales
     dir_func.dictionary[func_actual][3] = dir_func.dictionary[func_actual][3] + 1
+
     # Manteniendo la variable actual y su tipo en un temporal para contabilizar despues
     var_actual[0] = var
     var_actual[1] = tipo

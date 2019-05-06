@@ -126,8 +126,25 @@ def main(argv):
         variables_locales_funcion = dirfunc[izquierdo][3]
         firma_funcion = dirfunc[izquierdo][2]
 
-        #Crear memoria de tamaño [variables_locales_funcion]
+        # Creando espacio de memoria para la funcion
+        for variable_local in dirfunc[izquierdo][1]:
+          nombre = variable_local
+          tipo = dirfunc[izquierdo][1][variable_local][0]
 
+          if tipo == 'int':
+            memoria.int['local'][memoria.apuntador_int_local] = nombre
+            memoria.apuntador_int_local += 1
+          elif tipo == 'float':
+            memoria.float['local'][memoria.apuntador_float_local] = nombre
+            memoria.apuntador_float_local += 1
+          elif tipo == 'bool':
+            memoria.bool['local'][memoria.apuntador_bool_local] = nombre
+            memoria.apuntador_bool_local += 1
+          elif tipo == 'string':
+            memoria.string['local'][memoria.apuntador_string_local] = nombre
+            memoria.apuntador_string_local += 1
+
+        print memoria
     elif (operacion == '18'):
       print("PARAM", izquierdo, derecho, resultado)
       # Checar si el primer parametro es igual al primer elemento de la firma
@@ -137,7 +154,7 @@ def main(argv):
         # PASARSELO A LA FUNCION
 
     elif (operacion == '19'):
-      # print("GOSUB", izquierdo, derecho, resultado) 
+      print("GOSUB", izquierdo, derecho, resultado) 
       # GUARDAR VALOR A RETORNAR
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION

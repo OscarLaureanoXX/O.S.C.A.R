@@ -3,18 +3,22 @@
 var
   string name;
 
-def void suma(int a, int x){
+def void suma(int x, float y){
   var
-    int i = 0, b = 1;
+    int c, d = 10;
   
-  i = i + b;
-  print(i);
+  d = 1;
+  c = 10 + d;
+  print(c);
 }
 
 main(){
   var
-    int i = 0;
-    float d = 0.0;
+    int a;
+    float b;
+
+    a = 10;
+    b = 3.1416;
   
-  suma(i,i);
+  suma(a+1 , b+2.0);
 }
