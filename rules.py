@@ -126,14 +126,53 @@ def tipo_funcion(func, tipo, var):
   if func == 'oscar':
     if tipo == 'int':
       memoria.globales['int'][memoria.apuntador_globales_int] = var
+      memoria.apuntador_globales_int += 1
     elif tipo == 'float':
       memoria.globales['float'][memoria.apuntador_globales_float] = var
+      memoria.apuntador_globales_float += 1
     elif tipo == 'bool':
       memoria.globales['bool'][memoria.apuntador_globales_bool] = var
+      memoria.apuntador_globales_bool += 1
     elif tipo == 'string':
       memoria.globales['string'][memoria.apuntador_globales_string] = var
+      memoria.apuntador_globales_string += 1
     elif tipo == 'list':
       memoria.globales['list'][memoria.apuntador_globales_list] = var
+      memoria.apuntador_globales_list += 1
+  elif func == 'constante':
+    if tipo == 'int':
+      if var not in memoria.constantes['int'].values():
+        memoria.constantes['int'][memoria.apuntador_constantes_int] = var
+        memoria.apuntador_constantes_int += 1
+    elif tipo == 'float':
+      if var not in memoria.constantes['float'].values():
+        memoria.constantes['float'][memoria.apuntador_constantes_float] = var
+        memoria.apuntador_constantes_float += 1
+    elif tipo == 'bool':
+      if var not in memoria.constantes['bool'].values():
+        memoria.constantes['bool'][memoria.apuntador_constantes_bool] = var
+        memoria.apuntador_constantes_bool += 1
+    elif tipo == 'string':
+      if var not in memoria.constantes['string'].values():
+        memoria.constantes['string'][memoria.apuntador_constantes_string] = var
+        memoria.apuntador_constantes_string += 1
+    elif tipo == 'list':
+      if var not in memoria.constantes['list'].values():
+        memoria.constantes['list'][memoria.apuntador_constantes_list] = var
+        memoria.apuntador_constantes_list += 1
+  # Si es local
+  else:
+    if var not in dir_func.dictionary[func][1].values():
+      if tipo == 'int':
+        dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_int)
+      elif tipo == 'float':
+        dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_float)
+      elif tipo == 'string':
+        dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_string)
+      elif tipo == 'bool':
+        dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_bool)
+      elif tipo == 'list':
+        dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_list)
 
 # Agregar una variable llamada [varName] de tipo [type] 
 # a la tabla correspondiente
@@ -316,6 +355,10 @@ def add_to_operand_stack(id, type):
   if (type == 'int'):
     id = id.encode('UTF-8')
 
+    if id.isdigit():
+      tipo_funcion('constante', type, id)
+      id = str(dir_relativa('constante', type, id))
+
     pilaOperandos.push(id)
     pilaTipos.push('int')
 
@@ -323,12 +366,20 @@ def add_to_operand_stack(id, type):
   elif (type == 'float'):
     id = id.encode('UTF-8')
 
+    if re.match(r"^\d+?\.\d+?$", id):
+      tipo_funcion('constante', type, id)
+      id = str(dir_relativa('constante', type, id))
+
     pilaOperandos.push(id)
     pilaTipos.push('float')
   
   # Si es un bool se agrega a la tabla de bools
   elif (type == 'bool'):
     id = id.encode('UTF-8')
+
+    if id[0] == '_':
+      tipo_funcion('constante', type, id)
+      id = str(dir_relativa('constante', type, id))
     
     pilaOperandos.push(id)
     pilaTipos.push('bool')
@@ -336,12 +387,20 @@ def add_to_operand_stack(id, type):
   # Si es un string se agrega a la tabla de strings
   elif (type == 'string'):
     id = id.encode('UTF-8')
+
+    if id[0] == '"':
+      tipo_funcion('constante', type, id)
+      id = str(dir_relativa('constante', type, id))
     
     pilaOperandos.push(id)
     pilaTipos.push('string')
 
   elif (type == 'list'):
     id = id.encode('UTF-8')
+
+    if id[0] == '[':
+      tipo_funcion('constante', type, id)
+      id = str(dir_relativa('constante', type, id))
 
     pilaOperandos.push(id)
     pilaTipos.push('string')
@@ -357,9 +416,115 @@ def add_to_operand_stack(id, type):
       except KeyError:
         sys.exit("Variable " + "'" + id + "'" + " no declarada")
         return
-    id = id.encode('UTF-8')
+    id = str(dir_relativa(func_actual, tipo, id))
+    # meter a la pila de operandos la direccion relativa del id
     pilaOperandos.push(id)
     pilaTipos.push(tipo)
+
+# Funcion que retorna el valor de la direccion relativa de memoria de la variable
+def dir_relativa(func, tipo, id):
+  # Buscar si es global
+  if func == 'oscar':
+    # Checar el tipo
+    if tipo == 'int':
+      # Retornar valor memoria
+      memoria.apuntador_globales_int += 1
+      return memoria.apuntador_globales_int - 1
+    elif tipo == 'float':
+      memoria.apuntador_globales_float += 1
+      return memoria.apuntador_globales_float -1
+    elif tipo == 'bool':
+      memoria.apuntador_globales_bool += 1
+      return memoria.apuntador_globales_bool -1
+    elif tipo == 'string':
+      memoria.apuntador_globales_string += 1
+      return memoria.apuntador_globales_string -1
+    elif tipo == 'list':
+      memoria.apuntador_globales_list += 1
+      return memoria.apuntador_globales_list -1
+  # Si el valor es una constante
+  elif func == 'constante':
+    if tipo == 'int':
+      # Si el valor ya esta en memoria
+      if id in memoria.constantes['int'].values():
+        # Retornar su valor de memoria
+        index = memoria.constantes['int'].values().index(id)
+        return memoria.constantes['int'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_constantes_int += 1
+        return memoria.apuntador_constantes_int -1
+    elif tipo == 'float':
+      # Si el valor ya esta en memoria
+      if id in memoria.constantes['float'].values():
+        # Retornar su valor de memoria
+        index = memoria.constantes['float'].values().index(id)
+        return memoria.constantes['float'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_constantes_float += 1
+        return memoria.apuntador_constantes_float -1
+    elif tipo == 'bool':
+      # Si el valor ya esta en memoria
+      if id in memoria.constantes['bool'].values():
+        # Retornar su valor de memoria
+        index = memoria.constantes['bool'].values().index(id)
+        return memoria.constantes['bool'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_constantes_bool += 1
+        return memoria.apuntador_constantes_bool -1
+    elif tipo == 'string':
+      # Si el valor ya esta en memoria
+      if id in memoria.constantes['string'].values():
+        # Retornar su valor de memoria
+        index = memoria.constantes['string'].values().index(id)
+        return memoria.constantes['string'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_constantes_string += 1
+        return memoria.apuntador_constantes_string -1
+    elif tipo == 'list':
+      # Si el valor ya esta en memoria
+      if id in memoria.constantes['list'].values():
+        # Retornar su valor de memoria
+        index = memoria.constantes['list'].values().index(id)
+        return memoria.constantes['list'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_constantes_list += 1
+        return memoria.apuntador_constantes_list -1
+  else:
+    # Si la variable no es uno de los parametros
+    if id not in dir_func.dictionary[func][5:]:
+      # Si la variable esta dentro de la tabla de variables
+      if id in dir_func.dictionary[func][1]:
+        # retornar su direccion relativa
+        return dir_func.dictionary[func][1][id][1]
+      else:
+        # Checar su tipo
+        if tipo == 'int':
+          # Retornar valor memoria
+          memoria.apuntador_locales_int += 1
+          return memoria.apuntador_locales_int -1
+        elif tipo == 'float':
+          memoria.apuntador_locales_float += 1
+          return memoria.apuntador_locales_float -1
+        elif tipo == 'bool':
+          memoria.apuntador_locales_bool += 1
+          return memoria.apuntador_locales_bool -1
+        elif tipo == 'string':
+          memoria.apuntador_locales_string += 1
+          return memoria.apuntador_locales_string -1
+        elif tipo == 'list':
+          memoria.apuntador_locales_list += 1
+          return memoria.apuntador_locales_list -1
+    # Si si es un parametro
+    else:
+      # Sacar el indice dentro de la firma de la funcion
+      index = dir_func.dictionary[func][5:].index(id)
+      # Retornar valor memoria
+      return dir_func.dictionary[func][6+index]
 
 def pop_sum_from_stack():
   global pilaOperandos
