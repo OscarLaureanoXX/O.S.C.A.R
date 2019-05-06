@@ -92,23 +92,48 @@ def update_func_firm():
   firm = dir_func.dictionary[func_actual][2]
 
   # Actualizando la firma dependiendo del parametro nuevo
+  # Y sacando el valor relativo de memoria de los argumentos
   if var_actual[1] == 'int':
     firm = firm + 'i'
+    memDir = memoria.apuntador_locales_int
+    memoria.apuntador_locales_int += 1
   elif var_actual[1] == 'float':
     firm = firm + 'f'
+    memDir = memoria.apuntador_locales_float
+    memoria.apuntador_locales_float += 1
   elif var_actual[1] == 'string':
     firm = firm + 's'
+    memDir = memoria.apuntador_locales_string
+    memoria.apuntador_locales_string += 1
   elif var_actual[1] == 'bool':
     firm = firm + 'b'
+    memDir = memoria.apuntador_locales_bool
+    memoria.apuntador_locales_bool += 1
   elif var_actual[1] == 'list':
     firm = firm + 'l'
+    memDir = memoria.apuntador_locales_list
+    memoria.apuntador_locales_list += 1
 
   # Asignando el nuevo valor a la firma
   dir_func.dictionary[func_actual][2] = firm
   
-  # Actualizando firma de funcion con las variables de parametro
+  # Actualizando firma de funcion con las variables de parametro y su memoria relativa
   dir_func.dictionary[func_actual].append(var_actual[0])
+  dir_func.dictionary[func_actual].append(memDir)
 
+# Sacar tipo y funcion para meter la variable a memoria
+def tipo_funcion(func, tipo, var):
+  if func == 'oscar':
+    if tipo == 'int':
+      memoria.globales['int'][memoria.apuntador_globales_int] = var
+    elif tipo == 'float':
+      memoria.globales['float'][memoria.apuntador_globales_float] = var
+    elif tipo == 'bool':
+      memoria.globales['bool'][memoria.apuntador_globales_bool] = var
+    elif tipo == 'string':
+      memoria.globales['string'][memoria.apuntador_globales_string] = var
+    elif tipo == 'list':
+      memoria.globales['list'][memoria.apuntador_globales_list] = var
 
 # Agregar una variable llamada [varName] de tipo [type] 
 # a la tabla correspondiente
@@ -127,6 +152,9 @@ def add_to_var_table(varName, type):
     # Contabilizando las variables locales
     dir_func.dictionary[func_actual][3] = dir_func.dictionary[func_actual][3] + 1
 
+    # Meter a memoria la variable
+    tipo_funcion(func_actual, tipo, var)
+
     # Manteniendo la variable actual y su tipo en un temporal para contabilizar despues
     var_actual[0] = var
     var_actual[1] = tipo
@@ -141,11 +169,26 @@ def set_func_start():
 def set_func_end():
   global cuadruplos
   global cont_Cuadruplos
+  global cont_Temporales
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, ENDPROC, '_', '_', '_')
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos = cont_Cuadruplos + 1
+
+  # Reiniciando contadores de memoria
+  memoria.apuntador_locales_int = 11000
+  memoria.apuntador_locales_float = 13000
+  memoria.apuntador_locales_bool = 15000
+  memoria.apuntador_locales_string = 17000
+  memoria.apuntador_locales_list = 19000
+  memoria.apuntador_temporales_int = 21000
+  memoria.apuntador_temporales_float = 23000
+  memoria.apuntador_temporales_bool = 25000
+  memoria.apuntador_temporales_string = 27000
+  memoria.apuntador_temporales_list = 29000
+
+  cont_Temporales = 1
   
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
@@ -165,6 +208,7 @@ def addColumns(tableName, sizeC):
 
   dir_func.__getitem__(func_actual)[name].append(cols)
 
+# Generar salto al main
 def generate_first_goto():
   global cont_Cuadruplos
   global cuadruplos
@@ -203,7 +247,6 @@ def func_call_validation(func_name):
   cont_Cuadruplos += 1
   func_llamada = name
 
-
 def func_add_argument():
   global pilaOperandos
   global pilaTipos
@@ -216,7 +259,6 @@ def func_add_argument():
   # Obteniendo el argumento y su tipo
   arg = pilaOperandos.pop()
   tipo = pilaTipos.pop()
-  
 
   # Obteniendo la firma de la funcion
   firm = dir_func.dictionary[func_llamada][2]
@@ -254,7 +296,6 @@ def func_gosub():
 
   cont_Cuadruplos += 1
 
-
 ################################# /LLAMADA A FUNCIONES ##############################################
 
 # Agregar el operador [op] dentro de la pila de operadores
@@ -275,19 +316,6 @@ def add_to_operand_stack(id, type):
   if (type == 'int'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.int:
-      if (id.isdigit()):
-        memoria.int['constante'][memoria.apuntador_int_const] = id
-        memoria.apuntador_int_const += 1
-      elif (func_actual == 'oscar'):
-        
-        memoria.int['global'][memoria.apuntador_int_global] = id
-        memoria.apuntador_int_global +=1
-      else:
-        
-        memoria.int['local'][memoria.apuntador_int_local] = id
-        memoria.apuntador_int_local += 1
-    
     pilaOperandos.push(id)
     pilaTipos.push('int')
 
@@ -295,34 +323,12 @@ def add_to_operand_stack(id, type):
   elif (type == 'float'):
     id = id.encode('UTF-8')
 
-    if id not in memoria.float:
-      if (re.match(r"^\d+?\.\d+?$", id)):
-        memoria.float['constante'][memoria.apuntador_float_const] = id
-        memoria.apuntador_float_const += 1
-      elif (func_actual == 'oscar'):
-        memoria.float['global'][memoria.apuntador_float_global] = id
-        memoria.apuntador_float_global +=1
-      else:
-        memoria.float['local'][memoria.apuntador_float_local] = id
-        memoria.apuntador_float_local += 1
-    
     pilaOperandos.push(id)
     pilaTipos.push('float')
   
   # Si es un bool se agrega a la tabla de bools
   elif (type == 'bool'):
     id = id.encode('UTF-8')
-
-    if id not in memoria.bool:
-      if (id.isdigit()):
-        memoria.bool['constante'][memoria.apuntador_bool_const] = id 
-        memoria.apuntador_bool_const += 1
-      elif (func_actual == 'oscar'):
-        memoria.bool['global'][memoria.apuntador_bool_global] = id
-        memoria.apuntador_bool_global +=1
-      else:
-        memoria.bool['local'][memoria.apuntador_bool_local] = id
-        memoria.apuntador_bool_local += 1
     
     pilaOperandos.push(id)
     pilaTipos.push('bool')
@@ -330,18 +336,13 @@ def add_to_operand_stack(id, type):
   # Si es un string se agrega a la tabla de strings
   elif (type == 'string'):
     id = id.encode('UTF-8')
-
-    if id not in memoria.string:
-      if (id[0] == '"'):
-        memoria.string['constante'][memoria.apuntador_string_const] = id
-        memoria.apuntador_string_const += 1
-      elif (func_actual == 'oscar'):
-        memoria.string['global'][memoria.apuntador_string_global] = id
-        memoria.apuntador_string_global +=1
-      else:
-        memoria.string['local'][memoria.apuntador_string_local] = id
-        memoria.apuntador_string_local += 1
     
+    pilaOperandos.push(id)
+    pilaTipos.push('string')
+
+  elif (type == 'list'):
+    id = id.encode('UTF-8')
+
     pilaOperandos.push(id)
     pilaTipos.push('string')
 
@@ -380,23 +381,6 @@ def pop_sum_from_stack():
 
   pilaOperandos.push(temp)
 
-  if (tipoRes == 'int'):
-    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
-    memoria.apuntador_int_temp += 1
-  elif (tipoRes == 'float'):
-    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
-    memoria.apuntador_float_temp += 1
-  elif (tipoRes == 'string'):
-    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
-    memoria.apuntador_string_temp += 1
-  elif (tipoRes == 'bool'):
-    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
-    memoria.apuntador_bool_temp += 1
-
-  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
-  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
-  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
-
   # Impresion de Cuadruplos
   global cont_Cuadruplos
   global cuadruplos
@@ -430,23 +414,6 @@ def pop_mult_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + mult)
 
   pilaOperandos.push(temp)
-
-  if (tipoRes == 'int'):
-    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
-    memoria.apuntador_int_temp += 1
-  elif (tipoRes == 'float'):
-    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
-    memoria.apuntador_float_temp += 1
-  elif (tipoRes == 'string'):
-    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
-    memoria.apuntador_string_temp += 1
-  elif (tipoRes == 'bool'):
-    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
-    memoria.apuntador_bool_temp += 1
-
-  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
-  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
-  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -483,9 +450,6 @@ def pop_equals_from_stack():
       for cuadruplo in cuadruplos:
         if int(cuadruplo['cont']) == cont_Read:
           cuadruplo['res'] = str(cont_Cuadruplos)
-    else:
-      der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
-    izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
@@ -514,23 +478,6 @@ def pop_rel_from_stack():
     sys.exit('Tipos compatibles para la operacion ' + rel)
 
   pilaOperandos.push(temp)
-
-  if (tipoRes == 'int'):
-    memoria.int['temporal'][memoria.apuntador_int_temp] = temp
-    memoria.apuntador_int_temp += 1
-  elif (tipoRes == 'float'):
-    memoria.float['temporal'][memoria.apuntador_float_temp] = temp
-    memoria.apuntador_float_temp += 1
-  elif (tipoRes == 'string'):
-    memoria.string['temporal'][memoria.apuntador_string_temp] = temp
-    memoria.apuntador_string_temp += 1
-  elif (tipoRes == 'bool'):
-    memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
-    memoria.apuntador_bool_temp += 1
-
-  der = str([item[0] for value in getattr(memoria,t1).values() for item in value.items() if der in item][0])
-  izq = str([item[0] for value in getattr(memoria,t2).values() for item in value.items() if izq in item][0])
-  temp = str([item[0] for value in getattr(memoria,tipoRes).values() for item in value.items() if temp in item][0])
 
   # Impresion de Cuadruplos
   global cont_Cuadruplos
@@ -568,8 +515,6 @@ def add_conditional():
   
   # Obteniendo el resultado de la expresion para el cuadruplo
   res_Expresion = pilaOperandos.peek()
-
-  res_Expresion = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if res_Expresion in item][0])
 
   # Generando cuadruplo con GOTOF (go to en false)
   cuadruplo = Cuadruplo(cont_Cuadruplos, GOTOF,res_Expresion,'_','_')
@@ -667,18 +612,11 @@ def add_for_limite():
   inicio = pilaInicio.peek()
   lim_superior = pilaOperandos.peek()
 
-  inicio = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if inicio in item][0])
-  lim_superior = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if lim_superior in item][0])
-
   # Metiendo migaja de pan
   pilaSaltos.push(cont_Cuadruplos)
 
   # Generar cuadruplo de comparacion
   temp = 't'+ str(cont_Temporales)
-  # Meter temporal a memoria
-  memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
-  memoria.apuntador_bool_temp += 1
-  temp = str([item[0] for value in memoria.bool.values() for item in value.items() if temp in item][0])
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL , inicio , lim_superior , temp)
   cuadruplos.append(cuadruplo)
@@ -723,15 +661,8 @@ def add_for_final():
   fin = pilaSaltos.pop()
   ret = pilaSaltos.pop()
 
-  inicio = str([item[0] for value in memoria.int.values() for item in value.items() if inicio in item][0])
-  step = str([item[0] for value in memoria.int.values() for item in value.items() if step in item][0])
-
   # Generar cuadruplos de aumento de la variable controladora
   temp = 't'+ str(cont_Temporales)
-  # Meter temporal a memoria
-  memoria.bool['temporal'][memoria.apuntador_bool_temp] = temp
-  memoria.apuntador_bool_temp += 1
-  temp = str([item[0] for value in memoria.bool.values() for item in value.items() if temp in item][0])
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA , inicio , step , temp)
   cuadruplos.append(cuadruplo)
@@ -761,7 +692,7 @@ def add_print():
   global cont_Cuadruplos
   global cuadruplos
 
-  printeado = str([item[0] for value in getattr(memoria,pilaTipos.peek()).values() for item in value.items() if pilaOperandos.peek() in item][0])
+  printeado = pilaOperandos.peek()
   cuadruplo = Cuadruplo(cont_Cuadruplos , PRINT, '_', '_', printeado)
 
   cuadruplos.append(cuadruplo)
