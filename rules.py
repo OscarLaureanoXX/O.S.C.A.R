@@ -229,7 +229,7 @@ def func_add_argument():
     sys.exit("Demasiados argumentos para la funcion")
   
   # Generando el cuadruplo del parametro
-  cuadruplo = Cuadruplo(cont_Cuadruplos, PARAM, arg, '_', 'param'+str(cont_Parametros+1))
+  cuadruplo = Cuadruplo(cont_Cuadruplos, PARAM, arg, tipo , str(cont_Parametros+1))
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos += 1

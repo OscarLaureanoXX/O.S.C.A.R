@@ -144,14 +144,16 @@ def main(argv):
             memoria.string['local'][memoria.apuntador_string_local] = nombre
             memoria.apuntador_string_local += 1
 
-        print memoria
     elif (operacion == '18'):
       print("PARAM", izquierdo, derecho, resultado)
-      # Checar si el primer parametro es igual al primer elemento de la firma
-      if izquierdo == firma_funcion[0]:
+      # Checar si el tipo del primer parametro es igual al tipo primer elemento de la firma
+      if derecho[0] == firma_funcion[0]:
         # Si si fue, eliminar el primer elemento de la firma
         firma_funcion = firma_funcion[1:]
         # PASARSELO A LA FUNCION
+        print memoria.int['local']
+        
+
 
     elif (operacion == '19'):
       print("GOSUB", izquierdo, derecho, resultado) 
