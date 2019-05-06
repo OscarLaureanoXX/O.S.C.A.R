@@ -21,46 +21,46 @@ def main(argv):
     # Sacar los datos e ir metiendo los valores a memoria
 
     if (operacion == '1'):
-      # print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
+      print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
-      pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+      pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
       valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
 
       print(valorRes[0])
     elif (operacion == '2'):
-      # print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('+', izquierdo, derecho, resultado)
     elif (operacion == '3'):
-      # print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('-', izquierdo, derecho, resultado)
     elif (operacion == '4'):
-      # print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('*', izquierdo, derecho, resultado)
     elif (operacion == '5'):
-      # print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('/', izquierdo, derecho, resultado)
     elif (operacion == '6'):
-      # print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
       hazOperacion('%', izquierdo, derecho, resultado)
     elif (operacion == '7'):
-      # print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>', izquierdo, derecho, resultado)
     elif (operacion == '8'):
-      # print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<', izquierdo, derecho, resultado)
     elif (operacion == '9'):
-      # print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>=', izquierdo, derecho, resultado)
     elif (operacion == '10'):
-      # print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
-      # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
+      print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
       
       # Si la variable fue extraida de consola, no va a tener lugar en memoria, asi que solo se necesita trabajar con el resultado
       if (derecho == "read"):
         res = sacaTipoYLocalidad(resultado)
-        pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
+        pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
         valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
         for item in pedazoMemoriaResultado.items():
           # print(item, resultado)
@@ -74,8 +74,8 @@ def main(argv):
 
         # print(res, izq)
 
-        pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
-        pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+        pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+        pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
 
         # print(pedazoMemoriaResultado, pedazoMemoriaIzquierdo)
 
@@ -94,28 +94,33 @@ def main(argv):
         # print(pedazoMemoriaResultado)
 
     elif (operacion == '12'):
-      # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('==', izquierdo, derecho, resultado)
     elif (operacion == '13'):
-      # print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
+      print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('!=', izquierdo, derecho, resultado)
     elif (operacion == '14'):
-      # print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
+      print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
       # BRINCAR AL CUADRUPLO: resultado
       i = int(resultado) - 1
     elif (operacion == '15'):
-      # print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
+      print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
       izq = sacaTipoYLocalidad(izquierdo)
 
-      pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
+      print(izq)
+
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+
+      print(pedazoMemoriaIzquierdo)
 
       valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+      print(valorIzq)
 
       if (valorIzq[0] == False):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
     elif (operacion == '16'):
-      # print("ENDPROC", izquierdo, derecho, resultado)
+      print("ENDPROC", izquierdo, derecho, resultado)
       # REGRESAR AL VALOR DE RETORNO
       i = int(ret)
     elif (operacion == '17'):
@@ -162,7 +167,7 @@ def main(argv):
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
       i = int(resultado)
     elif (operacion == '20'):
-      # print("READ", izquierdo, derecho, resultado)
+      print("READ", izquierdo, derecho, resultado)
 
       # Leer de consola y eliminar caracteres invisibles
       var = sys.stdin.readline()
@@ -185,45 +190,41 @@ def main(argv):
 
 def sacaTipoYLocalidad(variable):
   if (1000 <= int(variable) < 9000):
-    tipo = 'int'
+    localidad = 'globales'
     if (1000 <= int(variable) < 3000):
-      localidad = 'global'
+      tipo = 'int'
     elif (3000 <= int(variable) < 5000):
-      localidad = 'local'
+      tipo = 'float'
     elif (5000 <= int(variable) < 7000):
-      localidad = 'temporal'
+      tipo = 'bool'
     elif (7000 <= int(variable) < 9000):
-      localidad = 'constante'
-  elif (9000 <= int(variable) < 17000):
-    tipo = 'float'
-    if (9000 <= int(variable) < 11000):
-      localidad = 'global'
-    elif (11000 <= int(variable) < 13000):
-      localidad = 'local'
+      tipo = 'string'
+    elif (9000 <= int(variable) < 11000):
+      tipo = 'list'
+  elif (11000 <= int(variable) < 21000):
+    localidad = 'locales'
+    if (11000 <= int(variable) < 13000):
+      tipo = 'int'
     elif (13000 <= int(variable) < 15000):
-      localidad = 'temporal'
+      tipo = 'float'
     elif (15000 <= int(variable) < 17000):
-      localidad = 'constante'
-  elif (17000 <= int(variable) < 25000):
-    tipo = 'string'
-    if (17000 <= int(variable) < 19000):
-      localidad = 'global'
+      tipo = 'bool'
+    elif (17000 <= int(variable) < 19000):
+      tipo = 'string'
     elif (19000 <= int(variable) < 21000):
-      localidad = 'local'
-    elif (21000 <= int(variable) < 23000):
-      localidad = 'temporal'
+      tipo = 'list'
+  elif (21000 <= int(variable) < 31000):
+    localidad = 'constantes'
+    if (21000 <= int(variable) < 23000):
+      tipo = 'int'
     elif (23000 <= int(variable) < 25000):
-      localidad = 'constante'
-  elif (25000 <= int(variable) < 31000):
-    tipo = 'bool'
-    if (25000 <= int(variable) < 27000):
-      localidad = 'global'
+      tipo = 'float'
+    elif (25000 <= int(variable) < 27000):
+      tipo = 'bool'
     elif (27000 <= int(variable) < 29000):
-      localidad = 'local'
+      tipo = 'string'
     elif (29000 <= int(variable) < 31000):
-      localidad = 'temporal'
-    elif (31000 <= int(variable) < 33000):
-      localidad = 'constante'
+      tipo = 'list'
   
   return [tipo, localidad]
 
@@ -237,9 +238,11 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
 
   # print(izq, der, res)
 
-  pedazoMemoriaResultado = getattr(memoria, res[0])[res[1]]
-  pedazoMemoriaIzquierdo = getattr(memoria, izq[0])[izq[1]]
-  pedazoMemoriaDerecho = getattr(memoria, der[0])[der[1]]
+  pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+  pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+  pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+
+  # print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
 
   valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
   valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
@@ -249,6 +252,7 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
   
   for item in pedazoMemoriaResultado.items():
     if (item[1] == valorRes[0]):
+      # print(str(valorIzq[0]) + operacion + str(valorDer[0]))
       pedazoMemoriaResultado[item[0]] = eval(str(valorIzq[0]) + operacion + str(valorDer[0]))
 
   # print(pedazoMemoriaResultado)

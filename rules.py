@@ -95,23 +95,18 @@ def update_func_firm():
   # Y sacando el valor relativo de memoria de los argumentos
   if var_actual[1] == 'int':
     firm = firm + 'i'
-    memDir = memoria.apuntador_locales_int
     memoria.apuntador_locales_int += 1
   elif var_actual[1] == 'float':
     firm = firm + 'f'
-    memDir = memoria.apuntador_locales_float
     memoria.apuntador_locales_float += 1
   elif var_actual[1] == 'string':
     firm = firm + 's'
-    memDir = memoria.apuntador_locales_string
     memoria.apuntador_locales_string += 1
   elif var_actual[1] == 'bool':
     firm = firm + 'b'
-    memDir = memoria.apuntador_locales_bool
     memoria.apuntador_locales_bool += 1
   elif var_actual[1] == 'list':
     firm = firm + 'l'
-    memDir = memoria.apuntador_locales_list
     memoria.apuntador_locales_list += 1
 
   # Asignando el nuevo valor a la firma
@@ -119,7 +114,6 @@ def update_func_firm():
   
   # Actualizando firma de funcion con las variables de parametro y su memoria relativa
   dir_func.dictionary[func_actual].append(var_actual[0])
-  dir_func.dictionary[func_actual].append(memDir)
 
 # Sacar tipo y funcion para meter la variable a memoria
 def tipo_funcion(func, tipo, var):
@@ -165,14 +159,19 @@ def tipo_funcion(func, tipo, var):
     if var not in dir_func.dictionary[func][1].values():
       if tipo == 'int':
         dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_int)
+        memoria.apuntador_locales_int += 1
       elif tipo == 'float':
         dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_float)
+        memoria.apuntador_locales_float += 1
       elif tipo == 'string':
         dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_string)
+        memoria.apuntador_locales_string += 1
       elif tipo == 'bool':
         dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_bool)
+        memoria.apuntador_locales_bool += 1
       elif tipo == 'list':
         dir_func.dictionary[func][1][var].append(memoria.apuntador_locales_list)
+        memoria.apuntador_locales_list += 1
 
 # Agregar una variable llamada [varName] de tipo [type] 
 # a la tabla correspondiente
@@ -221,11 +220,6 @@ def set_func_end():
   memoria.apuntador_locales_bool = 15000
   memoria.apuntador_locales_string = 17000
   memoria.apuntador_locales_list = 19000
-  memoria.apuntador_temporales_int = 21000
-  memoria.apuntador_temporales_float = 23000
-  memoria.apuntador_temporales_bool = 25000
-  memoria.apuntador_temporales_string = 27000
-  memoria.apuntador_temporales_list = 29000
 
   cont_Temporales = 1
   
@@ -358,6 +352,8 @@ def add_to_operand_stack(id, type):
     if id.isdigit():
       tipo_funcion('constante', type, id)
       id = str(dir_relativa('constante', type, id))
+    else:
+      id = str(dir_relativa(func_actual, 'int', id))
 
     pilaOperandos.push(id)
     pilaTipos.push('int')
@@ -369,7 +365,8 @@ def add_to_operand_stack(id, type):
     if re.match(r"^\d+?\.\d+?$", id):
       tipo_funcion('constante', type, id)
       id = str(dir_relativa('constante', type, id))
-
+    else:
+      id = str(dir_relativa(func_actual, 'float', id))
     pilaOperandos.push(id)
     pilaTipos.push('float')
   
@@ -380,7 +377,8 @@ def add_to_operand_stack(id, type):
     if id[0] == '_':
       tipo_funcion('constante', type, id)
       id = str(dir_relativa('constante', type, id))
-    
+    else:
+      id = str(dir_relativa(func_actual, 'bool', id))
     pilaOperandos.push(id)
     pilaTipos.push('bool')
 
@@ -391,7 +389,8 @@ def add_to_operand_stack(id, type):
     if id[0] == '"':
       tipo_funcion('constante', type, id)
       id = str(dir_relativa('constante', type, id))
-    
+    else:
+      id = str(dir_relativa(func_actual, 'string', id))
     pilaOperandos.push(id)
     pilaTipos.push('string')
 
@@ -401,7 +400,8 @@ def add_to_operand_stack(id, type):
     if id[0] == '[':
       tipo_funcion('constante', type, id)
       id = str(dir_relativa('constante', type, id))
-
+    else:
+      id = str(dir_relativa(func_actual, 'list', id))
     pilaOperandos.push(id)
     pilaTipos.push('string')
 
@@ -409,14 +409,15 @@ def add_to_operand_stack(id, type):
     # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
     try:
       tipo = dir_func.__getitem__(func_actual)[id][0]
+      str(dir_relativa(func_actual, tipo, id))
     except KeyError:
       # Si no se encuentra en la funcion global entonces marcar error
       try:
         tipo = dir_func.__getitem__('oscar')[id][0]
+        id = str(dir_relativa('oscar', tipo, id))
       except KeyError:
         sys.exit("Variable " + "'" + id + "'" + " no declarada")
         return
-    id = str(dir_relativa(func_actual, tipo, id))
     # meter a la pila de operandos la direccion relativa del id
     pilaOperandos.push(id)
     pilaTipos.push(tipo)
@@ -427,21 +428,56 @@ def dir_relativa(func, tipo, id):
   if func == 'oscar':
     # Checar el tipo
     if tipo == 'int':
+      # Si el valor ya esta en memoria
+      if id in memoria.globales['int'].values():
+        # Retornar su valor de memoria
+        index = memoria.globales['int'].values().index(id)
+        return memoria.globales['int'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_globales_int += 1
+        return memoria.apuntador_globales_int -1
       # Retornar valor memoria
-      memoria.apuntador_globales_int += 1
-      return memoria.apuntador_globales_int - 1
     elif tipo == 'float':
-      memoria.apuntador_globales_float += 1
-      return memoria.apuntador_globales_float -1
+      # Si el valor ya esta en memoria
+      if id in memoria.globales['float'].values():
+        # Retornar su valor de memoria
+        index = memoria.globales['float'].values().index(id)
+        return memoria.globales['float'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_globales_float += 1
+        return memoria.apuntador_globales_float -1
     elif tipo == 'bool':
-      memoria.apuntador_globales_bool += 1
-      return memoria.apuntador_globales_bool -1
+      # Si el valor ya esta en memoria
+      if id in memoria.globales['bool'].values():
+        # Retornar su valor de memoria
+        index = memoria.globales['bool'].values().index(id)
+        return memoria.globales['bool'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_globales_bool += 1
+        return memoria.apuntador_globales_bool -1
     elif tipo == 'string':
-      memoria.apuntador_globales_string += 1
-      return memoria.apuntador_globales_string -1
+      # Si el valor ya esta en memoria
+      if id in memoria.globales['string'].values():
+        # Retornar su valor de memoria
+        index = memoria.globales['string'].values().index(id)
+        return memoria.globales['string'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_globales_string += 1
+        return memoria.apuntador_globales_string -1
     elif tipo == 'list':
-      memoria.apuntador_globales_list += 1
-      return memoria.apuntador_globales_list -1
+      # Si el valor ya esta en memoria
+      if id in memoria.globales['list'].values():
+        # Retornar su valor de memoria
+        index = memoria.globales['list'].values().index(id)
+        return memoria.globales['list'].keys()[index]
+      else:
+        # Retornar un nuevo valor memoria
+        memoria.apuntador_globales_list += 1
+        return memoria.apuntador_globales_list -1
   # Si el valor es una constante
   elif func == 'constante':
     if tipo == 'int':
@@ -495,42 +531,69 @@ def dir_relativa(func, tipo, id):
         memoria.apuntador_constantes_list += 1
         return memoria.apuntador_constantes_list -1
   else:
-    # Si la variable no es uno de los parametros
-    if id not in dir_func.dictionary[func][5:]:
-      # Si la variable esta dentro de la tabla de variables
-      if id in dir_func.dictionary[func][1]:
-        # retornar su direccion relativa
-        return dir_func.dictionary[func][1][id][1]
-      else:
-        # Checar su tipo
-        if tipo == 'int':
+    # Si la variable esta dentro de la tabla de variables
+    if id in dir_func.dictionary[func][1]:
+      # retornar su direccion relativa
+      return dir_func.dictionary[func][1][id][1]
+    else:
+      # Checar su tipo
+      if tipo == 'int':
+        # Si el valor ya esta en memoria
+        if id in memoria.globales['int'].values():
+          # Retornar su valor de memoria
+          index = memoria.globales['int'].values().index(id)
+          return memoria.globales['int'].keys()[index]
+        else:
           # Retornar valor memoria
           memoria.apuntador_locales_int += 1
           return memoria.apuntador_locales_int -1
-        elif tipo == 'float':
+      elif tipo == 'float':
+        # Si el valor ya esta en memoria
+        if id in memoria.globales['float'].values():
+          # Retornar su valor de memoria
+          index = memoria.globales['float'].values().index(id)
+          return memoria.globales['float'].keys()[index]
+        else:
+          # Retornar valor memoria
           memoria.apuntador_locales_float += 1
           return memoria.apuntador_locales_float -1
-        elif tipo == 'bool':
+      elif tipo == 'bool':
+        # Si el valor ya esta en memoria
+        if id in memoria.globales['bool'].values():
+          # Retornar su valor de memoria
+          index = memoria.globales['bool'].values().index(id)
+          return memoria.globales['bool'].keys()[index]
+        else:
+          # Retornar valor memoria
           memoria.apuntador_locales_bool += 1
           return memoria.apuntador_locales_bool -1
-        elif tipo == 'string':
+      elif tipo == 'string':
+        # Si el valor ya esta en memoria
+        if id in memoria.globales['string'].values():
+          # Retornar su valor de memoria
+          index = memoria.globales['string'].values().index(id)
+          return memoria.globales['string'].keys()[index]
+        else:
+          # Retornar valor memoria
           memoria.apuntador_locales_string += 1
           return memoria.apuntador_locales_string -1
-        elif tipo == 'list':
+      elif tipo == 'list':
+        # Si el valor ya esta en memoria
+        if id in memoria.globales['list'].values():
+          # Retornar su valor de memoria
+          index = memoria.globales['list'].values().index(id)
+          return memoria.globales['list'].keys()[index]
+        else:
+          # Retornar valor memoria
           memoria.apuntador_locales_list += 1
           return memoria.apuntador_locales_list -1
-    # Si si es un parametro
-    else:
-      # Sacar el indice dentro de la firma de la funcion
-      index = dir_func.dictionary[func][5:].index(id)
-      # Retornar valor memoria
-      return dir_func.dictionary[func][6+index]
 
 def pop_sum_from_stack():
   global pilaOperandos
   global pilaTipos
   global pilaOperadores
   global cont_Temporales
+  global func_actual
 
   suma = pilaOperadores.pop()
   der = pilaOperandos.pop()
@@ -543,6 +606,8 @@ def pop_sum_from_stack():
 
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + suma)
+
+  temp = str(dir_relativa(func_actual, tipoRes, temp))
 
   pilaOperandos.push(temp)
 
@@ -577,6 +642,8 @@ def pop_mult_from_stack():
 
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + mult)
+
+  temp = str(dir_relativa(func_actual, tipoRes, temp))
 
   pilaOperandos.push(temp)
 
@@ -641,6 +708,8 @@ def pop_rel_from_stack():
 
   if (tipoRes == 'ERR'):
     sys.exit('Tipos compatibles para la operacion ' + rel)
+
+  temp = str(dir_relativa(func_actual, tipoRes, temp))
 
   pilaOperandos.push(temp)
 
@@ -752,6 +821,7 @@ def add_for_inicio(id):
   global pilaTipos
   global pilaOperandos
   global pilaInicio
+  global func_actual
 
   # Validando que la expresion del inicio del for sea int
   if pilaTipos.peek() != 'int':
@@ -759,6 +829,7 @@ def add_for_inicio(id):
 
   # Metiendo el inicio del for
   id = id.encode('UTF-8')
+  id = str(dir_relativa(func_actual, 'int', id))
   pilaInicio.push(id)
 
 def add_for_limite():
@@ -782,6 +853,8 @@ def add_for_limite():
 
   # Generar cuadruplo de comparacion
   temp = 't'+ str(cont_Temporales)
+
+  temp = str(dir_relativa(func_actual, 'bool', temp))
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, MENORIGUAL , inicio , lim_superior , temp)
   cuadruplos.append(cuadruplo)
@@ -828,6 +901,8 @@ def add_for_final():
 
   # Generar cuadruplos de aumento de la variable controladora
   temp = 't'+ str(cont_Temporales)
+
+  temp = str(dir_relativa(func_actual, 'int', temp))
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, SUMA , inicio , step , temp)
   cuadruplos.append(cuadruplo)

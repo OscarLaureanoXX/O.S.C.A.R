@@ -1,10 +1,9 @@
 #oscar; 
 
 var
-  int a;
+  int a = 1;
   int b = 1; 
 
 main () {
-  a = read(int);
-  print(a);
+  print(a + b);
 }

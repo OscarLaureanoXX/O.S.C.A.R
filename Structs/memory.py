@@ -11,16 +11,11 @@ class Execution_Memory:
     self.apuntador_locales_bool = 15000
     self.apuntador_locales_string = 17000
     self.apuntador_locales_list = 19000
-    self.apuntador_temporales_int = 21000
-    self.apuntador_temporales_float = 23000
-    self.apuntador_temporales_bool = 25000
-    self.apuntador_temporales_string = 27000
-    self.apuntador_temporales_list = 29000
-    self.apuntador_constantes_int = 31000
-    self.apuntador_constantes_float = 33000
-    self.apuntador_constantes_bool = 35000
-    self.apuntador_constantes_string = 37000
-    self.apuntador_constantes_list = 39000
+    self.apuntador_constantes_int = 21000
+    self.apuntador_constantes_float = 23000
+    self.apuntador_constantes_bool = 25000
+    self.apuntador_constantes_string = 27000
+    self.apuntador_constantes_list = 29000
     self.globales = dict()
     self.globales['int'] = dict()
     self.globales['float'] = dict()
@@ -33,12 +28,6 @@ class Execution_Memory:
     self.locales['bool'] = dict()
     self.locales['string'] = dict()
     self.locales['list'] = dict()
-    self.temporales = dict()
-    self.temporales['int'] = dict()
-    self.temporales['float'] = dict()
-    self.temporales['bool'] = dict()
-    self.temporales['string'] = dict()
-    self.temporales['list'] = dict()
     self.constantes = dict()
     self.constantes['int'] = dict()
     self.constantes['float'] = dict()
@@ -53,5 +42,5 @@ class Execution_Memory:
     return
 
   def __str__(self):
-    return 'globales: {globales}\nlocales: {locales}\ntemporales: {temporales}\nconstantes: {constantes}'.format(globales=self.globales, locales=self.locales, temporales=self.temporales, constantes=self.constantes)
+    return 'globales: {globales}\nlocales: {locales}\nconstantes: {constantes}'.format(globales=self.globales, locales=self.locales, constantes=self.constantes)
     
