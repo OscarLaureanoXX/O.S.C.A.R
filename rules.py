@@ -16,6 +16,7 @@ cont_Read = 0
 # [int],[float],[bool],[string],[list]
 paquetes = dict()
 paquete_local = [[],[],[],[],[]]
+first_go_to = False
 
 # Memoria de ejecuccion
 memoria = Execution_Memory()
@@ -277,10 +278,12 @@ def generate_first_goto():
 def fill_first_goto():
   global cuadruplos
   global cont_Cuadruplos
+  global first_go_to
 
   for cuadruplo in cuadruplos:
-    if cuadruplo['op'] ==  '14':
+    if cuadruplo['op'] ==  '14' and first_go_to == False:
       cuadruplo['res'] = str(cont_Cuadruplos)
+      first_go_to = True
 
 ################################ /TABLA DE FUNCIONES ################################################
 
@@ -924,6 +927,7 @@ def add_for_final():
   cont_Cuadruplos = cont_Cuadruplos + 1
 
   # Generar cuadruplo para volver a evaluar
+  print(ret)
   cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO , '_' , '_' , str(ret))
   cuadruplos.append(cuadruplo)
 

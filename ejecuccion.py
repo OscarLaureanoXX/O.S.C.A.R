@@ -12,7 +12,8 @@ def main(argv):
 
   Stack_local = Stack()
   # Cargar main a memoria local
-  memoria.locales = paquetes['main']
+  paquete_actual = paquetes['main']
+  memoria.locales = paquete_actual
 
   i = 1
   ret = 0
@@ -144,27 +145,11 @@ def main(argv):
         num_params = len(firma_funcion)
         params = dirfunc[izquierdo][5:]
         func_actual = izquierdo
+        paquete_funcion = paquetes[func_actual]
 
-        # Creando espacio de memoria para la funcion
-        for variable_local in dirfunc[izquierdo][1]:
-          nombre = variable_local
-          tipo = dirfunc[izquierdo][1][variable_local][0]
-          direccion = dirfunc[izquierdo][1][variable_local][1]
-
-          if tipo == 'int':
-            print memoria.locales[tipo]
-          elif tipo == 'float':
-            memoria.locales[tipo][memoria.apuntador_locales_float] = nombre
-            memoria.apuntador_locales_float += 1
-          elif tipo == 'bool':
-            memoria.locales[tipo][memoria.apuntador_locales_bool] = nombre
-            memoria.apuntador_locales_bool+= 1
-          elif tipo == 'string':
-            memoria.locales[tipo][memoria.apuntador_locales_string] = nombre
-            memoria.apuntador_locales_string += 1
-          elif tipo == 'list':
-            memoria.locales[tipo][memoria.apuntador_locales_list] = nombre
-            memoria.apuntador_locales_list += 1
+        Stack_local.push(paquete_actual)
+        paquete_actual = paquete_funcion
+        memoria.locales = paquete_actual
 
     elif (operacion == '18'):
       # print("PARAM", izquierdo, derecho, resultado)
@@ -178,26 +163,27 @@ def main(argv):
 
         pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
 
-        # Sacar valor de memoria
-        valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-
-        # print(valorIzq)
+        # Construir string dependiendo de localidad y tipo
+        stringIzq = getApuntadorMemoria(izq)
+        # Conseguir indice de la variable dentro de su lista
+        indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
     
-        for item in memoria.locales[derecho].items():
-          if item[1] == var:
-            memoria.locales[derecho][item[0]] = valorIzq[0]
-
-        params = params[2:]
+        for item in memoria.locales[izq[0]]:
+          if item == var:
+            index = memoria.locales[izq[0]].index(var)
+            memoria.locales[izq[0]][index] = pedazoMemoriaIzquierdo[indexIzq]
+        
+        params = params[1:]
 
       # print(memoria.locales)  
 
     elif (operacion == '19'):
       # print("GOSUB", izquierdo, derecho, resultado) 
-      print(memoria) 
+      # print(memoria) 
       # GUARDAR VALOR A RETORNAR
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
-      i = int(resultado)
+      i = int(resultado) - 1
     elif (operacion == '20'):
       # print("READ", izquierdo, derecho, resultado)
 
