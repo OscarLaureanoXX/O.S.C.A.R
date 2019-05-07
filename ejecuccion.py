@@ -137,10 +137,10 @@ def main(argv):
         for variable_local in dirfunc[izquierdo][1]:
           nombre = variable_local
           tipo = dirfunc[izquierdo][1][variable_local][0]
+          direccion = dirfunc[izquierdo][1][variable_local][1]
 
           if tipo == 'int':
-            memoria.locales[tipo][memoria.apuntador_locales_int] = nombre
-            memoria.apuntador_locales_int += 1
+            print memoria.locales[tipo]
           elif tipo == 'float':
             memoria.locales[tipo][memoria.apuntador_locales_float] = nombre
             memoria.apuntador_locales_float += 1

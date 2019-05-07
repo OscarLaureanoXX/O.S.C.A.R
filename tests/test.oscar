@@ -2,8 +2,13 @@
 
 var
   int a = 0;
-  int b = 2; 
+  int b = 5;
+  string name = "oscar";
+  bool flag = _true; 
 
 main () {
-  print("hi");
+  var 
+    int x = 11;
+  a = 10 + x;
+  print(a);
 }

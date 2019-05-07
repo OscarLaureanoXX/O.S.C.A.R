@@ -2,6 +2,7 @@
 
 var
   string name;
+  int number;
 
 def void suma(int x, float y){
   print(x+y);

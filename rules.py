@@ -52,6 +52,8 @@ cuadruplos = list()
 pilaInicio = Stack()
 pilaStep = Stack()
 
+
+
 ################################ TABLA DE FUNCIONES ################################################
 
 # Inicializa el directorio de funciones y agrega la funcion global
@@ -112,66 +114,41 @@ def update_func_firm():
 
 # Sacar tipo y funcion para meter la variable a memoria
 def tipo_funcion(func, tipo, var):
+  # Variables globales
   if func == 'oscar':
-    if tipo == 'int':
-      memoria.globales['int'][memoria.apuntador_globales_int] = var
+    if tipo == 'int' and var not in memoria.globales[memoria.indexInt]:
+      memoria.globales[memoria.indexInt].append(var)
       memoria.apuntador_globales_int += 1
-    elif tipo == 'float':
-      memoria.globales['float'][memoria.apuntador_globales_float] = var
+    elif tipo == 'float' and var not in memoria.globales[memoria.indexFloat]:
+      memoria.globales[memoria.indexFloat].append(var)
       memoria.apuntador_globales_float += 1
-    elif tipo == 'bool':
-      memoria.globales['bool'][memoria.apuntador_globales_bool] = var
+    elif tipo == 'bool' and var not in memoria.globales[memoria.indexBool]:
+      memoria.globales[memoria.indexBool].append(var)
       memoria.apuntador_globales_bool += 1
-    elif tipo == 'string':
-      memoria.globales['string'][memoria.apuntador_globales_string] = var
+    elif tipo == 'string' and var not in memoria.globales[memoria.indexString]:
+      memoria.globales[memoria.indexString].append(var)
       memoria.apuntador_globales_string += 1
-    elif tipo == 'list':
-      memoria.globales['list'][memoria.apuntador_globales_list] = var
+    elif tipo == 'list' and var not in memoria.globales[memoria.indexList]:
+      memoria.globales[memoria.indexList].append(var)
       memoria.apuntador_globales_list += 1
+  # Variables constantes
   elif func == 'constante':
-    if tipo == 'int':
-      if var not in memoria.constantes['int'].values():
-        memoria.constantes['int'][memoria.apuntador_constantes_int] = var
-        memoria.apuntador_constantes_int += 1
-    elif tipo == 'float':
-      if var not in memoria.constantes['float'].values():
-        memoria.constantes['float'][memoria.apuntador_constantes_float] = var
-        memoria.apuntador_constantes_float += 1
-    elif tipo == 'bool':
-      if var not in memoria.constantes['bool'].values():
-        memoria.constantes['bool'][memoria.apuntador_constantes_bool] = var
-        memoria.apuntador_constantes_bool += 1
-    elif tipo == 'string':
-      if var not in memoria.constantes['string'].values():
-        memoria.constantes['string'][memoria.apuntador_constantes_string] = var
-        memoria.apuntador_constantes_string += 1
-    elif tipo == 'list':
-      if var not in memoria.constantes['list'].values():
-        memoria.constantes['list'][memoria.apuntador_constantes_list] = var
-        memoria.apuntador_constantes_list += 1
-  # Si la funcion es main, se cargan sus variables a la memoria local
-  # O si es una funcion local
-  else:
-    if tipo == 'int':
-      if var not in memoria.locales['int'].values():
-        memoria.locales['int'][memoria.apuntador_locales_int] = var
-        memoria.apuntador_locales_int += 1
-    elif tipo == 'float':
-      if var not in memoria.locales['float'].values():
-        memoria.locales['float'][memoria.apuntador_locales_float] = var
-        memoria.apuntador_locales_float += 1
-    elif tipo == 'bool':
-      if var not in memoria.locales['bool'].values():
-        memoria.locales['bool'][memoria.apuntador_locales_bool] = var
-        memoria.apuntador_locales_bool += 1
-    elif tipo == 'string':
-      if var not in memoria.locales['string'].values():
-        memoria.locales['string'][memoria.apuntador_locales_string] = var
-        memoria.apuntador_locales_string += 1
-    elif tipo == 'list':
-      if var not in memoria.constantes['list'].values():
-        memoria.constantes['list'][memoria.apuntador_constantes_list] = var
-        memoria.apuntador_constantes_list += 1
+    if tipo == 'int' and var not in memoria.globales[memoria.indexInt]:
+      memoria.constantes[memoria.indexInt].append(var)
+      memoria.apuntador_constantes_int += 1
+    elif tipo == 'float' and var not in memoria.globales[memoria.indexFloat]:
+      memoria.constantes[memoria.indexFloat].append(var)
+      memoria.apuntador_constantes_float += 1
+    elif tipo == 'bool' and var not in memoria.globales[memoria.indexBool]:
+      memoria.constantes[memoria.indexBool].append(var)
+      memoria.apuntador_constantes_bool += 1
+    elif tipo == 'string' and var not in memoria.globales[memoria.indexString]:
+      memoria.constantes[memoria.indexString].append(var)
+      memoria.apuntador_constantes_string += 1
+    elif tipo == 'list' and var not in memoria.globales[memoria.indexList]:
+      memoria.constantes[memoria.indexList].append(var)
+      memoria.apuntador_constantes_list += 1
+
 
 # Agregar una variable llamada [varName] de tipo [type] 
 # a la tabla correspondiente
@@ -460,107 +437,108 @@ def dir_relativa(func, tipo, id):
     # Checar el tipo
     if tipo == 'int':
       # Si el valor ya esta en memoria
-      if id in memoria.globales['int'].values():
+      if id in memoria.globales[memoria.indexInt]:
         # Retornar su valor de memoria
-        index = memoria.globales['int'].values().index(id)
-        return memoria.globales['int'].keys()[index]
+        index = memoria.globales[memoria.indexInt].index(id)
+        return index + memoria.globales_int
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_globales_int += 1
-        return memoria.apuntador_globales_int -1
+        return memoria.apuntador_globales_int - 1 + memoria.globales_int
       # Retornar valor memoria
     elif tipo == 'float':
       # Si el valor ya esta en memoria
-      if id in memoria.globales['float'].values():
+      if id in memoria.globales[memoria.indexFloat]:
         # Retornar su valor de memoria
-        index = memoria.globales['float'].values().index(id)
-        return memoria.globales['float'].keys()[index]
+        index = memoria.globales[memoria.indexFloat].index(id)
+        return index + memoria.globales_float
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_globales_float += 1
-        return memoria.apuntador_globales_float -1
+        return memoria.apuntador_globales_float - 1 + memoria.globales_float
     elif tipo == 'bool':
       # Si el valor ya esta en memoria
-      if id in memoria.globales['bool'].values():
+      if id in memoria.globales[memoria.indexBool]:
         # Retornar su valor de memoria
-        index = memoria.globales['bool'].values().index(id)
-        return memoria.globales['bool'].keys()[index]
+        index = memoria.globales[memoria.indexBool].index(id)
+        return index + memoria.globales_bool
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_globales_bool += 1
-        return memoria.apuntador_globales_bool -1
+        return memoria.apuntador_globales_bool - 1 + memoria.globales_bool
     elif tipo == 'string':
       # Si el valor ya esta en memoria
-      if id in memoria.globales['string'].values():
+      if id in memoria.globales[memoria.indexString]:
         # Retornar su valor de memoria
-        index = memoria.globales['string'].values().index(id)
-        return memoria.globales['string'].keys()[index]
+        index = memoria.globales[memoria.indexString].index(id)
+        return index + memoria.globales_string
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_globales_string += 1
-        return memoria.apuntador_globales_string -1
+        return memoria.apuntador_globales_string - 1 + memoria.globales_string
     elif tipo == 'list':
       # Si el valor ya esta en memoria
-      if id in memoria.globales['list'].values():
+      if id in memoria.globales[memoria.indexList]:
         # Retornar su valor de memoria
-        index = memoria.globales['list'].values().index(id)
-        return memoria.globales['list'].keys()[index]
+        index = memoria.globales[memoria.indexList].index(id)
+        return index + memoria.globales_list
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_globales_list += 1
-        return memoria.apuntador_globales_list -1
+        return memoria.apuntador_globales_list - 1 + memoria.globales_list
   # Si el valor es una constante
   elif func == 'constante':
     if tipo == 'int':
       # Si el valor ya esta en memoria
-      if id in memoria.constantes['int'].values():
+      if id in memoria.constantes[memoria.indexInt]:
         # Retornar su valor de memoria
-        index = memoria.constantes['int'].values().index(id)
-        return memoria.constantes['int'].keys()[index]
+        index = memoria.constantes[memoria.indexInt].index(id)
+        return index + memoria.constantes_int
       else:
         # Retornar un nuevo valor memoria
+        print memoria.apuntador_constantes_int
         memoria.apuntador_constantes_int += 1
-        return memoria.apuntador_constantes_int -1
+        return memoria.apuntador_constantes_int - 1 + memoria.constantes_int
     elif tipo == 'float':
       # Si el valor ya esta en memoria
-      if id in memoria.constantes['float'].values():
+      if id in memoria.constantes[memoria.indexFloat]:
         # Retornar su valor de memoria
-        index = memoria.constantes['float'].values().index(id)
-        return memoria.constantes['float'].keys()[index]
+        index = memoria.constantes[memoria.indexFloat].index(id)
+        return index + memoria.constantes_float
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_constantes_float += 1
-        return memoria.apuntador_constantes_float -1
+        return memoria.apuntador_constantes_float - 1 + memoria.constantes_float
     elif tipo == 'bool':
       # Si el valor ya esta en memoria
-      if id in memoria.constantes['bool'].values():
+      if id in memoria.constantes[memoria.indexBool]:
         # Retornar su valor de memoria
-        index = memoria.constantes['bool'].values().index(id)
-        return memoria.constantes['bool'].keys()[index]
+        index = memoria.constantes[memoria.indexBool].index(id)
+        return index + memoria.constantes_bool
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_constantes_bool += 1
-        return memoria.apuntador_constantes_bool -1
+        return memoria.apuntador_constantes_bool - 1 + memoria.constantes_bool
     elif tipo == 'string':
       # Si el valor ya esta en memoria
-      if id in memoria.constantes['string'].values():
+      if id in memoria.constantes[memoria.indexString]:
         # Retornar su valor de memoria
-        index = memoria.constantes['string'].values().index(id)
-        return memoria.constantes['string'].keys()[index]
+        index = memoria.constantes[memoria.indexString].index(id)
+        return index + memoria.constantes_string
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_constantes_string += 1
-        return memoria.apuntador_constantes_string -1
+        return memoria.apuntador_constantes_string - 1 + memoria.constantes_string
     elif tipo == 'list':
       # Si el valor ya esta en memoria
-      if id in memoria.constantes['list'].values():
+      if id in memoria.constantes[memoria.indexList]:
         # Retornar su valor de memoria
-        index = memoria.constantes['list'].values().index(id)
-        return memoria.constantes['list'].keys()[index]
+        index = memoria.constantes[memoria.indexList].index(id)
+        return index + memoria.constantes_list
       else:
         # Retornar un nuevo valor memoria
         memoria.apuntador_constantes_list += 1
-        return memoria.apuntador_constantes_list -1
+        return memoria.apuntador_constantes_list - 1 + memoria.constantes_list
   elif func == 'main':
     if tipo == 'int':
       # Si el valor ya esta en memoria local
