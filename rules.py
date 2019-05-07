@@ -362,7 +362,7 @@ def nombre_arreglo():
   global var_actual
   global memoria
 
-  direccionVar = int (pilaOperandos.pop())
+  direccionVar = int (pilaOperandos.peek())
 
   # Checando que la variable este en listas locales
   if direccionVar >= memoria.locales_list:
@@ -375,7 +375,7 @@ def nombre_arreglo():
 
 
 
-def verifica_index():
+def verifica_index(dim):
   global pilaOperandos
   global var_actual
   global cuadruplos
@@ -386,18 +386,18 @@ def verifica_index():
   # Obteniendo las dimensiones de la variable
   # Buscando la variable en la tabla de variables local para sacar sus dimensiones
   if var_actual in dir_func.dictionary[func_actual][1]:
-    print dir_func.dictionary[func_actual][1]
+    limiteSup = int(dir_func.dictionary[func_actual][1][var_actual][dim])
+  # Buscando la variable en la tabla de variables globales
   elif var_actual in dir_func.dictionary['oscar'][1]:
-    print dir_func.dictionary['oscar'][1]
+    limiteSup = int(dir_func.dictionary['oscar'][1][var_actual][dim])
 
   dimension = pilaOperandos.pop()
   
   # Generando el cuadruplo de verificar dimension
-  cuadruplo = Cuadruplo(cont_Cuadruplos, VER, dimension, '_' , '_')
+  cuadruplo = Cuadruplo(cont_Cuadruplos, VER, dimension, '0' , str(limiteSup-1))
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos += 1
-  print dimension
 
 ######################################## /LISTAS ####################################################
 
