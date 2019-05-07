@@ -71,11 +71,12 @@ def main(argv):
       if (derecho == "read"):
         res = sacaTipoYLocalidad(resultado)
         pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
-        valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
-        for item in pedazoMemoriaResultado.items():
-          # print(item, resultado)
-          if (item[1] == valorRes[0] and item[0] == int(resultado)):
-            pedazoMemoriaResultado[item[0]] = izquierdo
+        # Construir string dependiendo de localidad y tipo
+        stringRes = getApuntadorMemoria(res)
+        # Conseguir indice de la variable dentro de su lista
+        indexRes = int(resultado) - getattr(memoria, stringRes)
+
+        pedazoMemoriaResultado[indexRes] = izquierdo
       # Si no, buscamos en memoria para ambos casos
       else:
         # Sacar tipo y localidad de resultado y valor a asignar
@@ -201,6 +202,7 @@ def main(argv):
       # print("READ", izquierdo, derecho, resultado)
 
       # Leer de consola y eliminar caracteres invisibles
+      print("Ingresa un valor:")
       var = sys.stdin.readline()
       var = var.rstrip("\n\r")
 

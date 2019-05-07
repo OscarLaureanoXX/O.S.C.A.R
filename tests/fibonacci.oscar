@@ -1,0 +1,19 @@
+#oscar;
+
+var
+  int inicio = 0, actual = 1, suma = 0;
+
+main () {
+  var
+    int input;
+
+  print(inicio);
+  print(actual);
+
+  for input = read(int) : 15 {
+    suma = inicio + actual;
+    inicio = actual;
+    actual = suma;
+    print(suma);
+  }
+}
