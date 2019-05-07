@@ -4,11 +4,19 @@ var
   int a = 0;
   int b = 5;
   string name = "oscar";
-  bool flag = _true; 
+  bool flag = _true;
+
+def void suma (int x, int y) {
+  print(x + y);
+}
 
 main () {
-  var 
-    int x = 11;
-  a = 10 + x;
+  var
+    int x,y,z;
+  x = 10;
+  y = 10;
+  z = 10;
+  a = 10 + x + y + z;
   print(a);
+  suma(x, y);
 }
