@@ -42,6 +42,8 @@ PARAM = '18'
 GOSUB = '19'
 READ = '20'
 ESPECIAL = '21'
+RETURN = '22'
+VER = '23'
 
 # Pilas para expresiones
 pilaOperandos = Stack()
@@ -221,6 +223,28 @@ def set_func_end():
   paquete_local = [[],[],[],[],[]]
 
   cont_Temporales = 1
+
+def create_packet_main():
+  global paquete_local
+  global paquetes
+
+  # Reiniciando contadores de memoria
+  paquetes[func_actual] = paquete_local
+  paquete_local = [[],[],[],[],[]]
+
+def create_return():
+  global pilaOperandos
+  global cont_Cuadruplos
+  global cuadruplos
+
+  value = pilaOperandos.pop()
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, RETURN, value , '_', '_')
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos = cont_Cuadruplos + 1
+
+
   
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
@@ -331,6 +355,49 @@ def func_gosub():
   cont_Cuadruplos += 1
 
 ################################# /LLAMADA A FUNCIONES ##############################################
+
+######################################## LISTAS #####################################################
+def nombre_arreglo():
+  global pilaOperandos
+  global var_actual
+  global memoria
+
+  direccionVar = int (pilaOperandos.pop())
+
+  # Checando que la variable este en listas locales
+  if direccionVar >= memoria.locales_list:
+    # Buscando su nombre en la lista de locales
+    var_actual = memoria.locales[memoria.indexList][direccionVar - memoria.locales_list]
+  # Checando si la variable esta en listas globales
+  elif direccionVar >= 5000 and direccionVar < 6000:
+    # Buscando su nombre en listas globales
+    var_actual = memoria.globales[memoria.indexList][direccionVar - memoria.globales_list]
+
+
+
+def verifica_index():
+  global pilaOperandos
+  global var_actual
+  global cuadruplos
+  global cont_Cuadruplos
+  global dir_func
+  global func_actual
+
+  # Obteniendo las dimensiones de la variable
+  # Buscando la variable en la tabla de variables local para sacar sus dimensiones
+  if var_actual in dir_func.dictionary[func_actual][1]:
+    print dir_func.dictionary[func_actual][1] 
+
+  dimension = pilaOperandos.pop()
+  
+  # Generando el cuadruplo de verificar dimension
+  cuadruplo = Cuadruplo(cont_Cuadruplos, VER, dimension, '_' , '_')
+  cuadruplos.append(cuadruplo)
+
+  cont_Cuadruplos += 1
+  print dimension
+
+######################################## /LISTAS ####################################################
 
 # Agregar el operador [op] dentro de la pila de operadores
 def add_to_operator_stack(op):

@@ -12,8 +12,13 @@ def void suma (int x, int y) {
   print(x + y);
 }
 
-def void resta(int x, int y) {
-  print(x - y);
+def int resta(int x, int y) {
+  if (x > y) {
+    return (x-y);
+  }
+  x = x + 1;
+  print(x);
+  
 }
 
 main () {

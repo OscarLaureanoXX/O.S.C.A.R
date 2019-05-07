@@ -9,11 +9,11 @@ import rules
 * Parser Rules
 */
 
-programa	:	'#oscar' ';' {rules.create_function_table()} vars_? modulo* main {rules.destroy()} ; 
-modulo	    :	{rules.generate_first_goto()} 'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.set_func_end()} {rules.fill_first_goto()};
-main		:	'main' {rules.add_to_func_table('main','main')} param bloque ;
+programa	:	'#oscar' ';' {rules.create_function_table()} vars_? {rules.generate_first_goto()} modulo* {rules.fill_first_goto()} main {rules.destroy()} ; 
+modulo	    :	'def' (tipo ID {rules.add_to_func_table($ID.text, $tipo.text)} | 'void' ID {rules.add_to_func_table($ID.text, 'void')}) param bloque {rules.set_func_end()} ;
+main		:	'main' {rules.add_to_func_table('main','main')} param bloque {rules.create_packet_main()};
 param		:	'(' (id_{rules.update_func_firm()}(','id_{rules.update_func_firm()})*)? ')' ;
-bloque	    :	'{' {rules.set_func_start()} vars_? estatuto+ ('return' exp ';')? '}' ;
+bloque	    :	'{' {rules.set_func_start()} vars_? estatuto* ('return' exp ';' {rules.create_return()})? '}' ;
 vars_		:	'var' ( tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?  (',' ID  {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')'{rules.add_conditional()} estats ('else'{rules.add_else()} estats)? {rules.add_end_conditional()} ;
@@ -37,7 +37,7 @@ estats	    :	'{' estatuto+ '}' ;
 asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp(','exp)*)?']' ;
-element	    :	'[' exp {#primera dimension} (','exp {#segunda dimension})? ']' ;
+element	    :	{rules.nombre_arreglo()}'[' exp {rules.verifica_index()} (','exp {rules.verifica_index()})? ']' ;
 llamadaret	:	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | import_csv | union | intersect | find | lectura | userdef ;
 llamadavoid :   histograma | pie_chart | bar_graph | export_csv | (userdef ';');
 mean		:	'mean' '(' ID {rules.generate_special_function("mean", $ID.text)} ')' ;
