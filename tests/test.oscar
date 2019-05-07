@@ -7,7 +7,13 @@ var
   bool flag = _true;
 
 def void suma (int x, int y) {
+  var
+    string test = "HI";
   print(x + y);
+}
+
+def void resta(int x, int y) {
+  print(x - y);
 }
 
 main () {

@@ -14,6 +14,7 @@ cont_Parametros = 0
 cont_Read = 0
 # Paquete de "memoria" para variables locales de funciones
 # [int],[float],[bool],[string],[list]
+paquetes = dict()
 paquete_local = [[],[],[],[],[]]
 
 # Memoria de ejecuccion
@@ -207,6 +208,8 @@ def set_func_end():
   global cont_Temporales
   global memoria
   global paquete_local
+  global paquetes
+  global func_actual
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, ENDPROC, '_', '_', '_')
   cuadruplos.append(cuadruplo)
@@ -214,6 +217,7 @@ def set_func_end():
   cont_Cuadruplos = cont_Cuadruplos + 1
 
   # Reiniciando contadores de memoria
+  paquetes[func_actual] = paquete_local
   paquete_local = [[],[],[],[],[]]
 
   cont_Temporales = 1
@@ -903,8 +907,10 @@ def generate_special_function(function, id):
   print(function, id)
 
 def destroy():
+  global paquete
   # Imprimiendo toda la tabla
   print(dir_func.dictionary)
   print(memoria)
   for i in cuadruplos:
     print(i)
+  print(paquetes)
