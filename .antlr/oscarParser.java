@@ -1777,7 +1777,7 @@ public class oscarParser extends Parser {
 			match(T__12);
 			setState(427);
 			exp();
-			rules.verifica_index()
+			rules.verifica_index(1)
 			setState(433);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1787,7 +1787,7 @@ public class oscarParser extends Parser {
 				match(T__6);
 				setState(430);
 				exp();
-				rules.verifica_index()
+				rules.verifica_index(2)
 				}
 			}
 
