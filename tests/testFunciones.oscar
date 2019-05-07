@@ -14,7 +14,7 @@ def void resta(int x, float y){
 
 main(){
   var
-    int a;
+    int a, suma;
     float b;
 
     a = 10;
