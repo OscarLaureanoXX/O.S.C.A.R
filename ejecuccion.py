@@ -2,6 +2,7 @@ import sys
 import antlr
 
 memoria = antlr.rules.memoria
+paquetes = antlr.rules.paquetes
 
 def main(argv):
   antlr.main(argv)
@@ -24,9 +25,13 @@ def main(argv):
       # print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
       pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
-      valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
 
-      print(valorRes[0])
+      # Construir string dependiendo de localidad y tipo
+      stringRes = getApuntadorMemoria(res)
+      # Conseguir indice de la variable dentro de su lista
+      indexRes = int(resultado) - getattr(memoria, stringRes)
+
+      print(pedazoMemoriaResultado[indexRes])
     elif (operacion == '2'):
       # print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('+', izquierdo, derecho, resultado)
@@ -74,24 +79,23 @@ def main(argv):
 
         # print(res, izq)
 
+        # Conseguir el pedazo de memoria de ese tipo y localidad
+        # EJEMPLO: Si izq tiene [0, constantes]
+        # Se agarra memoria.constantes[0]
         pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
         pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
 
-        # print(pedazoMemoriaResultado, pedazoMemoriaIzquierdo)
+        # Construir string dependiendo de localidad y tipo
+        stringRes = getApuntadorMemoria(res)
+        # Conseguir indice de la variable dentro de su lista
+        indexRes = int(resultado) - getattr(memoria, stringRes)
 
-        # Sacar valor de memoria
-        valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
-        valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-        # print(resultado)
+        # Construir string dependiendo de localidad y tipo
+        stringIzq = getApuntadorMemoria(izq)
+        # Conseguir indice de la variable dentro de su lista
+        indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
 
-        # print(valorRes, valorIzq)
-
-        for item in pedazoMemoriaResultado.items():
-          # print(item, resultado)
-          if (item[1] == valorRes[0] and item[0] == int(resultado)):
-            pedazoMemoriaResultado[item[0]] = valorIzq[0]
-
-        # print(pedazoMemoriaResultado)
+        pedazoMemoriaResultado[indexRes] = pedazoMemoriaIzquierdo[indexIzq]
 
     elif (operacion == '12'):
       # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
@@ -203,48 +207,68 @@ def main(argv):
       # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor leido de consola
       lista_cuadruplos[int(resultado)-1]['izq'] = var
       lista_cuadruplos[int(resultado)-1]['der'] = "read"
+    elif (operacion == '21'):
+      print "ESPECIAL"
+    elif (operacion == '22'):
+      print "RETURN"
+    elif (operacion == '23'):
+      print "VERIFICA"
     else:
       print(operacion)
 
     i = i + 1
 
+def getApuntadorMemoria(var):
+  if var[0] == 0:
+    str2 = 'int'
+  elif var[0] == 1:
+    str2 = 'float'
+  elif var[0] == 2:
+    str2 = 'bool'
+  elif var[0] == 3:
+    str2 = 'string'
+  elif var[0] == 4:
+    str2 = 'list'
+  string = var[1] + "_" + str2
+  return string
+
 def sacaTipoYLocalidad(variable):
-  if (1000 <= int(variable) < 9000):
+  if (1000 <= int(variable) < 6000):
     localidad = 'globales'
-    if (1000 <= int(variable) < 3000):
-      tipo = 'int'
-    elif (3000 <= int(variable) < 5000):
-      tipo = 'float'
-    elif (5000 <= int(variable) < 7000):
-      tipo = 'bool'
-    elif (7000 <= int(variable) < 9000):
-      tipo = 'string'
-    elif (9000 <= int(variable) < 11000):
-      tipo = 'list'
+    if (1000 <= int(variable) < 2000):
+      tipo = 0
+    elif (2000 <= int(variable) < 3000):
+      tipo = 1
+    elif (3000 <= int(variable) < 4000):
+      tipo = 2
+    elif (4000 <= int(variable) < 5000):
+      tipo = 3
+    elif (5000 <= int(variable) < 6000):
+      tipo = 4
+  elif (6000 <= int(variable) < 11000):
+    localidad = 'constantes'
+    if (6000 <= int(variable) < 7000):
+      tipo = 0
+    elif (7000 <= int(variable) < 8000):
+      tipo = 1
+    elif (8000 <= int(variable) < 9000):
+      tipo = 2
+    elif (9000 <= int(variable) < 10000):
+      tipo = 3
+    elif (10000 <= int(variable) < 11000):
+      tipo = 4
   elif (11000 <= int(variable) < 21000):
     localidad = 'locales'
     if (11000 <= int(variable) < 13000):
-      tipo = 'int'
+      tipo = 0
     elif (13000 <= int(variable) < 15000):
-      tipo = 'float'
+      tipo = 1
     elif (15000 <= int(variable) < 17000):
-      tipo = 'bool'
+      tipo = 2
     elif (17000 <= int(variable) < 19000):
-      tipo = 'string'
+      tipo = 3
     elif (19000 <= int(variable) < 21000):
-      tipo = 'list'
-  elif (21000 <= int(variable) < 31000):
-    localidad = 'constantes'
-    if (21000 <= int(variable) < 23000):
-      tipo = 'int'
-    elif (23000 <= int(variable) < 25000):
-      tipo = 'float'
-    elif (25000 <= int(variable) < 27000):
-      tipo = 'bool'
-    elif (27000 <= int(variable) < 29000):
-      tipo = 'string'
-    elif (29000 <= int(variable) < 31000):
-      tipo = 'list'
+      tipo = 4
   
   return [tipo, localidad]
 
@@ -256,25 +280,35 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
   izq = sacaTipoYLocalidad(izquierdo)
   der = sacaTipoYLocalidad(derecho)
 
-  # print(izq, der, res)
+  print(izq, der, res)
 
   pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
   pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
   pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
 
-  # print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
+  print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
 
-  valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
-  valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-  valorDer = [pedazoMemoriaDerecho[value] for value in pedazoMemoriaDerecho if int(derecho) == value]
+  # Construir string dependiendo de localidad y tipo
+  stringRes = getApuntadorMemoria(res)
+  # Conseguir indice de la variable dentro de su lista
+  indexRes = int(resultado) - getattr(memoria, stringRes)
 
-  # print(valorIzq, valorDer, valorRes)
+  # Construir string dependiendo de localidad y tipo
+  stringIzq = getApuntadorMemoria(izq)
+  # Conseguir indice de la variable dentro de su lista
+  indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
+
+  # Construir string dependiendo de localidad y tipo
+  stringDer = getApuntadorMemoria(der)
+  # Conseguir indice de la variable dentro de su lista
+  indexDer = int(derecho) - getattr(memoria, stringDer)
+
+  res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(pedazoMemoriaDerecho[indexDer]))
+
+  print(paquetes)
+
+  pedazoMemoriaResultado[indexRes] = res
   
-  for item in pedazoMemoriaResultado.items():
-    if (item[1] == valorRes[0]):
-      # print(str(valorIzq[0]) + operacion + str(valorDer[0]))
-      pedazoMemoriaResultado[item[0]] = eval(str(valorIzq[0]) + operacion + str(valorDer[0]))
-
   # print(pedazoMemoriaResultado)
 
 if __name__ == '__main__':
