@@ -4,6 +4,5 @@ var
   int a = 0;
 
 main () {
-  a = a + 1;
-  print(a);
+  print(a+1);
 }
