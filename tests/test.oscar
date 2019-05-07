@@ -2,27 +2,6 @@
 
 var
   int a = 0;
-<<<<<<< HEAD
-=======
-  int b = 5;
-  string name = "oscar";
-  bool flag = _true;
-
-def void suma (int x, int y) {
-  var
-    string test = "HI";
-  print(x + y);
-}
-
-def int resta(int x, int y) {
-  if (x > y) {
-    return (x-y);
-  }
-  x = x + 1;
-  print(x);
-  
-}
->>>>>>> master
 
 main () {
   print(a+1);
