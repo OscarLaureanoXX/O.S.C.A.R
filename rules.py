@@ -386,7 +386,9 @@ def verifica_index():
   # Obteniendo las dimensiones de la variable
   # Buscando la variable en la tabla de variables local para sacar sus dimensiones
   if var_actual in dir_func.dictionary[func_actual][1]:
-    print dir_func.dictionary[func_actual][1] 
+    print dir_func.dictionary[func_actual][1]
+  elif var_actual in dir_func.dictionary['oscar'][1]:
+    print dir_func.dictionary['oscar'][1]
 
   dimension = pilaOperandos.pop()
   
