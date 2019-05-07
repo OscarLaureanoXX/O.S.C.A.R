@@ -7,7 +7,7 @@ def void suma(int x, float y){
   print(x+y);
 }
 
-def void resta(int x, float y) {
+def void resta(int x, float y){
   print(x-y);
 }
 
@@ -20,5 +20,4 @@ main(){
     b = 3.1416;
   
   suma(a+1 , b+2.0);
-  resta(a+1, b+2.0);
 }

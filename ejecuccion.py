@@ -21,41 +21,41 @@ def main(argv):
     # Sacar los datos e ir metiendo los valores a memoria
 
     if (operacion == '1'):
-      print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
+      # print(str(i)+": " + "PRINT" + "\t_\t_\t" + resultado)
       res = sacaTipoYLocalidad(resultado)
       pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
       valorRes = [pedazoMemoriaResultado[value] for value in pedazoMemoriaResultado if int(resultado) == value]
 
       print(valorRes[0])
     elif (operacion == '2'):
-      print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "SUMA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('+', izquierdo, derecho, resultado)
     elif (operacion == '3'):
-      print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "RESTA" + "\t" + derecho + "\t" + resultado)
       hazOperacion('-', izquierdo, derecho, resultado)
     elif (operacion == '4'):
-      print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MULTIPLICACION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('*', izquierdo, derecho, resultado)
     elif (operacion == '5'):
-      print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "DIVISION" + "\t" + derecho + "\t" + resultado)
       hazOperacion('/', izquierdo, derecho, resultado)
     elif (operacion == '6'):
-      print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MODULO" + "\t" + derecho + "\t" + resultado)
       hazOperacion('%', izquierdo, derecho, resultado)
     elif (operacion == '7'):
-      print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MAYOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>', izquierdo, derecho, resultado)
     elif (operacion == '8'):
-      print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MENOR" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<', izquierdo, derecho, resultado)
     elif (operacion == '9'):
-      print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MAYORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('>=', izquierdo, derecho, resultado)
     elif (operacion == '10'):
-      print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "MENORIGUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
-      print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
+      # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
       
       # Si la variable fue extraida de consola, no va a tener lugar en memoria, asi que solo se necesita trabajar con el resultado
       if (derecho == "read"):
@@ -94,42 +94,44 @@ def main(argv):
         # print(pedazoMemoriaResultado)
 
     elif (operacion == '12'):
-      print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('==', izquierdo, derecho, resultado)
     elif (operacion == '13'):
-      print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
+      # print(str(i)+": " + izquierdo + "\t" + "NOTEQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('!=', izquierdo, derecho, resultado)
     elif (operacion == '14'):
-      print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
+      # print(str(i)+": " + "GOTO " + "\t_\t_\t" + resultado)
       # BRINCAR AL CUADRUPLO: resultado
       i = int(resultado) - 1
     elif (operacion == '15'):
-      print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
+      # print(str(i)+": " + "GOTOF "+ "\t" + izquierdo + "\t_\t" + resultado)
       izq = sacaTipoYLocalidad(izquierdo)
 
-      print(izq)
+      # print(izq)
 
       pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
 
-      print(pedazoMemoriaIzquierdo)
+      # print(pedazoMemoriaIzquierdo)
 
       valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-      print(valorIzq)
+      # print(valorIzq)
 
       if (valorIzq[0] == False):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
     elif (operacion == '16'):
-      print("ENDPROC", izquierdo, derecho, resultado)
+      # print("ENDPROC", izquierdo, derecho, resultado)
       # REGRESAR AL VALOR DE RETORNO
       i = int(ret)
     elif (operacion == '17'):
-      print("ERA", izquierdo, derecho, resultado)
+      # print("ERA", izquierdo, derecho, resultado)
       # Checar si la funcion existe en el directiorio de funciones
       if izquierdo in dirfunc:
         # Si existe, sacar variables locales de la funcion y su firma
-        variables_locales_funcion = dirfunc[izquierdo][3]
         firma_funcion = dirfunc[izquierdo][2]
+        num_params = len(firma_funcion)
+        params = dirfunc[izquierdo][5:]
+        func_actual = izquierdo
 
         # Creando espacio de memoria para la funcion
         for variable_local in dirfunc[izquierdo][1]:
@@ -137,37 +139,55 @@ def main(argv):
           tipo = dirfunc[izquierdo][1][variable_local][0]
 
           if tipo == 'int':
-            memoria.int['local'][memoria.apuntador_int_local] = nombre
-            memoria.apuntador_int_local += 1
+            memoria.locales[tipo][memoria.apuntador_locales_int] = nombre
+            memoria.apuntador_locales_int += 1
           elif tipo == 'float':
-            memoria.float['local'][memoria.apuntador_float_local] = nombre
-            memoria.apuntador_float_local += 1
+            memoria.locales[tipo][memoria.apuntador_locales_float] = nombre
+            memoria.apuntador_locales_float += 1
           elif tipo == 'bool':
-            memoria.bool['local'][memoria.apuntador_bool_local] = nombre
-            memoria.apuntador_bool_local += 1
+            memoria.locales[tipo][memoria.apuntador_locales_bool] = nombre
+            memoria.apuntador_locales_bool+= 1
           elif tipo == 'string':
-            memoria.string['local'][memoria.apuntador_string_local] = nombre
-            memoria.apuntador_string_local += 1
+            memoria.locales[tipo][memoria.apuntador_locales_string] = nombre
+            memoria.apuntador_locales_string += 1
+          elif tipo == 'list':
+            memoria.locales[tipo][memoria.apuntador_locales_list] = nombre
+            memoria.apuntador_locales_list += 1
 
     elif (operacion == '18'):
-      print("PARAM", izquierdo, derecho, resultado)
+      # print("PARAM", izquierdo, derecho, resultado)
       # Checar si el tipo del primer parametro es igual al tipo primer elemento de la firma
       if derecho[0] == firma_funcion[0]:
         # Si si fue, eliminar el primer elemento de la firma
         firma_funcion = firma_funcion[1:]
+        var = params[0]
         # PASARSELO A LA FUNCION
-        print memoria.int['local']
-        
+        izq = sacaTipoYLocalidad(izquierdo)
 
+        pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+
+        # Sacar valor de memoria
+        valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
+
+        # print(valorIzq)
+    
+        for item in memoria.locales[derecho].items():
+          if item[1] == var:
+            memoria.locales[derecho][item[0]] = valorIzq[0]
+
+        params = params[2:]
+
+      # print(memoria.locales)  
 
     elif (operacion == '19'):
-      print("GOSUB", izquierdo, derecho, resultado) 
+      # print("GOSUB", izquierdo, derecho, resultado) 
+      print(memoria) 
       # GUARDAR VALOR A RETORNAR
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
       i = int(resultado)
     elif (operacion == '20'):
-      print("READ", izquierdo, derecho, resultado)
+      # print("READ", izquierdo, derecho, resultado)
 
       # Leer de consola y eliminar caracteres invisibles
       var = sys.stdin.readline()
