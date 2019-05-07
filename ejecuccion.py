@@ -1,5 +1,6 @@
 import sys
 import antlr
+from Structs import *
 
 memoria = antlr.rules.memoria
 paquetes = antlr.rules.paquetes
@@ -8,6 +9,10 @@ def main(argv):
   antlr.main(argv)
   lista_cuadruplos = antlr.rules.cuadruplos
   dirfunc = antlr.rules.dir_func.dictionary
+
+  Stack_local = Stack()
+  # Cargar main a memoria local
+  memoria.locales = paquetes['main']
 
   i = 1
   ret = 0
@@ -117,10 +122,12 @@ def main(argv):
 
       # print(pedazoMemoriaIzquierdo)
 
-      valorIzq = [pedazoMemoriaIzquierdo[value] for value in pedazoMemoriaIzquierdo if int(izquierdo) == value]
-      # print(valorIzq)
+      # Construir string dependiendo de localidad y tipo
+      stringIzq = getApuntadorMemoria(izq)
+      # Conseguir indice de la variable dentro de su lista
+      indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
 
-      if (valorIzq[0] == False):
+      if (pedazoMemoriaIzquierdo[indexIzq] == False):
         # BRINCAR AL CUADRUPLO: resultado
         i = int(resultado) - 1
     elif (operacion == '16'):
@@ -280,13 +287,13 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
   izq = sacaTipoYLocalidad(izquierdo)
   der = sacaTipoYLocalidad(derecho)
 
-  print(izq, der, res)
+  # print(izq, der, res)
 
   pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
   pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
   pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
 
-  print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
+  # print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
 
   # Construir string dependiendo de localidad y tipo
   stringRes = getApuntadorMemoria(res)
@@ -305,7 +312,7 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
 
   res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(pedazoMemoriaDerecho[indexDer]))
 
-  print(paquetes)
+  # print(memoria.locales)
 
   pedazoMemoriaResultado[indexRes] = res
   
