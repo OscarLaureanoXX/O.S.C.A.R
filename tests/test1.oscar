@@ -1,0 +1,12 @@
+#oscar;
+
+var
+  list L = [0,1,2,3,4];
+
+main() {
+  var
+    float promedio;
+  print(L);
+  promedio = mean(L);
+  print(promedio);
+}

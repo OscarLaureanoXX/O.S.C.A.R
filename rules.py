@@ -13,6 +13,7 @@ cont_Cuadruplos = 1
 cont_Parametros = 0
 cont_Read = 0
 cont_Return = 0
+cont_Special = 0
 # Paquete de "memoria" para variables locales de funciones
 # [int],[float],[bool],[string],[list]
 paquetes = dict()
@@ -368,10 +369,6 @@ def add_return_value(llamadaFuncion):
   nombreFuncion = llamadaFuncion.split('(')[0]
   tipoFuncion = dir_func.dictionary[nombreFuncion][0]
   
-  # temp = 't'+str(cont_Temporales)
-  # crear_dir_memoria(nombreFuncion, tipoFuncion, temp)
-  # temp = str(dir_relativa(nombreFuncion, tipoFuncion, temp))
-
   pilaOperandos.push('return')
   pilaTipos.push(tipoFuncion)
 
@@ -770,10 +767,13 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
+  # print t1, t2
+
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
     global cont_Return
+    global cont_Special
 
     if (der == 'read'):
       for cuadruplo in cuadruplos:
@@ -783,6 +783,11 @@ def pop_equals_from_stack():
     if (der == 'return'):
       for cuadruplo in cuadruplos:
         if int(cuadruplo['cont']) == cont_Return:
+          cuadruplo['res'] = str(cont_Cuadruplos)
+
+    if (der == 'special'):
+      for cuadruplo in cuadruplos:
+        if int(cuadruplo['cont']) == cont_Special:
           cuadruplo['res'] = str(cont_Cuadruplos)
 
   
@@ -1065,17 +1070,28 @@ def generate_read(tipo):
   cont_Read = cont_Cuadruplos
   cont_Cuadruplos += 1
 
+def add_special(type):
+  global pilaOperandos
+  global pilaTipos
+  global cont_Special
+
+  pilaOperandos.push('special')
+  pilaTipos.push(type)
+  cont_Special = cont_Cuadruplos - 1
+
 def generate_special_function(function, id):
   global cont_Cuadruplos
   global cuadruplos
   global pilaOperandos
   global pilaTipos
+  global paquete_local
 
-  # cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, funcion, '_')
-  # cuadruplos.append(cuadruplo)
-  # cont_Cuadruplos += 1
+  id = id.encode('UTF-8')
+  id = str(dir_relativa('oscar', 'list', id))
 
-  print(function, id)
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, id , '_')
+  cuadruplos.append(cuadruplo)
+  cont_Cuadruplos += 1
 
 def destroy():
   global paquete

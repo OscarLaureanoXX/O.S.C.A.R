@@ -1,5 +1,6 @@
 import sys
 import antlr
+import numpy as np
 from Structs import *
 
 memoria = antlr.rules.memoria
@@ -87,6 +88,15 @@ def main(argv):
         pedazoMemoriaResultado[indexRes] = izquierdo
       # Si no, buscamos en memoria para ambos casos
       elif (derecho == 'return'):
+        res = sacaTipoYLocalidad(resultado)
+        pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+        # Construir string dependiendo de localidad y tipo
+        stringRes = getApuntadorMemoria(res)
+        # Conseguir indice de la variable dentro de su lista
+        indexRes = int(resultado) - getattr(memoria, stringRes)
+
+        pedazoMemoriaResultado[indexRes] = izquierdo
+      elif (derecho == 'special'):
         res = sacaTipoYLocalidad(resultado)
         pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
         # Construir string dependiendo de localidad y tipo
@@ -239,7 +249,27 @@ def main(argv):
       lista_cuadruplos[int(resultado)-1]['izq'] = var
       lista_cuadruplos[int(resultado)-1]['der'] = "read"
     elif (operacion == '21'):
-      print "ESPECIAL"
+      # print "ESPECIAL", izquierdo, derecho, resultado
+
+      der = sacaTipoYLocalidad(derecho)
+
+      pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+
+      # Construir string dependiendo de localidad y tipo
+      stringDer = getApuntadorMemoria(der)
+      # Conseguir indice de la variable dentro de su lista
+      indexDer = int(derecho) - getattr(memoria, stringDer)
+
+      if izquierdo == 'mean':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        resultado = np.mean(valorATrabajar)
+
+        # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor generado de funcion
+        lista_cuadruplos[int(resultado)+2]['izq'] = str(resultado)
+        lista_cuadruplos[int(resultado)+2]['der'] = "special"
+        # print lista_cuadruplos[int(resultado)+2]
+
     elif (operacion == '22'):
       # print "RETURN" + " " + izquierdo + " " + derecho + " " + resultado
       izq = sacaTipoYLocalidad(izquierdo)
