@@ -1,20 +1,21 @@
 #oscar;
 
-var
-  int inicio = 0, actual = 1, suma = 0;
-
-def void fibonacci() {
-  var 
-   int limite; 
+def int fibonacci() {
+  var
+    int inicio = 0, actual = 1, suma = 0, limite; 
   
   for limite = read(int) : 15 {
     suma = inicio + actual;
     inicio = actual;
     actual = suma;
-    print(suma);
   }
+
+  return suma;
 }
 
 main () {
-  fibonacci();
+  var
+    int fib;
+  fib = fibonacci();
+  print(fib);
 }

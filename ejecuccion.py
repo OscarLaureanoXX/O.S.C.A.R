@@ -14,9 +14,14 @@ def main(argv):
   # Cargar main a memoria local
   paquete_actual = paquetes['main']
   memoria.locales = paquete_actual
+  func_actual = 'main'
 
   i = 1
   ret = 0
+  apuntador_main = 0
+  contadorLlamadas = 0
+  bandera = False
+  funcionPadre = ''
   print("_____ EJECUCCION _____")
   while(i <= len(lista_cuadruplos)):
     contador = lista_cuadruplos[i-1]['cont']
@@ -24,6 +29,8 @@ def main(argv):
     izquierdo = lista_cuadruplos[i-1]['izq']
     derecho = lista_cuadruplos[i-1]['der']
     resultado = lista_cuadruplos[i-1]['res']
+
+    # print contador
 
     # Sacar los datos e ir metiendo los valores a memoria
 
@@ -67,7 +74,7 @@ def main(argv):
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
       # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
-      
+      # print izquierdo, derecho, resultado
       # Si la variable fue extraida de consola, no va a tener lugar en memoria, asi que solo se necesita trabajar con el resultado
       if (derecho == "read"):
         res = sacaTipoYLocalidad(resultado)
@@ -79,6 +86,15 @@ def main(argv):
 
         pedazoMemoriaResultado[indexRes] = izquierdo
       # Si no, buscamos en memoria para ambos casos
+      elif (derecho == 'return'):
+        res = sacaTipoYLocalidad(resultado)
+        pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+        # Construir string dependiendo de localidad y tipo
+        stringRes = getApuntadorMemoria(res)
+        # Conseguir indice de la variable dentro de su lista
+        indexRes = int(resultado) - getattr(memoria, stringRes)
+
+        pedazoMemoriaResultado[indexRes] = izquierdo
       else:
         # Sacar tipo y localidad de resultado y valor a asignar
         res = sacaTipoYLocalidad(resultado)
@@ -134,12 +150,31 @@ def main(argv):
         i = int(resultado) - 1
     elif (operacion == '16'):
       # print("ENDPROC", izquierdo, derecho, resultado)
+      # Sacar la memoria de la funcion anterior del stack y asignarla a la memoria local
+      # print (bandera, contadorLlamadas)
+      if not bandera:
+        if contadorLlamadas != 0:
+          memoria.locales = Stack_local.pop()
+          funcionPadre = Stack_local.pop()
+          contadorLlamadas -= 1
+        else:
+          bandera = True
+
       # REGRESAR AL VALOR DE RETORNO
-      i = int(ret)
+      # print funcionPadre, ret, apuntador_main
+      # if funcionPadre == 'main':
+      i = int(apuntador_main)
+      # else:
+      #   i = int(ret)
+
     elif (operacion == '17'):
       # print("ERA", izquierdo, derecho, resultado)
       # Checar si la funcion existe en el directiorio de funciones
+      if func_actual == 'main':
+        apuntador_main = int(contador) + 1
+      Stack_local.push(func_actual)
       if izquierdo in dirfunc:
+        contadorLlamadas += 1
         # Si existe, sacar variables locales de la funcion y su firma
         firma_funcion = dirfunc[izquierdo][2]
         num_params = len(firma_funcion)
@@ -158,6 +193,7 @@ def main(argv):
         # Si si fue, eliminar el primer elemento de la firma
         firma_funcion = firma_funcion[1:]
         var = params[0]
+        # print var
         # PASARSELO A LA FUNCION
         izq = sacaTipoYLocalidad(izquierdo)
 
@@ -178,9 +214,9 @@ def main(argv):
       # print(memoria.locales)  
 
     elif (operacion == '19'):
-      # print("GOSUB", izquierdo, derecho, resultado) 
-      # print(memoria) 
-      # GUARDAR VALOR A RETORNAR
+      # print("GOSUB", izquierdo, derecho, resultado)
+      
+      # GUARDAR CUADRUPLO A RETORNAR
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
       i = int(resultado) - 1
@@ -205,7 +241,21 @@ def main(argv):
     elif (operacion == '21'):
       print "ESPECIAL"
     elif (operacion == '22'):
-      print "RETURN"
+      # print "RETURN" + " " + izquierdo + " " + derecho + " " + resultado
+      izq = sacaTipoYLocalidad(izquierdo)
+
+      pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+
+      # Construir string dependiendo de localidad y tipo
+      stringIzq = getApuntadorMemoria(izq)
+      # Conseguir indice de la variable dentro de su lista
+      indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
+
+      valorARetornar = pedazoMemoriaIzquierdo[indexIzq]
+
+      # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor regresado de una funcion
+      lista_cuadruplos[int(resultado)-1]['izq'] = valorARetornar
+      lista_cuadruplos[int(resultado)-1]['der'] = "return"
     elif (operacion == '23'):
       print "VERIFICA"
     else:
