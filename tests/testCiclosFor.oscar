@@ -7,6 +7,6 @@ main() {
   b = 1;
   
   for a = read(int) : 10 {
-    print("a", a)
+    print("a", a);
   }
 }
