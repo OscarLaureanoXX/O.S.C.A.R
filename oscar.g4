@@ -37,7 +37,7 @@ asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad 
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion | ('['((exp {rules.crear_array(1)} | sub_lista ) (','(exp {rules.crear_array(1)} | sub_lista ) )*)?']'{rules.asignar_array(1)}) | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp {rules.crear_array(2)} (','exp {rules.crear_array(2)})*)?']' {rules.asignar_array(2)};
 element	    :	{rules.nombre_arreglo()}'[' exp {rules.verifica_index(1)} (','exp {rules.verifica_index(2)})? ']' ;
-llamadaret	:	concat {rules.add_special('string')} | sort {rules.add_special('list')} | splice {rules.add_special('string')} | length {rules.add_special('list')} | min_ {rules.add_special('int')} | max_ {rules.add_special('int')} | mean {rules.add_special('float')} | variance {rules.add_special('float')} | median {rules.add_special('list')} | stdev {rules.add_special('float')}| head {rules.add_special('list')} | tail {rules.add_special('list')}| import_csv {rules.add_special('list')}| union {rules.add_special('list')}| intersect {rules.add_special('list')}| find {rules.add_special('int')}| lectura | userdef {rules.add_return_value($userdef.text)} ;
+llamadaret	:	concat {rules.add_special('string')} | sort {rules.add_special('list')} | splice {rules.add_special('string')} | length {rules.add_special('int')} | min_ {rules.add_special('int')} | max_ {rules.add_special('int')} | mean {rules.add_special('float')} | variance {rules.add_special('float')} | median {rules.add_special('list')} | stdev {rules.add_special('float')}| head {rules.add_special('list')} | tail {rules.add_special('list')}| import_csv {rules.add_special('list')}| union {rules.add_special('list')}| intersect {rules.add_special('list')}| find {rules.add_special('int')}| lectura | userdef {rules.add_return_value($userdef.text)} ;
 llamadavoid :   histograma | pie_chart | bar_graph | export_csv | (userdef ';');
 mean		:	'mean' '(' ID {rules.generate_special_function("mean", $ID.text)} ')' ;
 variance	:	'variance' '(' ID {rules.generate_special_function("variance", $ID.text)}')' ;
@@ -45,20 +45,20 @@ median	    :	'median' '(' ID {rules.generate_special_function("median", $ID.text
 stdev		: 	'stdev' '(' ID {rules.generate_special_function("stdev", $ID.text)}')' ;
 head		: 	'head' '(' ID {rules.generate_special_function("head", $ID.text)}')' ;
 tail		:	'tail' '(' ID {rules.generate_special_function("tail", $ID.text)}')' ;
-union		:	'union' '(' ID ',' ID ')' {rules.generate_special_function("union")} ;
-intersect	:	'intersect' '(' ID ',' ID ')' {rules.generate_special_function("intersect")} ;
+union		:	'union' '(' ID {rules.add_special_stack($ID.text, 'list')} ',' ID {rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("union")} ;
+intersect	:	'intersect' '(' ID {rules.add_special_stack($ID.text, 'list')}',' ID {rules.add_special_stack($ID.text, 'list')}')' {rules.generate_special_function2("intersect")} ;
 find		:	'find' '(' ID ',' exp ')' ;
 import_csv	:	'import' '(' CTE_STRING ')' ;
 length  	:	'length' '(' ID {rules.generate_special_function("length", $ID.text)}')' ;
 min_		:	'min' '(' ID {rules.generate_special_function("min", $ID.text)}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
 max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
-concat	    :	'concat' '(' ID ',' ID ')' {rules.generate_special_function("concat")} ;
+concat	    :	'concat' '(' ID {rules.add_special_stack($ID.text, 'string')} ',' ID {rules.add_special_stack($ID.text, 'string')} ')' {rules.generate_special_function2("concat")} ;
 sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort")} ;
 splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice")} ;
 userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (exp {rules.func_add_argument()}(',' exp{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
-histograma	:	'histogram' '(' ID ',' ID ')' {rules.generate_special_function("histogram")} ';' ; 
-pie_chart	:	'pie_chart' '(' ID ',' ID ')' {rules.generate_special_function("pie_chart")} ';' ;
-bar_graph	:	'bar_graph' '(' ID ',' ID ')' {rules.generate_special_function("bar_graph")} ';' ;
+histograma	:	'histogram' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("histogram")} ';' ; 
+pie_chart	:	'pie_chart' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("pie_chart")} ';' ;
+bar_graph	:	'bar_graph' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("bar_graph")} ';' ;
 export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {rules.generate_special_function("export")} ';';
 
 /** LEXER RULES **/

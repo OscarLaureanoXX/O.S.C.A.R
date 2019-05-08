@@ -2,18 +2,16 @@
 
 var
   list L = [0,1,2,3,4];
+  list M = [0,1,2,3,4];
+  string a = "hola";
+  string b = "mundo";
 
 main() {
   var
-    float promedio;
     list X;
-  print(L);
-  promedio = mean(L);
-  print(promedio);
-  promedio = variance(L);
-  print(promedio);
-  promedio = stdev(L);
-  print(promedio);
-  X = median(L);
-  print(X);
+    string Y;
+
+  Y = concat(a, b);
+  print(Y);
+  pie_chart(L, M);
 }

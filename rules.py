@@ -54,6 +54,7 @@ pilaOperandos = Stack()
 pilaOperadores = Stack()
 pilaTipos = Stack()
 pilaSaltos = Stack()
+pilaEspecial = Stack()
 
 # Lista de cuadruplos
 cuadruplos = list()
@@ -1082,6 +1083,7 @@ def add_special(type):
   pilaTipos.push(type)
   cont_Special = cont_Cuadruplos - 1
 
+# Generar cuadruplos para funciones especiales de un parametro
 def generate_special_function(function, id):
   global cont_Cuadruplos
   global cuadruplos
@@ -1095,6 +1097,36 @@ def generate_special_function(function, id):
   cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, id , '_')
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos += 1
+
+# Agregar parametros de funciones especiales dentro de la pila de especiales para poder despues armar el paquete de parametros
+def add_special_stack(id, tipo):
+  global pilaEspecial
+
+  id = id.encode('UTF-8')
+  tipo = tipo.encode('UTF-8')
+
+  pilaEspecial.push(id)
+  pilaEspecial.push(tipo)
+  
+def generate_special_function2(function):
+  global pilaEspecial
+  global cont_Cuadruplos
+  global cuadruplos
+
+  tipoParam1 = pilaEspecial.pop()
+  param1 = pilaEspecial.pop()
+  param1 = str(dir_relativa('oscar', tipoParam1, param1))
+
+  tipoParam2 = pilaEspecial.pop()
+  param2 = pilaEspecial.pop()
+  param2 = str(dir_relativa('oscar', tipoParam2, param2))
+
+  paquete_params = [param1, param2]
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, str(paquete_params), '_')
+  cuadruplos.append(cuadruplo)
+  cont_Cuadruplos += 1
+
 
 def destroy():
   global paquete

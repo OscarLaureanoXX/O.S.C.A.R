@@ -1,6 +1,8 @@
 import sys
 import antlr
 import numpy as np
+import re
+from matplotlib import pyplot as plt
 from Structs import *
 
 memoria = antlr.rules.memoria
@@ -251,39 +253,105 @@ def main(argv):
     elif (operacion == '21'):
       print "ESPECIAL", izquierdo, derecho, resultado
 
-      der = sacaTipoYLocalidad(derecho)
+      # Limpiar el string de parametros para contener solo direcciones de memoria
+      if derecho[0] == '[':
+        arguments = list()
+        args = derecho.split(',')
+        for arg in args:
+          arguments.append(re.sub("[^0-9]", "", arg))
 
-      pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+        arg1 = sacaTipoYLocalidad(arguments[0])
+        arg2 = sacaTipoYLocalidad(arguments[1])
 
-      # Construir string dependiendo de localidad y tipo
-      stringDer = getApuntadorMemoria(der)
-      # Conseguir indice de la variable dentro de su lista
-      indexDer = int(derecho) - getattr(memoria, stringDer)
+        pedazoMemoria1 = getattr(memoria, arg1[1])[arg1[0]]
+        pedazoMemoria2 = getattr(memoria, arg2[1])[arg2[0]]
+
+        string1 = getApuntadorMemoria(arg1)
+        index1 = int(arguments[0]) - getattr(memoria, string1)
+
+        string2 = getApuntadorMemoria(arg2)
+        index2 = int(arguments[1]) - getattr(memoria, string2)
+      else:
+        der = sacaTipoYLocalidad(derecho)
+        pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+        # Construir string dependiendo de localidad y tipo
+        stringDer = getApuntadorMemoria(der)
+        # Conseguir indice de la variable dentro de su lista
+        indexDer = int(derecho) - getattr(memoria, stringDer)
 
       if izquierdo == 'mean':
         valorATrabajar = pedazoMemoriaDerecho[indexDer]
         valorATrabajar = map(int, valorATrabajar)
         result = np.mean(valorATrabajar)
-        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
-        lista_cuadruplos[int(resultado)-1]['der'] = "special"
       elif izquierdo == 'variance':
         valorATrabajar = pedazoMemoriaDerecho[indexDer]
         valorATrabajar = map(int, valorATrabajar)
         resul = np.var(valorATrabajar, ddof=1)
-        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
-        lista_cuadruplos[int(resultado)-1]['der'] = "special"
       elif izquierdo == 'median':
         valorATrabajar = pedazoMemoriaDerecho[indexDer]
         valorATrabajar = map(int, valorATrabajar)
         result = np.median(valorATrabajar)
-        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
-        lista_cuadruplos[int(resultado)-1]['der'] = "special"
       elif izquierdo == 'stdev':
         valorATrabajar = pedazoMemoriaDerecho[indexDer]
         valorATrabajar = map(int, valorATrabajar)
         result = np.std(valorATrabajar)
+      elif izquierdo == 'head':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = valorATrabajar[0]
+      elif izquierdo == 'tail':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = valorATrabajar[len(valorATrabajar) -1]
+      elif izquierdo == 'max':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = max(valorATrabajar)
+      elif izquierdo == 'min':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = min(valorATrabajar)
+      elif izquierdo == 'length':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = len(valorATrabajar)
+      elif izquierdo == 'union':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = map(int, valor1)
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        result = list(set(valor1) | set(valor2))
+      elif izquierdo == 'intersect':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = map(int, valor1)
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        result = list(set(valor1) & set(valor2))
+      elif izquierdo == 'concat':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = valor1.split('"')[1]
+        valor2 = pedazoMemoria2[index2]
+        valor2 = valor2.split('"')[1]
+        result = '"' + valor2 + " " + valor1 + '"'
+      elif izquierdo == 'bar_graph':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = map(int, valor1)
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        plt.bar(valor2, valor1)
+        plt.show()
+      elif izquierdo == 'pie_chart':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = map(int, valor1)
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        plt.pie(valor2, labels=valor1)
+        plt.show()
+
+      if resultado != '_':
         lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
         lista_cuadruplos[int(resultado)-1]['der'] = "special"
+      
 
     elif (operacion == '22'):
       # print "RETURN" + " " + izquierdo + " " + derecho + " " + resultado
