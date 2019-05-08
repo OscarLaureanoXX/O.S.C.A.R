@@ -364,13 +364,14 @@ def nombre_arreglo():
   global pilaOperandos
   global var_actual
   global memoria
+  global paquete_local
 
   direccionVar = int (pilaOperandos.peek())
 
   # Checando que la variable este en listas locales
   if direccionVar >= memoria.locales_list:
     # Buscando su nombre en la lista de locales
-    var_actual = memoria.locales[memoria.indexList][direccionVar - memoria.locales_list]
+    var_actual = paquete_local[memoria.indexList][direccionVar - memoria.locales_list]
   # Checando si la variable esta en listas globales
   elif direccionVar >= 5000 and direccionVar < 6000:
     # Buscando su nombre en listas globales
@@ -401,6 +402,79 @@ def verifica_index(dim):
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos += 1
+
+listaTemporal = []
+subListaTemporal = []
+
+# Si el parametro es 1 hace una lista, si no hace una sublista
+def crear_array(kind):
+  global pilaOperandos
+  global listaTemporal
+  global subListaTemporal
+  global memoria
+
+  direccion = pilaOperandos.pop()
+  valor = retornaValor(direccion)
+
+  if kind == 1:
+    listaTemporal.append(valor)
+  else:
+    subListaTemporal.append(valor)
+
+
+def retornaValor(direccion):
+  global memoria
+
+  direccion = int (direccion)
+  # Checando en memoria global
+  if direccion >= memoria.globales_int and direccion < memoria.globales_float:
+    return memoria.globales[memoria.indexInt][direccion-memoria.globales_int]
+  elif direccion >= memoria.globales_float and direccion < memoria.globales_bool:
+    return memoria.globales[memoria.indexFloat][direccion-memoria.globales_float]
+  elif direccion >= memoria.globales_bool and direccion < memoria.globales_string:
+    return memoria.globales[memoria.indexBool][direccion-memoria.globales_bool]
+  elif direccion >= memoria.globales_string and direccion < memoria.globales_list:
+    return memoria.globales[memoria.indexString][direccion-memoria.globales_string]
+  elif direccion >= memoria.globales_list and direccion < memoria.constantes_int:
+    return memoria.globales[memoria.indexList][direccion-memoria.globales_list]
+  # Checando en memoria constante
+  if direccion >= memoria.constantes_int and direccion < memoria.constantes_float:
+    return memoria.constantes[memoria.indexInt][direccion-memoria.constantes_int]
+  elif direccion >= memoria.constantes_float and direccion < memoria.constantes_bool:
+    return memoria.constantes[memoria.indexFloat][direccion-memoria.constantes_float]
+  elif direccion >= memoria.constantes_bool and direccion < memoria.constantes_string:
+    return memoria.constantes[memoria.indexBool][direccion-memoria.constantes_bool]
+  elif direccion >= memoria.constantes_string and direccion < memoria.constantes_list:
+    return memoria.constantes[memoria.indexString][direccion-memoria.constantes_string]
+  elif direccion >= memoria.constantes_list and direccion < memoria.locales_int:
+    return memoria.constantes[memoria.indexList][direccion-memoria.constantes_list]
+
+# Si el kind es 1 lo asigna como array final, si no lo hace como subarray
+def asignar_array(kind):
+  global listaTemporal
+  global subListaTemporal
+  global pilaOperandos
+  global paquete_local
+
+  if kind == 1:
+    # Direccion de donde va a quedar
+    direccion = len(paquete_local[memoria.indexList]) + memoria.locales_list
+
+    # Asignar el arreglo al paquete en el lugar que le corresponde
+    paquete_local[memoria.indexList].append(listaTemporal)
+
+    # Agregando la direccion a la pila de operandos
+    pilaOperandos.push(str(direccion))
+    listaTemporal = []
+  else:
+    listaTemporal.append(subListaTemporal)
+    subListaTemporal = []
+  
+
+
+  
+
+
 
 ######################################## /LISTAS ####################################################
 

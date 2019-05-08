@@ -27,16 +27,15 @@ var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')}
                 | CTE_I {rules.add_to_operand_stack($CTE_I.text, 'int')} 
                 | CTE_F {rules.add_to_operand_stack($CTE_F.text, 'float')} 
                 | CTE_B {rules.add_to_operand_stack($CTE_B.text, 'bool')}
-                | CTE_STRING {rules.add_to_operand_stack($CTE_STRING.text, 'string')}
-                | element {#sacar direccion} ;
+                | CTE_STRING {rules.add_to_operand_stack($CTE_STRING.text, 'string')};
 tipo		: 	'int' | 'float' | 'string' | 'bool' | 'list' ;
 estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID {rules.add_to_operand_stack($ID.text, 'var')} '=' {rules.add_to_operator_stack('=')} exp {rules.pop_equals_from_stack()} ':'{rules.add_for_inicio($ID.text)} exp {rules.add_for_limite()} (':' exp{rules.add_for_step()})? estats {rules.add_for_final()}) 
                 | ( 'while' {rules.add_while()}'(' expresion ')'{rules.add_expr_while()} estats{rules.add_end_while()}) ;
 estats	    :	'{' estatuto+ '}' ;
 asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
-igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;
-sub_lista   :   '[' (exp(','exp)*)?']' ;
+igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion | ('['((exp {rules.crear_array(1)} | sub_lista ) (','(exp {rules.crear_array(1)} | sub_lista ) )*)?']'{rules.asignar_array(1)}) | llamadaret ) {rules.pop_equals_from_stack()} ;
+sub_lista   :   '[' (exp {rules.crear_array(2)} (','exp {rules.crear_array(2)})*)?']' {rules.asignar_array(2)};
 element	    :	{rules.nombre_arreglo()}'[' exp {rules.verifica_index(1)} (','exp {rules.verifica_index(2)})? ']' ;
 llamadaret	:	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | import_csv | union | intersect | find | lectura | userdef ;
 llamadavoid :   histograma | pie_chart | bar_graph | export_csv | (userdef ';');

@@ -1,9 +1,9 @@
 #oscar;
 
-var
-  list A[2 , 5];
-  int b;
-
 main () {
-  A[ 0 + 1 , 15 - 11 ] = 10 * 2;
+  var
+  	list C;
+
+  	C = [["a","b"],[1,2,3,4]];
+  	print(C);
 }
