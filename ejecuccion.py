@@ -333,6 +333,12 @@ def main(argv):
         valor2 = pedazoMemoria2[index2]
         valor2 = valor2.split('"')[1]
         result = '"' + valor2 + " " + valor1 + '"'
+      elif izquierdo == 'histogram':
+        valor1 = int(pedazoMemoria1[index1])
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        plt.hist(valor2, bins=valor1)
+        plt.show()
       elif izquierdo == 'bar_graph':
         valor1 = pedazoMemoria1[index1]
         valor1 = map(int, valor1)

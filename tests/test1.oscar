@@ -11,6 +11,5 @@ main() {
     list X;
     string Y;
 
-  Y = splice(b, 2, 4);
-  print(Y);
+  histogram(L, 3);
 }

@@ -56,10 +56,10 @@ concat	    :	'concat' '(' ID {rules.add_special_stack($ID.text, 'string')} ',' I
 sort		:	'sort' '(' ID {rules.add_special_stack($ID.text, 'list')}  ',' CTE_I {rules.add_special_stack($CTE_I.text, 'int')}')' {rules.generate_special_function2("sort")} ;
 splice 	    :	'splice' '(' ID{rules.add_special_stack($ID.text, 'string')} ',' CTE_I{rules.add_special_stack($CTE_I.text, 'int')} ',' CTE_I{rules.add_special_stack($CTE_I.text, 'int')} ')' {rules.generate_special_function3("splice")} ;
 userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (exp {rules.func_add_argument()}(',' exp{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
-histograma	:	'histogram' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("histogram")} ';' ; 
+histograma	:	'histogram' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' CTE_I{rules.add_special_stack($CTE_I.text, 'int')} ')' {rules.generate_special_function2("histogram")} ';' ; 
 pie_chart	:	'pie_chart' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("pie_chart")} ';' ;
 bar_graph	:	'bar_graph' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("bar_graph")} ';' ;
-export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {rules.generate_special_function("export")} ';';
+export_csv	:	'export' '(' ID ',' CTE_STRING '.csv' ')' {###FALTA} {rules.generate_special_function("export")} ';';
 
 /** LEXER RULES **/
 
