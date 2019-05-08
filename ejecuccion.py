@@ -10,6 +10,7 @@ def main(argv):
   antlr.main(argv)
   lista_cuadruplos = antlr.rules.cuadruplos
   dirfunc = antlr.rules.dir_func.dictionary
+  main = antlr.rules.apuntador_main
 
   Stack_local = Stack()
   # Cargar main a memoria local
@@ -19,7 +20,6 @@ def main(argv):
 
   i = 1
   ret = 0
-  apuntador_main = 0
   contadorLlamadas = 0
   bandera = False
   funcionPadre = ''
@@ -173,15 +173,13 @@ def main(argv):
       # REGRESAR AL VALOR DE RETORNO
       # print funcionPadre, ret, apuntador_main
       # if funcionPadre == 'main':
-      i = int(apuntador_main)
+      i = int(main) + 1
       # else:
       #   i = int(ret)
 
     elif (operacion == '17'):
       # print("ERA", izquierdo, derecho, resultado)
       # Checar si la funcion existe en el directiorio de funciones
-      if func_actual == 'main':
-        apuntador_main = int(contador) + 1
       Stack_local.push(func_actual)
       if izquierdo in dirfunc:
         contadorLlamadas += 1
@@ -226,9 +224,11 @@ def main(argv):
     elif (operacion == '19'):
       # print("GOSUB", izquierdo, derecho, resultado)
       
+      
       # GUARDAR CUADRUPLO A RETORNAR
       ret = contador
       # BRINCAR AL CUADRUPLO DE INICIO DE FUNCION
+      
       i = int(resultado) - 1
     elif (operacion == '20'):
       # print("READ", izquierdo, derecho, resultado)
@@ -249,7 +249,7 @@ def main(argv):
       lista_cuadruplos[int(resultado)-1]['izq'] = var
       lista_cuadruplos[int(resultado)-1]['der'] = "read"
     elif (operacion == '21'):
-      # print "ESPECIAL", izquierdo, derecho, resultado
+      print "ESPECIAL", izquierdo, derecho, resultado
 
       der = sacaTipoYLocalidad(derecho)
 
@@ -263,12 +263,27 @@ def main(argv):
       if izquierdo == 'mean':
         valorATrabajar = pedazoMemoriaDerecho[indexDer]
         valorATrabajar = map(int, valorATrabajar)
-        resultado = np.mean(valorATrabajar)
-
-        # Ir al cuadruplo correspondiente y agregar el valor y la nota que es un valor generado de funcion
-        lista_cuadruplos[int(resultado)+2]['izq'] = str(resultado)
-        lista_cuadruplos[int(resultado)+2]['der'] = "special"
-        # print lista_cuadruplos[int(resultado)+2]
+        result = np.mean(valorATrabajar)
+        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
+        lista_cuadruplos[int(resultado)-1]['der'] = "special"
+      elif izquierdo == 'variance':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        resul = np.var(valorATrabajar, ddof=1)
+        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
+        lista_cuadruplos[int(resultado)-1]['der'] = "special"
+      elif izquierdo == 'median':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = np.median(valorATrabajar)
+        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
+        lista_cuadruplos[int(resultado)-1]['der'] = "special"
+      elif izquierdo == 'stdev':
+        valorATrabajar = pedazoMemoriaDerecho[indexDer]
+        valorATrabajar = map(int, valorATrabajar)
+        result = np.std(valorATrabajar)
+        lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
+        lista_cuadruplos[int(resultado)-1]['der'] = "special"
 
     elif (operacion == '22'):
       # print "RETURN" + " " + izquierdo + " " + derecho + " " + resultado

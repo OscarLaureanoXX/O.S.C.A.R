@@ -19,6 +19,7 @@ cont_Special = 0
 paquetes = dict()
 paquete_local = [[],[],[],[],[]]
 first_go_to = False
+apuntador_main = 0
 
 # Memoria de ejecuccion
 memoria = Execution_Memory()
@@ -282,10 +283,12 @@ def fill_first_goto():
   global cuadruplos
   global cont_Cuadruplos
   global first_go_to
+  global apuntador_main
 
   for cuadruplo in cuadruplos:
     if cuadruplo['op'] ==  '14' and first_go_to == False:
       cuadruplo['res'] = str(cont_Cuadruplos)
+      apuntador_main = str(cont_Cuadruplos)
       first_go_to = True
 
 ################################ /TABLA DE FUNCIONES ################################################
@@ -1101,3 +1104,4 @@ def destroy():
   for i in cuadruplos:
     print(i)
   print(paquetes)
+  # print apuntador_main
