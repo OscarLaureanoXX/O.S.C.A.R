@@ -9,7 +9,6 @@ var
 main() {
   var
     list X;
-    string Y;
 
-  histogram(L, 3);
+  X = import("test");
 }

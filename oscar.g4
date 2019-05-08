@@ -48,7 +48,7 @@ tail		:	'tail' '(' ID {rules.generate_special_function("tail", $ID.text)}')' ;
 union		:	'union' '(' ID {rules.add_special_stack($ID.text, 'list')} ',' ID {rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("union")} ;
 intersect	:	'intersect' '(' ID {rules.add_special_stack($ID.text, 'list')}',' ID {rules.add_special_stack($ID.text, 'list')}')' {rules.generate_special_function2("intersect")} ;
 find		:	'find' '(' ID {rules.add_special_stack($ID.text, 'list')}',' exp {##FALTA}')' {rules.generate_special_function2("find")} ;
-import_csv	:	'import' '(' CTE_STRING ')' {####FALTA} ;
+import_csv	:	'import' '(' CTE_STRING ')' {rules.generate_special_function("import", $CTE_STRING.text)} ;
 length  	:	'length' '(' ID {rules.generate_special_function("length", $ID.text)}')' ;
 min_		:	'min' '(' ID {rules.generate_special_function("min", $ID.text)}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
 max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python

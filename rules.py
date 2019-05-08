@@ -1092,7 +1092,10 @@ def generate_special_function(function, id):
   global paquete_local
 
   id = id.encode('UTF-8')
-  id = str(dir_relativa('oscar', 'list', id))
+  if id[0] == '"':
+    id = str(dir_relativa('oscar', 'string', id))
+  else:
+    id = str(dir_relativa('oscar', 'list', id))
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, id , '_')
   cuadruplos.append(cuadruplo)
