@@ -1034,7 +1034,7 @@ def add_for_final():
   cont_Cuadruplos = cont_Cuadruplos + 1
 
   # Generar cuadruplo para volver a evaluar
-  print(ret)
+
   cuadruplo = Cuadruplo(cont_Cuadruplos, GOTO , '_' , '_' , str(ret))
   cuadruplos.append(cuadruplo)
 
@@ -1172,9 +1172,9 @@ def generate_special_function3(function):
 def destroy():
   global paquete
   # Imprimiendo toda la tabla
-  print(dir_func.dictionary)
-  print(memoria)
-  for i in cuadruplos:
-    print(i)
-  print(paquetes)
+  # print(dir_func.dictionary)
+  # print(memoria)
+  # for i in cuadruplos:
+  #   print(i)
+  # print(paquetes)
   # print apuntador_main
