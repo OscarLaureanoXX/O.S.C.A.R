@@ -38,7 +38,7 @@ asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad 
 igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion |('[' ((exp | sub_lista )(','(exp | sub_lista ) )*)?']') | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp(','exp)*)?']' ;
 element	    :	{rules.nombre_arreglo()}'[' exp {rules.verifica_index()} (','exp {rules.verifica_index()})? ']' ;
-llamadaret	:	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | import_csv | union | intersect | find | lectura | userdef ;
+llamadaret	:	concat | sort | splice | length | min_ | max_ | mean | variance | median | stdev | head | tail | import_csv | union | intersect | find | lectura | userdef {rules.add_return_value($userdef.text)} ;
 llamadavoid :   histograma | pie_chart | bar_graph | export_csv | (userdef ';');
 mean		:	'mean' '(' ID {rules.generate_special_function("mean", $ID.text)} ')' ;
 variance	:	'variance' '(' ID {rules.generate_special_function("variance", $ID.text)}')' ;

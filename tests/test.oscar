@@ -2,12 +2,17 @@
 
 var
   int a = 0;
-  float b = 3.1416;
 
-def void suma(int x, float y) {
-  print(x + y);
+def int suma(int limite) {
+  if (limite != 1) {
+    limite = limite - 1;
+    suma(limite);
+  }
+
+  return 1;
 }
 
 main () {
-  suma(a+1,b+1);
+  a = suma(2);
+  print(a);
 }

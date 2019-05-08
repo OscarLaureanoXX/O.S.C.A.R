@@ -12,6 +12,7 @@ cont_Temporales = 1
 cont_Cuadruplos = 1
 cont_Parametros = 0
 cont_Read = 0
+cont_Return = 0
 # Paquete de "memoria" para variables locales de funciones
 # [int],[float],[bool],[string],[list]
 paquetes = dict()
@@ -236,15 +237,16 @@ def create_packet_main():
 def create_return():
   global pilaOperandos
   global cont_Cuadruplos
+  global cont_Return
   global cuadruplos
 
   value = pilaOperandos.pop()
 
   cuadruplo = Cuadruplo(cont_Cuadruplos, RETURN, value , '_', '_')
   cuadruplos.append(cuadruplo)
-
+  
+  cont_Return = cont_Cuadruplos
   cont_Cuadruplos = cont_Cuadruplos + 1
-
 
   
 # Agregar numero de renglon de una lista [sizeR]
@@ -356,6 +358,22 @@ def func_gosub():
   cuadruplos.append(cuadruplo)
 
   cont_Cuadruplos += 1
+
+def add_return_value(llamadaFuncion):
+  global cont_Temporales
+  global pilaOperandos
+  global pilaTipos
+  global func_actual
+
+  nombreFuncion = llamadaFuncion.split('(')[0]
+  tipoFuncion = dir_func.dictionary[nombreFuncion][0]
+  
+  # temp = 't'+str(cont_Temporales)
+  # crear_dir_memoria(nombreFuncion, tipoFuncion, temp)
+  # temp = str(dir_relativa(nombreFuncion, tipoFuncion, temp))
+
+  pilaOperandos.push('return')
+  pilaTipos.push(tipoFuncion)
 
 ################################# /LLAMADA A FUNCIONES ##############################################
 
@@ -681,12 +699,18 @@ def pop_equals_from_stack():
   if(t1 == t2):
     global cont_Cuadruplos
     global cuadruplos
+    global cont_Return
 
     if (der == 'read'):
-      der = 'read'
       for cuadruplo in cuadruplos:
         if int(cuadruplo['cont']) == cont_Read:
           cuadruplo['res'] = str(cont_Cuadruplos)
+    
+    if (der == 'return'):
+      for cuadruplo in cuadruplos:
+        if int(cuadruplo['cont']) == cont_Return:
+          cuadruplo['res'] = str(cont_Cuadruplos)
+
   
     cuadruplo = Cuadruplo(cont_Cuadruplos , ASIGNACION, der, '_', izq)
     cont_Cuadruplos += 1
