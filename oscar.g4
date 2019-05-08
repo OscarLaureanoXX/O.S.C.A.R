@@ -47,14 +47,14 @@ head		: 	'head' '(' ID {rules.generate_special_function("head", $ID.text)}')' ;
 tail		:	'tail' '(' ID {rules.generate_special_function("tail", $ID.text)}')' ;
 union		:	'union' '(' ID {rules.add_special_stack($ID.text, 'list')} ',' ID {rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("union")} ;
 intersect	:	'intersect' '(' ID {rules.add_special_stack($ID.text, 'list')}',' ID {rules.add_special_stack($ID.text, 'list')}')' {rules.generate_special_function2("intersect")} ;
-find		:	'find' '(' ID ',' exp ')' ;
-import_csv	:	'import' '(' CTE_STRING ')' ;
+find		:	'find' '(' ID {rules.add_special_stack($ID.text, 'list')}',' exp {##FALTA}')' {rules.generate_special_function2("find")} ;
+import_csv	:	'import' '(' CTE_STRING ')' {####FALTA} ;
 length  	:	'length' '(' ID {rules.generate_special_function("length", $ID.text)}')' ;
 min_		:	'min' '(' ID {rules.generate_special_function("min", $ID.text)}')' ;                       // Se tuvo que cambiar min por min_ porque ese nombre tiene conflicto en Python
 max_	    :	'max' '(' ID {rules.generate_special_function("max", $ID.text)}')' ;                       // Se tuvo que cambiar max por max_ porque ese nombre tiene conflicto en Python
 concat	    :	'concat' '(' ID {rules.add_special_stack($ID.text, 'string')} ',' ID {rules.add_special_stack($ID.text, 'string')} ')' {rules.generate_special_function2("concat")} ;
-sort		:	'sort' '(' ID ',' CTE_I ')' {rules.generate_special_function("sort")} ;
-splice 	    :	'splice' '(' ID ',' exp ',' exp ')' {rules.generate_special_function("splice")} ;
+sort		:	'sort' '(' ID {rules.add_special_stack($ID.text, 'list')}  ',' CTE_I {rules.add_special_stack($CTE_I.text, 'int')}')' {rules.generate_special_function2("sort")} ;
+splice 	    :	'splice' '(' ID{rules.add_special_stack($ID.text, 'string')} ',' CTE_I{rules.add_special_stack($CTE_I.text, 'int')} ',' CTE_I{rules.add_special_stack($CTE_I.text, 'int')} ')' {rules.generate_special_function3("splice")} ;
 userdef	    :	 ID {rules.func_call_validation($ID.text)}'(' (exp {rules.func_add_argument()}(',' exp{rules.func_add_argument()})* )? ')' {rules.func_gosub()};
 histograma	:	'histogram' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("histogram")} ';' ; 
 pie_chart	:	'pie_chart' '(' ID{rules.add_special_stack($ID.text, 'list')} ',' ID{rules.add_special_stack($ID.text, 'list')} ')' {rules.generate_special_function2("pie_chart")} ';' ;

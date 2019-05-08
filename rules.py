@@ -1107,7 +1107,8 @@ def add_special_stack(id, tipo):
 
   pilaEspecial.push(id)
   pilaEspecial.push(tipo)
-  
+
+# Generar cuadruplos para funciones especiales de 2 argumentos 
 def generate_special_function2(function):
   global pilaEspecial
   global cont_Cuadruplos
@@ -1115,7 +1116,10 @@ def generate_special_function2(function):
 
   tipoParam1 = pilaEspecial.pop()
   param1 = pilaEspecial.pop()
-  param1 = str(dir_relativa('oscar', tipoParam1, param1))
+  if param1.isdigit():
+    param1 = str(dir_relativa('constante', tipoParam1, param1)) 
+  else: 
+    param1 = str(dir_relativa('oscar', tipoParam1, param1))
 
   tipoParam2 = pilaEspecial.pop()
   param2 = pilaEspecial.pop()
@@ -1126,6 +1130,40 @@ def generate_special_function2(function):
   cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, str(paquete_params), '_')
   cuadruplos.append(cuadruplo)
   cont_Cuadruplos += 1
+
+# Generar cuadruplos para funciones especiales de 3 argumentos 
+def generate_special_function3(function):
+  global pilaEspecial
+  global cont_Cuadruplos
+  global cuadruplos
+
+  tipoParam1 = pilaEspecial.pop()
+  param1 = pilaEspecial.pop()
+  if param1.isdigit():
+    param1 = str(dir_relativa('constante', tipoParam1, param1)) 
+  else: 
+    param1 = str(dir_relativa('oscar', tipoParam1, param1))
+
+  tipoParam2 = pilaEspecial.pop()
+  param2 = pilaEspecial.pop()
+  if param2.isdigit():
+    param2 = str(dir_relativa('constante', tipoParam2, param2)) 
+  else: 
+    param2 = str(dir_relativa('oscar', tipoParam2, param2))
+
+  tipoParam3 = pilaEspecial.pop()
+  param3 = pilaEspecial.pop()
+  if param3.isdigit():
+    param3 = str(dir_relativa('constante', tipoParam3, param3)) 
+  else: 
+    param3 = str(dir_relativa('oscar', tipoParam3, param3))
+
+  paquete_params = [param1, param2, param3]
+
+  cuadruplo = Cuadruplo(cont_Cuadruplos, ESPECIAL, function, str(paquete_params), '_')
+  cuadruplos.append(cuadruplo)
+  cont_Cuadruplos += 1
+
 
 
 def destroy():

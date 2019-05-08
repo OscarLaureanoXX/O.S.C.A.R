@@ -347,6 +347,26 @@ def main(argv):
         valor2 = map(int, valor2)
         plt.pie(valor2, labels=valor1)
         plt.show()
+      elif izquierdo == 'sort':
+        valor1 = pedazoMemoria1[index1]
+        valor1 = map(int, valor1)
+        valor2 = pedazoMemoria2[index2]
+        valor2 = map(int, valor2)
+        if valor1[0] == 1:
+          result = sorted(valor2, reverse= True)
+        else:
+          result = sorted(valor2, reverse=False)
+      elif izquierdo == 'splice':
+        arg3 = sacaTipoYLocalidad(arguments[2])
+        pedazoMemoria3 = getattr(memoria, arg3[1])[arg3[0]]
+        string3 = getApuntadorMemoria(arg3)
+        index3 = int(arguments[2]) - getattr(memoria, string3)
+
+        valor1 = int(pedazoMemoria1[index1])
+        valor2 = int(pedazoMemoria2[index2])
+        valor3 = pedazoMemoria3[index3]
+
+        result = valor3[valor2:valor1]
 
       if resultado != '_':
         lista_cuadruplos[int(resultado)-1]['izq'] = str(result)
