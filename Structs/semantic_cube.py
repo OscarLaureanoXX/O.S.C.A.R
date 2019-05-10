@@ -64,7 +64,7 @@ class Semantic_Cube:
           '||' : 'ERR'
         },
         'list': {
-          '+' : 'ERR',
+          '+' : 'int',
           '-' : 'ERR',
           '/' : 'ERR',
           '*' : 'ERR',
@@ -312,7 +312,7 @@ class Semantic_Cube:
       },
       'list': {
         'int': {
-          '+' : 'ERR',
+          '+' : 'int',
           '-' : 'ERR',
           '/' : 'ERR',
           '*' : 'ERR',

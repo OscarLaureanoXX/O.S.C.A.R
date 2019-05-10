@@ -17,13 +17,13 @@ bloque	    :	'{' {rules.set_func_start()} vars_? estatuto* ('return' exp ';' {ru
 vars_		:	'var' ( tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?  (',' ID  {rules.add_to_var_table($ID.text, $tipo.text)} {rules.add_to_operand_stack($ID.text, $tipo.text)} ('['CTE_I {rules.addRows($ID.text,$CTE_I.text)}(','CTE_I{rules.addColumns($ID.text,$CTE_I.text)})?']')? igualdad?)* ';' )+ ;                   // Se tuvo que cambiar vars por vars_ porque ese nombre tiene conflicto en Python
 id_		    :	tipo ID {rules.add_to_var_table($ID.text, $tipo.text)} ;                                          // Se tuvo que cambiar id por id_ porque ese nombre tiene conflicto en Python
 condicion	:	'if' '(' expresion ')'{rules.add_conditional()} estats ('else'{rules.add_else()} estats)? {rules.add_end_conditional()} ;
-escritura	:	'print' '(' (expresion {rules.add_print()} | CTE_STRING) (','(expresion {rules.add_print()} | CTE_STRING) )*  ')' ';' ;
+escritura	:	'print' '(' (expresion {rules.add_print()} | CTE_STRING | acceso) (','(expresion {rules.add_print()} | CTE_STRING | acceso) )*  ')' ';' ;
 lectura	    :	'read' '(' tipo ')' {rules.generate_read($tipo.text)} ;
 expresion	:	exp ((RELACIONALES {rules.add_to_operator_stack($RELACIONALES.text)} | LOGICOS {rules.add_to_operator_stack($LOGICOS.text)}) exp {rules.pop_rel_from_stack()} )? ;
 exp		    :	termino (( '+' {rules.add_to_operator_stack('+')} | '-' {rules.add_to_operator_stack('-')} ) termino {rules.pop_sum_from_stack()})* ;
 termino	    :	factor (( '*' {rules.add_to_operator_stack('*')} | '/' {rules.add_to_operator_stack('/')} | '%' {rules.add_to_operator_stack('%')} )  factor{rules.pop_mult_from_stack()})* ;
 factor	    :	('(' {rules.add_to_operator_stack('(')} expresion ')') | (( '+' | '-')? var_cte ) | llamadaret;
-var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')} 
+var_cte	    :	ID {rules.add_to_operand_stack($ID.text, 'var')} element?
                 | CTE_I {rules.add_to_operand_stack($CTE_I.text, 'int')} 
                 | CTE_F {rules.add_to_operand_stack($CTE_F.text, 'float')} 
                 | CTE_B {rules.add_to_operand_stack($CTE_B.text, 'bool')}
@@ -33,8 +33,9 @@ estatuto	:	asignacion | condicion | escritura | ciclo | llamadavoid ;
 ciclo		:	( 'for' ID {rules.add_to_operand_stack($ID.text, 'var')} '=' {rules.add_to_operator_stack('=')} exp {rules.pop_equals_from_stack()} ':'{rules.add_for_inicio($ID.text)} exp {rules.add_for_limite()} (':' exp{rules.add_for_step()})? estats {rules.add_for_final()}) 
                 | ( 'while' {rules.add_while()}'(' expresion ')'{rules.add_expr_while()} estats{rules.add_end_while()}) ;
 estats	    :	'{' estatuto+ '}' ;
+acceso      :   ID {rules.add_to_operand_stack($ID.text, 'var')} element;
 asignacion	:	ID {rules.add_to_operand_stack($ID.text, 'var')} element? igualdad ';' ;
-igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion | ('['((exp {rules.crear_array(1)} | sub_lista ) (','(exp {rules.crear_array(1)} | sub_lista ) )*)?']'{rules.asignar_array(1)}) | llamadaret ) {rules.pop_equals_from_stack()} ;
+igualdad    :   '=' {rules.add_to_operator_stack('=')} ( expresion | acceso | ('['((exp {rules.crear_array(1)} | sub_lista ) (','(exp {rules.crear_array(1)} | sub_lista ) )*)?']'{rules.asignar_array(1)}) | llamadaret ) {rules.pop_equals_from_stack()} ;
 sub_lista   :   '[' (exp {rules.crear_array(2)} (','exp {rules.crear_array(2)})*)?']' {rules.asignar_array(2)};
 element	    :	{rules.nombre_arreglo()}'[' exp {rules.verifica_index(1)} (','exp {rules.verifica_index(2)})? ']' ;
 llamadaret	:	concat {rules.add_special('string')} | sort {rules.add_special('list')} | splice {rules.add_special('string')} | length {rules.add_special('int')} | min_ {rules.add_special('int')} | max_ {rules.add_special('int')} | mean {rules.add_special('float')} | variance {rules.add_special('float')} | median {rules.add_special('list')} | stdev {rules.add_special('float')}| head {rules.add_special('list')} | tail {rules.add_special('list')}| import_csv {rules.add_special('list')}| union {rules.add_special('list')}| intersect {rules.add_special('list')}| find {rules.add_special('int')}| lectura | userdef {rules.add_return_value($userdef.text)} ;

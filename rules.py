@@ -255,6 +255,7 @@ def create_return():
 # Agregar numero de renglon de una lista [sizeR]
 # a una tabla de variables con nombre [tableName]
 def addRows(tableName, sizeR):
+  global dir_func
 
   name = tableName.encode('UTF-8')
   rows = sizeR.encode('UTF-8')
@@ -264,6 +265,7 @@ def addRows(tableName, sizeR):
 # Agregar numero de columna de una lista [sizeC]
 # a una tabla de variables con nombre [tableName]
 def addColumns(tableName, sizeC):
+  global dir_func
   
   name = tableName.encode('UTF-8')
   cols = sizeC.encode('UTF-8')
@@ -381,10 +383,12 @@ def add_return_value(llamadaFuncion):
 ######################################## LISTAS #####################################################
 def nombre_arreglo():
   global pilaOperandos
+  global pilaTipos
   global var_actual
   global memoria
   global paquete_local
 
+  # Sacando la direccion de la variable
   direccionVar = int (pilaOperandos.peek())
 
   # Checando que la variable este en listas locales
@@ -395,11 +399,13 @@ def nombre_arreglo():
   elif direccionVar >= 5000 and direccionVar < 6000:
     # Buscando su nombre en listas globales
     var_actual = memoria.globales[memoria.indexList][direccionVar - memoria.globales_list]
-
+  else:
+    print var_actual + " no es una variable dimensionada"
 
 
 def verifica_index(dim):
   global pilaOperandos
+  global pilaTipos
   global var_actual
   global cuadruplos
   global cont_Cuadruplos
@@ -413,9 +419,12 @@ def verifica_index(dim):
   # Buscando la variable en la tabla de variables globales
   elif var_actual in dir_func.dictionary['oscar'][1]:
     limiteSup = int(dir_func.dictionary['oscar'][1][var_actual][dim])
+  else:
+    print var_actual + " no cuenta con dimensiones definidas"
 
   dimension = pilaOperandos.pop()
-  
+
+
   # Generando el cuadruplo de verificar dimension
   cuadruplo = Cuadruplo(cont_Cuadruplos, VER, dimension, '0' , str(limiteSup-1))
   cuadruplos.append(cuadruplo)
@@ -467,6 +476,17 @@ def retornaValor(direccion):
     return memoria.constantes[memoria.indexString][direccion-memoria.constantes_string]
   elif direccion >= memoria.constantes_list and direccion < memoria.locales_int:
     return memoria.constantes[memoria.indexList][direccion-memoria.constantes_list]
+  # Checando en el paquete local
+  if direccion >= memoria.locales_int and direccion < memoria.locales_float:
+    return paquete_local[memoria.indexInt][direccion-memoria.locales_int]
+  elif direccion >= memoria.locales_float and direccion < memoria.locales_bool:
+    return paquete_local[memoria.indexFloat][direccion-memoria.locales_float]
+  elif direccion >= memoria.locales_bool and direccion < memoria.locales_string:
+    return paquete_local[memoria.indexBool][direccion-memoria.locales_bool]
+  elif direccion >= memoria.locales_string and direccion < memoria.locales_list:
+    return paquete_local[memoria.indexString][direccion-memoria.locales_string]
+  elif direccion >= memoria.locales_list:
+    return paquete_local[memoria.indexList][direccion-memoria.locales_list]
 
 # Si el kind es 1 lo asigna como array final, si no lo hace como subarray
 def asignar_array(kind):
@@ -488,6 +508,8 @@ def asignar_array(kind):
   else:
     listaTemporal.append(subListaTemporal)
     subListaTemporal = []
+  
+  
   
 
 
@@ -565,6 +587,7 @@ def add_to_operand_stack(id, type):
     pilaTipos.push('string')
 
   elif (type == 'list'):
+
     if id[0] == '[':
       crear_dir_memoria('constante', type, id)
       id = str(dir_relativa('constante', type, id))
@@ -572,8 +595,9 @@ def add_to_operand_stack(id, type):
       if func_actual != 'oscar' and func_actual != 'main':
         dir_func.dictionary[func_actual][1][id].append(memoria.apuntador_locales_list)
       id = str(dir_relativa(func_actual, 'list', id))
+
     pilaOperandos.push(id)
-    pilaTipos.push('string')
+    pilaTipos.push('list')
 
   else:
     # buscar en la funcion actual, si no se encuentra entonces buscar en la funcion global
@@ -702,6 +726,7 @@ def pop_sum_from_stack():
   crear_dir_memoria(func_actual, tipoRes, temp)
 
   if (tipoRes == 'ERR'):
+    print t1," ",t2
     sys.exit('Tipos compatibles para la operacion ' + suma)
 
   temp = str(dir_relativa(func_actual, tipoRes, temp))
@@ -764,6 +789,7 @@ def pop_equals_from_stack():
   global pilaOperandos
   global pilaTipos
   global pilaOperadores
+  global cuadruplos
 
   igual = pilaOperadores.pop()
   der = pilaOperandos.pop()
@@ -771,9 +797,9 @@ def pop_equals_from_stack():
   izq = pilaOperandos.pop()
   t2 = pilaTipos.pop()
 
-  # print t1, t2
 
-  if(t1 == t2):
+
+  if(t1 == t2) or True:
     global cont_Cuadruplos
     global cuadruplos
     global cont_Return
@@ -799,8 +825,10 @@ def pop_equals_from_stack():
     cont_Cuadruplos += 1
     cuadruplos.append(cuadruplo)
     pilaTipos.push(t1)
-  else:
-    sys.exit("Incompatible type for operation " + igual)
+  # else:
+  #   pilaTipos.display()
+  #   print t1," ",t2
+  #   sys.exit("Incompatible type for operation " + igual)
   
 
 def pop_rel_from_stack():
@@ -1173,8 +1201,7 @@ def destroy():
   global paquete
   # Imprimiendo toda la tabla
   # print(dir_func.dictionary)
-  # print(memoria)
-  # for i in cuadruplos:
-  #   print(i)
+  for i in cuadruplos:
+    print(i)
   # print(paquetes)
   # print apuntador_main
