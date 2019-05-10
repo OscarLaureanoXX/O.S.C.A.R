@@ -132,6 +132,8 @@ def main(argv):
 
         pedazoMemoriaResultado[indexRes] = pedazoMemoriaIzquierdo[indexIzq]
 
+      # print pedazoMemoriaResultado
+
     elif (operacion == '12'):
       # print(str(i)+": " + izquierdo + "\t" + "EQUAL" + "\t" + derecho + "\t" + resultado)
       hazOperacion('==', izquierdo, derecho, resultado)
@@ -175,7 +177,7 @@ def main(argv):
       # REGRESAR AL VALOR DE RETORNO
       # print funcionPadre, ret, apuntador_main
       # if funcionPadre == 'main':
-      i = int(main) + 1
+      i = int(ret)
       # else:
       #   i = int(ret)
 
@@ -192,9 +194,13 @@ def main(argv):
         func_actual = izquierdo
         paquete_funcion = paquetes[func_actual]
 
+        # print paquete_actual
+
         Stack_local.push(paquete_actual)
         paquete_actual = paquete_funcion
         memoria.locales = paquete_actual
+
+        # print memoria.locales
 
     elif (operacion == '18'):
       # print("PARAM", izquierdo, derecho, resultado)
@@ -207,7 +213,7 @@ def main(argv):
         # PASARSELO A LA FUNCION
         izq = sacaTipoYLocalidad(izquierdo)
 
-        pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+        pedazoMemoriaIzquierdo = Stack_local.peek()[izq[0]]
 
         # Construir string dependiendo de localidad y tipo
         stringIzq = getApuntadorMemoria(izq)
@@ -251,7 +257,7 @@ def main(argv):
       lista_cuadruplos[int(resultado)-1]['izq'] = var
       lista_cuadruplos[int(resultado)-1]['der'] = "read"
     elif (operacion == '21'):
-      print "ESPECIAL", izquierdo, derecho, resultado
+      # print "ESPECIAL", izquierdo, derecho, resultado
 
       # Limpiar el string de parametros para contener solo direcciones de memoria
       if derecho[0] == '[':
