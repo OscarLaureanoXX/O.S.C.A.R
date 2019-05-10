@@ -1,12 +1,18 @@
 #oscar;
 
-def void test(int y) {
+def int test(int y) {
   print(y);
+  if (y != 1) {
+    y = y - 1
+  } else {
+    return (y);
+  }
 }
 
 main() {
   var
-    int x;
+    int x, y;
   x = 2;
-  test(x);
+  y = test(x);
+  print(y);
 }
