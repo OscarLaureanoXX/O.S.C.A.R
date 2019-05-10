@@ -1,0 +1,12 @@
+#oscar;
+
+var
+  list C = [1,2,3,4,5];
+  list A = [1,2,3,4,5];
+
+main() {
+  var
+    list x;
+
+  pie_chart(C, A);
+}
