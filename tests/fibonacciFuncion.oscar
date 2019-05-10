@@ -1,8 +1,8 @@
 #oscar;
 
-def int fibonacci(int limite) {
+def int fibonacci() {
   var
-    int inicio = 0, actual = 1, suma = 0; 
+    int inicio = 0, actual = 1, suma = 0, limite; 
   
   for limite = read(int) : 15 {
     suma = inicio + actual;
@@ -15,8 +15,7 @@ def int fibonacci(int limite) {
 
 main () {
   var
-    int fib, limite;
-  limite = read(int);
-  fib = fibonacci(limite);
+    int fib;
+  fib = fibonacci();
   print(fib);
 }
