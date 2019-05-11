@@ -1,12 +1,18 @@
 #oscar;
 
-var
-  list C = [1,2,3,4,5];
-  list A = [1,2,3,4,5];
+def int test(int y) {
+  print(y);
+  if (y != 1) {
+    y = y - 1
+  } else {
+    return (y);
+  }
+}
 
 main() {
   var
-    list x;
-
-  pie_chart(C, A);
+    int x, y;
+  x = 2;
+  y = test(x);
+  print(y);
 }

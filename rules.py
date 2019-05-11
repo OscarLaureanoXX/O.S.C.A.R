@@ -1198,7 +1198,7 @@ def generate_special_function3(function):
 
 
 def destroy():
-  global paquete
+  global paquetes
   # Imprimiendo toda la tabla
   # print(dir_func.dictionary)
   for i in cuadruplos:
