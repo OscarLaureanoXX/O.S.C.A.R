@@ -6,17 +6,22 @@ main () {
 		list C[ 7 ] = [ 1, 11, 12, 13, 14, 15, 16 ];
 		int i;
 		string elem = "empty";
+		int x;
 
 	C[ 3 ] = D [ 0 ];
 	print(C);
 
-	i = 12 + C[ 1 ];
+	i = 12 - C[ 1 + C[ 0 ]] + 20;
 	print(i);
 
-	for i = 0 : 4 {
-		elem = D[ i ];
+	elem = D[ 1 ];
+	print(elem);
+
+	print(D);
+	for x = 0 : 4 {
+		elem = D[ x ];
+		C[ x ] = x;
 		print(elem);
 	}
-
-
+	print(C);
 }

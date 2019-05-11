@@ -65,9 +65,9 @@ class Semantic_Cube:
         },
         'list': {
           '+' : 'int',
-          '-' : 'ERR',
+          '-' : 'int',
           '/' : 'ERR',
-          '*' : 'ERR',
+          '*' : 'int',
           '%' : 'ERR',
           '>' : 'ERR',
           '>=' : 'ERR',

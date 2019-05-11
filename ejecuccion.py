@@ -111,21 +111,54 @@ def main(argv):
         pedazoMemoriaResultado[indexRes] = izquierdo
       # Asignacion a elemento de lista
       elif not pilaAcceso.is_empty():
-        # Lista a asignar el valor
+        # Posibles listas
         tempList = retornaValor(resultado)
+        tempList2 = retornaValor(izquierdo)
 
-        # Valor a asignar
-        tempValue = retornaValor(izquierdo)
+        # Checando cual es lista
+        if isinstance(tempList, list):
+          # Obteniendo dimensiones de la lista
+          x = np.array(tempList)
+          rows = np.shape(x)[0]
+          col = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
+        elif isinstance(tempList2, list):
+          # Obteniendo dimensiones de la lista
+          x = np.array(tempList2)
+          rows = np.shape(x)[0]
+          col = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
+          tempList = tempList2
+
         
-        if isinstance(tempValue, list):
-          tempValue = tempValue[pilaAcceso.pop()]
 
-        if not pilaAcceso.is_empty():
-          # Dimension 1
-          dim = pilaAcceso.pop()
+        # Lista de dos dimensiones
+        if col > 1:
+          # Obteniendo los index para renglones y columnas
+          dim2 = pilaAcceso.pop()
+          dim1 = pilaAcceso.pop()
+          
+          # Obteniendo el valor a asignar
+          tempValue = retornaValor(izquierdo)
+          
+          # Checando si es una lista
+          if isinstance(tempValue, list):
+            # Obteniendo sus dimensiones
+            x = np.array(tempValue)
+            rows_ = np.shape(x)[0]
+            col_ = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
 
-          # Cambiando el valor y regresando a su lugar
-          tempList[dim] = tempValue
+            # Si es de dos dimensiones
+            if col_ > 1:
+              # Obtener dimensiones
+              dim2_ = pilaAcceso.pop()
+              dim1_ = pilaAcceso.pop()
+              
+              # Obtener valor
+              tempValue = tempValue[dim1_][dim2_]
+            # Una dimension
+            else:
+              tempValue = tempValue[pilaAcceso.pop()]
+          
+          tempList[dim1][dim2] = tempValue
 
           res = sacaTipoYLocalidad(resultado)
 
@@ -138,19 +171,45 @@ def main(argv):
           pedazoMemoriaResultado[indexRes] = tempList
 
         else:
-          tempList = retornaValor(izquierdo)
-          tempValue = tempList[int(pedazoMemoriaResultado[indexRes])]
-
+          # Valor a asignar
+          tempValue = retornaValor(izquierdo)
           
-          res = sacaTipoYLocalidad(resultado)
+          if isinstance(tempValue, list):
+            tempValue = tempValue[pilaAcceso.pop()]
 
-          pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+          if not pilaAcceso.is_empty():
+            # Dimension 1
+            dim = pilaAcceso.pop()
 
-          stringRes = getApuntadorMemoria(res)
+            # Cambiando el valor y regresando a su lugar
+            tempList[dim] = tempValue
 
-          indexRes = int(resultado) - getattr(memoria, stringRes)
+            res = sacaTipoYLocalidad(resultado)
 
-          pedazoMemoriaResultado[indexRes] = tempValue
+            pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+
+            stringRes = getApuntadorMemoria(res)
+
+            indexRes = int(resultado) - getattr(memoria, stringRes)
+
+            pedazoMemoriaResultado[indexRes] = tempList
+
+          else:
+
+            tempList = retornaValor(izquierdo)
+
+            # tempValue = tempList[int(pedazoMemoriaResultado[indexRes])]
+
+            
+            res = sacaTipoYLocalidad(resultado)
+
+            pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+
+            stringRes = getApuntadorMemoria(res)
+
+            indexRes = int(resultado) - getattr(memoria, stringRes)
+
+            pedazoMemoriaResultado[indexRes] = tempValue
 
       else:
         # Sacar tipo y localidad de resultado y valor a asignar
@@ -589,6 +648,7 @@ def hazOperacion(operacion, izquierdo, derecho, resultado):
     res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(der))
 
     pedazoMemoriaResultado[indexRes] = res
+
     
   else:
     pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
