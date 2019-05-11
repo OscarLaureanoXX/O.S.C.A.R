@@ -2,8 +2,26 @@
 
 main () {
   var
-  	list C;
+		list D[ 5 ] = ["A", "B", "C", "D", "E"];
+		list C[ 7 ] = [ 1, 11, 12, 13, 14, 15, 16 ];
+		int i;
+		string elem = "empty";
+		int x;
 
-  	C = [["a","b"],[1,2,3,4]];
-  	print(C);
+	C[ 3 ] = D [ 0 ];
+	print(C);
+
+	i = 12 - C[ 1 + C[ 0 ]] + 20;
+	print(i);
+
+	elem = D[ 1 ];
+	print(elem);
+
+	print(D);
+	for x = 0 : 4 {
+		elem = D[ x ];
+		C[ x ] = x;
+		print(elem);
+	}
+	print(C);
 }

@@ -7,8 +7,10 @@ from Structs import *
 
 memoria = antlr.rules.memoria
 paquetes = antlr.rules.paquetes
+pilaAcceso = Stack()
 
 def main(argv):
+  global pilaAcceso
   antlr.main(argv)
   lista_cuadruplos = antlr.rules.cuadruplos
   dirfunc = antlr.rules.dir_func.dictionary
@@ -77,7 +79,7 @@ def main(argv):
       hazOperacion('<=', izquierdo, derecho, resultado)
     elif (operacion == '11'):
       # print(str(i)+": " + resultado + "\t" + "ASIGNACION" + "\t_\t" + izquierdo)
-      # print izquierdo, derecho, resultado
+
       # Si la variable fue extraida de consola, no va a tener lugar en memoria, asi que solo se necesita trabajar con el resultado
       if (derecho == "read"):
         res = sacaTipoYLocalidad(resultado)
@@ -107,12 +109,112 @@ def main(argv):
         indexRes = int(resultado) - getattr(memoria, stringRes)
 
         pedazoMemoriaResultado[indexRes] = izquierdo
+      # Asignacion a elemento de lista
+      elif not pilaAcceso.is_empty():
+        # Posibles listas
+        tempList = retornaValor(resultado)
+        tempList2 = retornaValor(izquierdo)
+
+        # Checando cual es lista
+        if isinstance(tempList, list):
+          # Obteniendo dimensiones de la lista
+          x = np.array(tempList)
+          rows = np.shape(x)[0]
+          col = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
+        elif isinstance(tempList2, list):
+          # Obteniendo dimensiones de la lista
+          x = np.array(tempList2)
+          rows = np.shape(x)[0]
+          col = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
+          tempList = tempList2
+
+        
+
+        # Lista de dos dimensiones
+        if col > 1:
+          # Obteniendo los index para renglones y columnas
+          dim2 = pilaAcceso.pop()
+          dim1 = pilaAcceso.pop()
+          
+          # Obteniendo el valor a asignar
+          tempValue = retornaValor(izquierdo)
+          
+          # Checando si es una lista
+          if isinstance(tempValue, list):
+            # Obteniendo sus dimensiones
+            x = np.array(tempValue)
+            rows_ = np.shape(x)[0]
+            col_ = 1 if (len(np.shape(x)) == 1) else np.shape(x)[1]
+
+            # Si es de dos dimensiones
+            if col_ > 1:
+              # Obtener dimensiones
+              dim2_ = pilaAcceso.pop()
+              dim1_ = pilaAcceso.pop()
+              
+              # Obtener valor
+              tempValue = tempValue[dim1_][dim2_]
+            # Una dimension
+            else:
+              tempValue = tempValue[pilaAcceso.pop()]
+          
+          tempList[dim1][dim2] = tempValue
+
+          res = sacaTipoYLocalidad(resultado)
+
+          pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+
+          stringRes = getApuntadorMemoria(res)
+
+          indexRes = int(resultado) - getattr(memoria, stringRes)
+
+          pedazoMemoriaResultado[indexRes] = tempList
+
+        else:
+          # Valor a asignar
+          tempValue = retornaValor(izquierdo)
+          
+          if isinstance(tempValue, list):
+            tempValue = tempValue[pilaAcceso.pop()]
+
+          if not pilaAcceso.is_empty():
+            # Dimension 1
+            dim = pilaAcceso.pop()
+
+            # Cambiando el valor y regresando a su lugar
+            tempList[dim] = tempValue
+
+            res = sacaTipoYLocalidad(resultado)
+
+            pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+
+            stringRes = getApuntadorMemoria(res)
+
+            indexRes = int(resultado) - getattr(memoria, stringRes)
+
+            pedazoMemoriaResultado[indexRes] = tempList
+
+          else:
+
+            tempList = retornaValor(izquierdo)
+
+            # tempValue = tempList[int(pedazoMemoriaResultado[indexRes])]
+
+            
+            res = sacaTipoYLocalidad(resultado)
+
+            pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+
+            stringRes = getApuntadorMemoria(res)
+
+            indexRes = int(resultado) - getattr(memoria, stringRes)
+
+            pedazoMemoriaResultado[indexRes] = tempValue
+
       else:
         # Sacar tipo y localidad de resultado y valor a asignar
         res = sacaTipoYLocalidad(resultado)
         izq = sacaTipoYLocalidad(izquierdo)
-
-        # print(res, izq)
 
         # Conseguir el pedazo de memoria de ese tipo y localidad
         # EJEMPLO: Si izq tiene [0, constantes]
@@ -396,11 +498,60 @@ def main(argv):
       lista_cuadruplos[int(resultado)-1]['izq'] = valorARetornar
       lista_cuadruplos[int(resultado)-1]['der'] = "return"
     elif (operacion == '23'):
-      print "VERIFICA"
+      # print "VERIFICA" , izquierdo , derecho , resultado
+      izq = int(retornaValor(izquierdo))
+
+      if izq >= int(derecho) and izq <= int(resultado):
+        pilaAcceso.push(izq)
+      else:
+        print "Index out of range on access method"
+    
+        
+
     else:
       print(operacion)
 
     i = i + 1
+
+
+
+def retornaValor(direccion):
+  global memoria
+
+  direccion = int (direccion)
+  # Checando en memoria global
+  if direccion >= memoria.globales_int and direccion < memoria.globales_float:
+    return memoria.globales[memoria.indexInt][direccion-memoria.globales_int]
+  elif direccion >= memoria.globales_float and direccion < memoria.globales_bool:
+    return memoria.globales[memoria.indexFloat][direccion-memoria.globales_float]
+  elif direccion >= memoria.globales_bool and direccion < memoria.globales_string:
+    return memoria.globales[memoria.indexBool][direccion-memoria.globales_bool]
+  elif direccion >= memoria.globales_string and direccion < memoria.globales_list:
+    return memoria.globales[memoria.indexString][direccion-memoria.globales_string]
+  elif direccion >= memoria.globales_list and direccion < memoria.constantes_int:
+    return memoria.globales[memoria.indexList][direccion-memoria.globales_list]
+  # Checando en memoria constante
+  if direccion >= memoria.constantes_int and direccion < memoria.constantes_float:
+    return memoria.constantes[memoria.indexInt][direccion-memoria.constantes_int]
+  elif direccion >= memoria.constantes_float and direccion < memoria.constantes_bool:
+    return memoria.constantes[memoria.indexFloat][direccion-memoria.constantes_float]
+  elif direccion >= memoria.constantes_bool and direccion < memoria.constantes_string:
+    return memoria.constantes[memoria.indexBool][direccion-memoria.constantes_bool]
+  elif direccion >= memoria.constantes_string and direccion < memoria.constantes_list:
+    return memoria.constantes[memoria.indexString][direccion-memoria.constantes_string]
+  elif direccion >= memoria.constantes_list and direccion < memoria.locales_int:
+    return memoria.constantes[memoria.indexList][direccion-memoria.constantes_list]
+  # Checando en memoria local
+  if direccion >= memoria.locales_int and direccion < memoria.locales_float:
+    return memoria.locales[memoria.indexInt][direccion-memoria.locales_int]
+  elif direccion >= memoria.locales_float and direccion < memoria.locales_bool:
+    return memoria.locales[memoria.indexFloat][direccion-memoria.locales_float]
+  elif direccion >= memoria.locales_bool and direccion < memoria.locales_string:
+    return memoria.locales[memoria.indexBool][direccion-memoria.locales_bool]
+  elif direccion >= memoria.locales_string and direccion < memoria.locales_list:
+    return memoria.locales[memoria.indexString][direccion-memoria.locales_string]
+  elif direccion >= memoria.locales_list:
+    return memoria.locales[memoria.indexList][direccion-memoria.locales_list]
 
 def getApuntadorMemoria(var):
   if var[0] == 0:
@@ -458,42 +609,80 @@ def sacaTipoYLocalidad(variable):
 
 def hazOperacion(operacion, izquierdo, derecho, resultado):
   global memoria
+  global pilaAcceso
   # print(izquierdo, derecho, resultado)
 
   res = sacaTipoYLocalidad(resultado)
   izq = sacaTipoYLocalidad(izquierdo)
   der = sacaTipoYLocalidad(derecho)
 
-  # print(izq, der, res)
+  if izq[0] == 4:
+    izq = retornaValor(izquierdo)
+    izq = izq[pilaAcceso.pop()]
 
-  pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
-  pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
-  pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+    pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+    pedazoMemoriaDerecho = getattr(memoria, der[1])[izq[0]]
 
-  # print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
+    stringRes = getApuntadorMemoria(res)
+    indexRes = int(resultado) - getattr(memoria, stringRes)
 
-  # Construir string dependiendo de localidad y tipo
-  stringRes = getApuntadorMemoria(res)
-  # Conseguir indice de la variable dentro de su lista
-  indexRes = int(resultado) - getattr(memoria, stringRes)
+    stringDer = getApuntadorMemoria(der)
+    indexDer = int(derecho) - getattr(memoria, stringDer)
 
-  # Construir string dependiendo de localidad y tipo
-  stringIzq = getApuntadorMemoria(izq)
-  # Conseguir indice de la variable dentro de su lista
-  indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
+    res = eval(str(izq) + operacion + str(pedazoMemoriaDerecho[indexDer]))
 
-  # Construir string dependiendo de localidad y tipo
-  stringDer = getApuntadorMemoria(der)
-  # Conseguir indice de la variable dentro de su lista
-  indexDer = int(derecho) - getattr(memoria, stringDer)
+    pedazoMemoriaResultado[indexRes] = res
+  elif der[0] == 4:
+    der = retornaValor(derecho)
+    der = der[pilaAcceso.pop()]
 
-  res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(pedazoMemoriaDerecho[indexDer]))
+    pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+    pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
 
-  # print(memoria.locales)
+    stringRes = getApuntadorMemoria(res)
+    indexRes = int(resultado) - getattr(memoria, stringRes)
 
-  pedazoMemoriaResultado[indexRes] = res
-  
-  # print(pedazoMemoriaResultado)
+    stringIzq = getApuntadorMemoria(izq)
+    indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
+
+    res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(der))
+
+    pedazoMemoriaResultado[indexRes] = res
+
+    
+  else:
+    pedazoMemoriaResultado = getattr(memoria, res[1])[res[0]]
+    pedazoMemoriaIzquierdo = getattr(memoria, izq[1])[izq[0]]
+    pedazoMemoriaDerecho = getattr(memoria, der[1])[der[0]]
+
+    # print(pedazoMemoriaIzquierdo, pedazoMemoriaDerecho, pedazoMemoriaResultado)
+
+    # Construir string dependiendo de localidad y tipo
+    stringRes = getApuntadorMemoria(res)
+    # Conseguir indice de la variable dentro de su lista
+    indexRes = int(resultado) - getattr(memoria, stringRes)
+
+    # Construir string dependiendo de localidad y tipo
+    stringIzq = getApuntadorMemoria(izq)
+    # Conseguir indice de la variable dentro de su lista
+    indexIzq = int(izquierdo) - getattr(memoria, stringIzq)
+
+    # Construir string dependiendo de localidad y tipo
+    stringDer = getApuntadorMemoria(der)
+    # Conseguir indice de la variable dentro de su lista
+    indexDer = int(derecho) - getattr(memoria, stringDer)
+
+    res = eval(str(pedazoMemoriaIzquierdo[indexIzq]) + operacion + str(pedazoMemoriaDerecho[indexDer]))
+
+    # print(memoria.locales)
+
+    pedazoMemoriaResultado[indexRes] = res
+    
+    # print(pedazoMemoriaResultado)
+
+def is_list(direccion):
+  return (direccion > 19000) or (direccion >= 10000 and direccion < 11000) or (direccion >= 5000 and direccion < 6000) 
+
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -20,3 +20,6 @@ class Stack:
   def display(self):
     for i in self.items:
       print(i)
+  
+  def size(self):
+    return len(self.items)
